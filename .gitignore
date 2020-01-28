@@ -1,1 +1,16 @@
 node_modules
+db
+.bash_history
+.bash_logout
+.bashrc
+.config/
+.dbshell
+.forever/
+.gnupg/
+.mongorc.js
+.mysql_history
+.node_repl_history
+.npm/
+.profile
+.ssh/
+.viminfo

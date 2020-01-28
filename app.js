@@ -11,6 +11,17 @@ var contactSchema = new mongoose.Schema({
 
 var Contact = mongoose.model("Contact",contactSchema);
 
+Contact.create({
+	    name:"Harish",
+	    designation:"Cleaner",
+	    phone:"9876543211"
+},(err,contact)=>{
+	    if(err){
+		            console.log("Somethng went wrong");
+		        }else{
+				        console.log("Created successfully");
+				    }
+})
 
 
 express.get("/",(req,res)=>{
