@@ -1,35 +1,51 @@
 var mongoose = require('mongoose');
 var express=require('express')();
+var movie=require("./modules/movies");
+var contact=require("./modules/contact");
 
 mongoose.connect("mongodb://localhost/elaichi",{ useNewUrlParser: true ,useUnifiedTopology: true });
 
-var contactSchema = new mongoose.Schema({
-    name:String,
-    designation:String,
-    phone:String
-})
+var createMovie=()=>{
+    var h=10,w=10;
+    var seats=new Array(h);
+    for(var i=0;i<h;++i){
+        seats[i]=new Array(w);
+        for(var j=0;j<w;++j){
+            seats[i][j]=0;
+        }
+    }
 
-var Contact = mongoose.model("Contact",contactSchema);
+    movie.create({
+            title:"New Movie",
+            date:Date.now(),
+            seats:seats
+    },(err,contact)=>{
+            if(err){
+                        console.log(err);
+                    }else{
+                            console.log("Created successfully");
+                        }
+    })
+}
 
-Contact.create({
-	    name:"Harish",
-	    designation:"Cleaner",
-	    phone:"9876543211"
-},(err,contact)=>{
-	    if(err){
-		            console.log("Somethng went wrong");
-		        }else{
-				        console.log("Created successfully");
-				    }
-})
 
+// createMovie();
 
 express.get("/",(req,res)=>{
-    Contact.find({},(err,data)=>{
+    movie.find({},(err,data)=>{
         if(err){
-            console.log('Something went wrong');
-        }else{
-            console.log("saved contact");
+            console.log(err);
+        }else{            
+            res.send(JSON.stringify(data));
+        }
+    })
+})
+
+express.get("/:id",(req,res)=>{
+    movie.findById(req.params.id,(err,data)=>{
+        if(err){
+            console.log(err);
+        }else{            
             res.send(JSON.stringify(data));
         }
     })
