@@ -15,8 +15,5 @@ jobs:
         env:
           PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID}}
           APPLICATION_CREDENTIALS: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
-       
-      - run: npm ci
-      - run: npm run build --if-present
-      - run: node app.js
+      - run: gcloud compute scp --recurse ./ route:/opt/project-dates
       
