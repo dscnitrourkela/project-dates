@@ -15,5 +15,3 @@ jobs:
         env:
           PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID}}
           APPLICATION_CREDENTIALS: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
-      - run: gcloud compute scp --recurse ./ route:/opt/project-dates
-      
