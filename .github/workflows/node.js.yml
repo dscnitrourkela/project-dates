@@ -19,4 +19,6 @@ jobs:
         with:
           key: ${{ secrets.SSH_KEY }}
           known_hosts: ${{ secrets.KNOWN_HOSTS }}          
-          run: ls
+          run: gcloud compute scp --recurse ./ route:/opt/project-dates
+          
+        
