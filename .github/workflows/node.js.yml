@@ -15,5 +15,8 @@ jobs:
         env:
           PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID}}
           APPLICATION_CREDENTIALS: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
-        
-      - run: gcloud compute scp --recurse ~/ route:~/opt/project-dates
+      - uses: shimataro/ssh-key-action@v2.0.3
+        with:
+          key: ${{ secrets.SSH_KEY }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS }}          
+          run: ls
