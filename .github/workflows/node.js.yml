@@ -19,6 +19,6 @@ jobs:
         with:
           key: ${{ secrets.SSH_KEY }}
           known_hosts: ${{ secrets.KNOWN_HOSTS }}          
-          args: gcloud compute scp --recurse ~/ route:~/opt/project-dates
+          args: sudo mkdit /opt/project
           
         
