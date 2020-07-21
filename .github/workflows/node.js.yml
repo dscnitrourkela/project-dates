@@ -19,6 +19,6 @@ jobs:
         with:
           key: ${{ secrets.SSH_KEY }}
           known_hosts: ${{ secrets.KNOWN_HOSTS }}          
-          args: sudo mkdit /opt/project
+          args: sudo mkdir /opt/project
           
         
