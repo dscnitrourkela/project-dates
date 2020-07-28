@@ -12,7 +12,7 @@ jobs:
       -  name: testing SSH connection
          uses: appleboy/ssh-action@master
          with:
-          host: ${{ secrets.KNOWN_HOSTS }} 
+          host: central.nitrkl.in
           username: Harish
           key: ${{ secrets.SSH_KEY }}
           port: 22
