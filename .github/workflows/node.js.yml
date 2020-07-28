@@ -7,20 +7,15 @@ on: [push]
 jobs:
   deploy:
     name: Deploy
-    runs-on: ubuntu-latest
-
-    
+    runs-on: ubuntu-latest    
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions-hub/gcloud@master
-        env:
-          PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID}}
-          APPLICATION_CREDENTIALS: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
-      - uses: shimataro/ssh-key-action@v2.0.3
-        with:
+      -  name: testing SSH connection
+         uses: appleboy/ssh-action@master
+         with:
+          host: ${{ secrets.KNOWN_HOSTS }} 
+          username: Harish
           key: ${{ secrets.SSH_KEY }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS }}          
-          args: sudo mkdir /opt/project-dates
-          run: sudo gcloud compute scp --recurse ./ route:/opt/project-dates
-          
+          port: 22
+          script: |
+            ls
         
