@@ -17,5 +17,6 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: 22
           script: |
+            gcloud beta compute ssh --zone "us-central1-a" "route" --project "project-elaichi"
             ls
         
