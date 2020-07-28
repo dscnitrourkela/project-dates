@@ -12,11 +12,10 @@ jobs:
       -  name: testing SSH connection
          uses: appleboy/ssh-action@master
          with:
-          host: central.nitrkl.in
-          username: Harish
+          host: 35.239.58.93
+          username: arishh2_gmail_com
           key: ${{ secrets.SSH_KEY }}
           port: 22
-          script: |
-            gcloud beta compute ssh --zone "us-central1-a" "route" --project "project-elaichi"
-            ls
+          script: |            
+            ls -a
         
