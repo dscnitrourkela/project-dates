@@ -1,9 +1,22 @@
-var mongoose = require('mongoose');
-var express=require('express')();
-var movie=require("./modules/movies");
-var contact=require("./modules/contact");
+const mongoose = require('mongoose');
+const express=require('express')();
+const {graphqlHTTP} = require('express-graphql');
+const schema = require('./schema/schema'); 
+
+// const movie=require("./models/movies");
+const user=require("./models/user");
+const event=require("./models/event");
+const club=require("./models/club");
+const venue=require("./models/venue");
 
 mongoose.connect("mongodb://localhost/elaichi",{ useNewUrlParser: true ,useUnifiedTopology: true });
+mongoose.connection.once('open',()=>{
+    console.log('connected to the database');
+});
+express.use('/graphql',graphqlHTTP({
+    schema,
+    graphiql:true
+}));
 
 var createMovie=()=>{
     var h=10,w=10;
@@ -15,24 +28,35 @@ var createMovie=()=>{
         }
     }
 
-    movie.create({
-            title:"New Movie",
-            date:Date.now(),
-            seats:seats
-    },(err,contact)=>{
-            if(err){
-                        console.log(err);
-                    }else{
-                            console.log("Created successfully");
-                        }
-    })
+    // movie.create({
+    //         title:"New Movie",
+    //         date:Date.now(),
+    //         seats:seats
+    // },(err,contact)=>{
+    //         if(err){
+    //                     console.log(err);
+    //                 }else{
+    //                         console.log("Created successfully");
+    //                     }
+    // })
+
+    user.create({
+        name:"Harish",
+        username:"harish",
+        gmailAuthMail : "abc@gmail.com",
+        // firebaseToken : "token123",
+        instituteId : "117cs0176",
+        mobile : 9878282989,
+        emergencyContact : 9120901290,
+        displayPicture : "abc.com",
+    });
 }
 
 
 // createMovie();
 
 express.get("/",(req,res)=>{
-    movie.find({},(err,data)=>{
+    user.find({},(err,data)=>{
         if(err){
             console.log(err);
         }else{            
@@ -41,8 +65,8 @@ express.get("/",(req,res)=>{
     })
 })
 
-express.get("/:id",(req,res)=>{
-    movie.findById(req.params.id,(err,data)=>{
+express.get("/user",(req,res)=>{
+    user.find({},(err,data)=>{
         if(err){
             console.log(err);
         }else{            
@@ -50,6 +74,16 @@ express.get("/:id",(req,res)=>{
         }
     })
 })
+
+// express.get("/:id",(req,res)=>{
+//     movie.findById(req.params.id,(err,data)=>{
+//         if(err){
+//             console.log(err);
+//         }else{            
+//             res.send(JSON.stringify(data));
+//         }
+//     })
+// })
 
 express.listen(80,()=>{
     console.log("server started");
