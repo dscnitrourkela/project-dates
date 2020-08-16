@@ -194,7 +194,7 @@ const Mutation = new GraphQLObjectType({
             // displayPicture: { type: GraphQLString },
             },
             resolve(parent, args) {
-                console.log(typeof(args.input.access[0].accessLevel));
+                //console.log(args.input.access[0]);
             let user = new User({
                 username: args.input.username,
                 name: args.input.name,
@@ -213,7 +213,7 @@ const Mutation = new GraphQLObjectType({
                 if(err)
                     console.log(err);
                 else    
-                    console.log(cust);
+                    console.log("cust");
             })
             }
         },
@@ -244,7 +244,7 @@ const Mutation = new GraphQLObjectType({
                 society: args.input.society,
                 domain: args.input.domain,
             });
-            return club.insert();
+            return club.save();
             },
 
         }
