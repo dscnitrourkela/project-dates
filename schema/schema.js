@@ -195,26 +195,21 @@ const Mutation = new GraphQLObjectType({
             },
             resolve(parent, args) {
                 console.log(typeof(args.input.access[0].accessLevel));
-            let user = new User({
-                username: args.input.username,
-                name: args.input.name,
-                gmailAuthMail: args.input.gmailAuthMail,
-                access: [{
-                    accessLevel : args.input.access[0].accessLevel,
-                    associatedClubId : args.input.access[0].associatedClubId
-                }],
-                instituteId: args.input.instituteId,
-                address: args.input.address,
-                mobile: args.input.mobile,
-                emergencyContact: args.input.emergencyContact,
-                displayPicture: args.input.displayPicture,
-            });
-            return user.save((err,cust)=>{
-                if(err)
-                    console.log(err);
-                else    
-                    console.log(cust);
-            })
+                let user = new User({
+                    username: args.input.username,
+                    name: args.input.name,
+                    gmailAuthMail: args.input.gmailAuthMail,
+                    access: {
+                        accessLevel : args.input.access[0].accessLevel,
+                        associatedClubId : args.input.access[0].associatedClubId
+                    },
+                    instituteId: args.input.instituteId,
+                    address: args.input.address,
+                    mobile: args.input.mobile,
+                    emergencyContact: args.input.emergencyContact,
+                    displayPicture: args.input.displayPicture,
+                });
+                return user.save();                    
             }
         },
         addClub : {
