@@ -1,6 +1,7 @@
 const graphql = require('graphql');
 const User=require("../models/user");
 const Club=require("../models/club");
+const accessLevel=require("../models/accessLevel");
 
 const{
     GraphQLObjectType,
@@ -152,7 +153,7 @@ const RootQuery = new GraphQLObjectType({
                 clubName:{type:GraphQLString}
             },
             resolve(parent,args){
-                return Club.find({clubName:args.ClubName});
+                return Club.find({clubName:args.clubName});
             }
         },
         users:{
@@ -195,26 +196,94 @@ const Mutation = new GraphQLObjectType({
             },
             resolve(parent, args) {
                 //console.log(args.input.access[0]);
-            let user = new User({
-                username: args.input.username,
-                name: args.input.name,
-                gmailAuthMail: args.input.gmailAuthMail,
-                access: [{
-                    accessLevel : args.input.access[0].accessLevel,
-                    associatedClubId : args.input.access[0].associatedClubId
-                }],
-                instituteId: args.input.instituteId,
-                address: args.input.address,
-                mobile: args.input.mobile,
-                emergencyContact: args.input.emergencyContact,
-                displayPicture: args.input.displayPicture,
-            });
-            return user.save((err,cust)=>{
-                if(err)
+            // let user = new User({
+            //     username: args.input.username,
+            //     name: args.input.name,
+            //     gmailAuthMail: args.input.gmailAuthMail,
+            //     access: [{
+            //         accessLevel : args.input.access[0].accessLevel,
+            //         associatedClubId : args.input.access[0].associatedClubId
+            //     }],
+            //     instituteId: args.input.instituteId,
+            //     address: args.input.address,
+            //     mobile: args.input.mobile,
+            //     emergencyContact: args.input.emergencyContact,
+            //     displayPicture: args.input.displayPicture,
+            // });
+            // const result = user.save();
+            // //console.log(result);
+            // return result;
+            const clubId="5f34a1c767861c2674888ff0";
+            Club.findById(clubId,(err,foundClub)=>{
+                if(err){
                     console.log(err);
-                else    
-                    console.log("cust");
-            })
+                }else{
+                    User.create({
+                        name:"Harish",
+                        username:"harish",
+                        gmailAuthMail : "abc@gmail.com",
+                        instituteId : "117cs0176",
+                        mobile : 9878282989,
+                        emergencyContact : 9120901290,
+                        displayPicture : "abc.com",
+                    },(err,createdUser)=>{
+                        userId=createdUser._id;
+                        const accessObj={
+                            level:"1",
+                            associatedClub:foundClub
+                        };
+                        accessLevel.create(accessObj,(err,createdAccessLevel)=>{
+                            createdUser.access.push(createdAccessLevel);                    
+                            const retPromise=createdUser.save((err,saved)=>{
+                                if(err){
+                                    console.log(err);
+                                }else{
+                                    user.findById(userId).populate("access").exec(function(err,found){
+                                        if(err)
+                                        console.log(err);
+                                        else
+                                        console.log(found);
+                                    })
+                                }
+                            })
+                            return retPromise;
+                        })
+                    });
+                }
+            });
+                // User.create({
+                //             username: args.input.username,
+                //             name: args.input.name,
+                //             gmailAuthMail: args.input.gmailAuthMail,
+                //             instituteId: args.input.instituteId,
+                //             address: args.input.address,
+                //             mobile: args.input.mobile,
+                //             emergencyContact: args.input.emergencyContact,
+                //             displayPicture: args.input.displayPicture,
+                //         },
+                //         (err,createdUser)=>{
+                //             userId=createdUser._id;
+                //             const accessObj={
+                //                 level:args.input.access[0].accessLevel,
+                //                 associatedClub:args.input.access[0].associatedClubId
+                //             };
+                //             accessLevel.create(accessObj,(err,createdAccessLevel)=>{
+                //                 createdUser.access.push(createdAccessLevel);                    
+                //                 createdUser.save((err,saved)=>{
+                //                     if(err){
+                //                         console.log(err);
+                //                     }else{
+                //                         user.findById(userId).populate("access").exec(function(err,found){
+                //                             if(err)
+                //                             console.log(err);
+                //                             else
+                //                             return found;
+                //                         })
+                //                     }
+                //                 })
+    
+                //             });
+                //         });
             }
         },
         addClub : {
