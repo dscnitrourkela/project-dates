@@ -1,6 +1,6 @@
 node_modules
 db
-.vs/
+
 .bash_history
 .bash_logout
 .bashrc
