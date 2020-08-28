@@ -6,12 +6,8 @@ var userSchema = new mongoose.Schema({
     // firebaseToken : String,
     // password : String,
     access : [{
-        level : String,
-        associatedClubs : {
-            String
-            // type:mongoose.Schema.Types.ObjectId,
-            // ref:"Club"
-        }
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"AccessLevel"
     }],
     instituteId  : String ,
     address : String ,

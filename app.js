@@ -6,6 +6,7 @@ const schema = require('./schema/schema');
 // const movie=require("./models/movies");
 const user=require("./models/user");
 const event=require("./models/event");
+const accessLevel=require("./models/accessLevel");
 const club=require("./models/club");
 const venue=require("./models/venue");
 
@@ -19,14 +20,14 @@ express.use('/graphql',graphqlHTTP({
 }));
 
 var createMovie=()=>{
-    var h=10,w=10;
-    var seats=new Array(h);
-    for(var i=0;i<h;++i){
-        seats[i]=new Array(w);
-        for(var j=0;j<w;++j){
-            seats[i][j]=0;
-        }
-    }
+    // var h=10,w=10;
+    // var seats=new Array(h);
+    // for(var i=0;i<h;++i){
+    //     seats[i]=new Array(w);
+    //     for(var j=0;j<w;++j){
+    //         seats[i][j]=0;
+    //     }
+    // }
 
     // movie.create({
     //         title:"New Movie",
@@ -40,20 +41,72 @@ var createMovie=()=>{
     //                     }
     // })
 
-    user.create({
-        name:"Harish",
-        username:"harish",
-        gmailAuthMail : "abc@gmail.com",
-        // firebaseToken : "token123",
-        instituteId : "117cs0176",
-        mobile : 9878282989,
-        emergencyContact : 9120901290,
-        displayPicture : "abc.com",
-    });
+    
+    const clubId="5f3821ef406ba321683dcb87";
+    let userId;
+    club.findById(clubId,(err,foundClub)=>{
+        if(err){
+            console.log(err);
+        }else{
+            user.create({
+                name:"Harish",
+                username:"harish",
+                gmailAuthMail : "abc@gmail.com",
+                instituteId : "117cs0176",
+                mobile : 9878282989,
+                emergencyContact : 9120901290,
+                displayPicture : "abc.com",
+            },(err,createdUser)=>{
+                userId=createdUser._id;
+                const accessObj={
+                    level:"1",
+                    associatedClub:foundClub
+                };
+                accessLevel.create(accessObj,(err,createdAccessLevel)=>{
+                    createdUser.access.push(createdAccessLevel);                    
+                    createdUser.save((err,saved)=>{
+                        if(err){
+                            console.log(err);
+                        }else{
+                            user.findById(userId).populate("access").exec(function(err,found){
+                                if(err)
+                                console.log(err);
+                                else
+                                console.log(found);
+                            })
+                        }
+                    })
+                })
+            });
+        }
+    })
+
+    
+
+    // user.create({
+    //     name:"Harish",
+    //     username:"harish",
+    //     gmailAuthMail : "abc@gmail.com",
+    //     // firebaseToken : "token123",
+        
+    //     instituteId : "117cs0176",
+    //     mobile : 9878282989,
+    //     emergencyContact : 9120901290,
+    //     displayPicture : "abc.com",
+    // },(err,createdUser)=>{
+    //     console.log(createdUser);
+    //     createdUser.access.push(accessObj);
+    //     console.log(createdUser);
+    //     createdUser.save((err)=>{
+    //         if(err){
+    //             console.log(err);
+    //         }
+    //     });
+    // });
 }
 
 
-// createMovie();
+ createMovie();
 
 express.get("/",(req,res)=>{
     user.find({},(err,data)=>{
