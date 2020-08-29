@@ -2,12 +2,15 @@ const events = require('../models/event.js');
 const accessLevel = require('../models/accessLevel.js');
 const {DataSource} = require('apollo-datasource');
 
-class eventAPI extends DataSource{
+class EventAPI extends DataSource{
     constructor(){
         super();
     }
     initialize(config){
 
+    }
+    getAllEvents(){
+        return events.find();
     }
     getEvents(args){
         return events.find(args);

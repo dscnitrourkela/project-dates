@@ -1,4 +1,7 @@
 const queries={
+    allEvents:(parent,args,{dataSources},info) => {
+        return dataSources.EventAPI.getAllEvents();
+    },
     events:(parent,args,{dataSources},info) => {
         return dataSources.EventAPI.getEvents(args);
     },

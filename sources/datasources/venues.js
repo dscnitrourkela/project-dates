@@ -2,12 +2,15 @@ const venues = require('../models/venue.js');
 const accessLevel = require('../models/accessLevel.js');
 const {DataSource} = require('apollo-datasource');
 
-class venueAPI extends DataSource{
+class VenueAPI extends DataSource{
     constructor(){
         super();
     }
     initialize(config){
 
+    }
+    getAllVenues(){
+        return venues.find();
     }
     getVenues(args){
         return venues.find(args);

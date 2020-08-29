@@ -1,5 +1,8 @@
 const {ApolloServer,gql, ApolloError} = require('apollo-server');
 const UserAPI = require('./datasources/users.js');
+const ClubAPI = require('./datasources/clubs.js');
+const EventAPI = require('./datasources/events.js');
+const VenueAPI = require('./datasources/venues.js');
 const typeDefs = require('./schema.js');
 const resolvers = require('./resolvers.js');
 const mongoose = require('mongoose');
@@ -11,6 +14,9 @@ mongoose.connection.once('open',()=>{
 
 const dataSources =() => ({
     UserAPI: new UserAPI(),
+    ClubAPI: new ClubAPI(),
+    EventAPI: new EventAPI(),
+    VenueAPI: new VenueAPI(),
 });
 
 const server = new ApolloServer({
@@ -20,12 +26,12 @@ const server = new ApolloServer({
     introspection:true,
     playground:true,
     debug:false,
-    formatError:(err)=>{
-        if(err.extensions.code=="INTERNAL_SERVER_ERROR"){
-            return new ApolloError("We are having some trouble","ERROR",{Token:"Unique Token"});
-        }
-        return err;
-    }
+    // formatError:(err)=>{
+    //     if(err.extensions.code=="INTERNAL_SERVER_ERROR"){
+    //         return new ApolloError("We are having some trouble","ERROR",{Token:"Unique Token"});
+    //     }
+    //     return err;
+    // }
 });
 
 server

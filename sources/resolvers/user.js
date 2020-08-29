@@ -1,4 +1,7 @@
 const queries={
+    allUsers:(parent,args,{dataSources},info) => {
+        return dataSources.UserAPI.getAllUsers();
+    },
     users:(parent,args,{dataSources},info) => {
         return dataSources.UserAPI.getUsers(args);
     },
@@ -8,9 +11,6 @@ const queries={
     userById:(parent,{id},{dataSourc0es},info) =>{
         return dataSources.UserAPI.getUserById(id);
     },
-    allUsers:(parent,args,{dataSources},info) => {
-        return dataSources.UserAPI.getAllUsers();
-    }
 }
 
 const mutations={

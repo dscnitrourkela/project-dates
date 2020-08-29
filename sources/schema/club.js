@@ -12,6 +12,7 @@ type Club{
 `;
 
 const queries=`
+    allClubs:[Club]
     clubs(
         id:ID
         clubName:String
