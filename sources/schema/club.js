@@ -2,7 +2,7 @@ const types=`
 type Club{
     id:ID
     clubName:String
-    clubMembers:[User]
+    clubMembers:[AccessLevel]
     facAd:String
     logo:String
     events:[Event]

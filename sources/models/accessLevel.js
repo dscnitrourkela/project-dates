@@ -4,7 +4,12 @@ var accessLevelSchema = new mongoose.Schema({
     associatedClub : {
         type:mongoose.Schema.Types.ObjectId,
         ref:"Club"
-    }        
+    },
+    associatedUser : {
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"User"
+    }       
+
 })
 
 module.exports = mongoose.model("AccessLevel",accessLevelSchema);

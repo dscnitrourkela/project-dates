@@ -10,10 +10,12 @@ class ClubAPI extends DataSource{
 
     }
     getAllClubs(){
-        return clubs.find();
+        return clubs.find()
     }
-    getClubs(args){
-        return clubs.find(args);
+    async getClubs(args){
+        const ans=await clubs.find(args);
+        return ans;
+        
     }
     getClubById(id){
         return clubs.findById(id);
