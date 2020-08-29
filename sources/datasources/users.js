@@ -1,5 +1,6 @@
-const users = require('../models/user.js');
-const accessLevel = require('../models/accessLevel.js');
+const Users = require('../models/user.js');
+const Clubs = require('../models/club.js');
+const AccessLevel = require('../models/accessLevel.js');
 const {DataSource} = require('apollo-datasource');
 
 class UserAPI extends DataSource{
@@ -10,16 +11,43 @@ class UserAPI extends DataSource{
     initialize(config){
 
     }
-
+    getAllUsers(){
+        return Users.find();
+    }
     getUsers(args){
-        return users.find(args);
+        return Users.find(args);
     }
     getUserById(id){
-        return users.findById(id);
+        return Users.findById(id);
+    }
+    getUserByUsername(username){
+        return Users.find({username:username});
     }
 
-    addUser(user){
-        return users.create(user);
+    async addUser(user){
+        let retPromise={};
+        const clubId=user.access[0].associatedClubId;
+        const foundClub=await Clubs.findById(clubId);
+        let createdUser=await Users.create({
+            username: user.username,
+            name: user.name,
+            gmailAuthMail: user.gmailAuthMail,                        
+            instituteId: user.instituteId,
+            address: user.address,
+            mobile: user.mobile,
+            emergencyContact: user.emergencyContact,
+            displayPicture: user.displayPicture                        
+        });
+        userId=createdUser._id;
+        const accessObj={
+            level:user.access[0].accessLevel,
+            associatedClub:foundClub
+        };
+        let createdAccessLevel=await accessLevel.create(accessObj);
+        createdUser.access.push(createdAccessLevel);                                                
+        retPromise=await createdUser.save();
+        console.log(retPromise);            
+        return retPromise;
     }
 }
-module.exports=UserAPI;
+module.exports = UserAPI;

@@ -18,6 +18,16 @@ const types=`
 `;
 
 const queries=`
+    events(
+        id:ID
+        eventName:String
+        facAd:String
+        logo:String
+        society:String
+        domain:String
+    ):[Event]
+    eventByName(name:String):Event
+    eventById(id:String):Event
 
 `;
 

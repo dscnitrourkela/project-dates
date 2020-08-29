@@ -1,8 +1,14 @@
-module.exports = {
-    users:(parent,args,{dataSources},info) => {
-        return dataSources.UserAPI.getUsers();
-    },
-    userById:(parent,{id},{dataSources},info) =>{
-        return dataSources.UserAPI.getUserById(id);
-    }
-};
+const User= require('./user.js');
+const Event= require('./event.js');
+const Club= require('./club.js');
+const Venue= require('./venue.js');
+
+const queries={};
+
+const schemas= [User,Event,Club,Venue];
+
+schemas.forEach((s)=>{
+    Object.assign( queries, s.queries );
+});
+
+module.exports = queries;

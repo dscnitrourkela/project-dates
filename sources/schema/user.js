@@ -25,8 +25,6 @@ const types=`
         emergencyContact:String
         displayPicture:String
     }
-    
-    
     input AccessLevelInputType{
         level: String
         club : [String]
@@ -35,6 +33,7 @@ const types=`
 `;
 
 const queries=`
+    allUsers:[User]
     users(
         id:ID
         name:String
@@ -44,7 +43,8 @@ const queries=`
         mobile:String
         emergencyContact:String
     ):[User]
-    userById(username:String):User
+    userByUsername(username:String):User
+    userById(id:String):User
 `;
 
 const mutations=`

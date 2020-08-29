@@ -12,7 +12,16 @@ type Club{
 `;
 
 const queries=`
-
+    clubs(
+        id:ID
+        clubName:String
+        facAd:String
+        logo:String
+        society:String
+        domain:String
+    ):[Club]
+    clubByName(name:String):Club
+    clubById(id:String):Club
 `;
 
 const mutations=`
