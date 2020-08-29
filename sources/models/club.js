@@ -3,18 +3,16 @@ var clubSchema = new mongoose.Schema({
     clubName : String,
     clubMember : [{
         userId : {
-            String
-            // type:mongoose.Schema.Types.ObjectId,
-            // ref:"User"
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"User"
         }
     }],
     facAd : String,
     logo : String,
     events : [
         {
-            String
-            // type:mongoose.Schema.Types.ObjectId,
-            // ref:"Event"
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"Event"
         }
     ],
     society : String,
