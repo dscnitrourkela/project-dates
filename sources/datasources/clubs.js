@@ -9,11 +9,10 @@ class ClubAPI extends DataSource{
     initialize(config){
 
     }
-    getAllClubs(){
-        return clubs.find();
-    }
-    getClubs(args){
-        return clubs.find(args);
+    async getClubs(args){
+        const ans=await clubs.find(args);
+        return ans;
+        
     }
     getClubById(id){
         return clubs.findById(id);
@@ -21,6 +20,7 @@ class ClubAPI extends DataSource{
     addClub(club){
         return clubs.create(club);
     }
+    
 }
 
 module.exports = ClubAPI;

@@ -1,7 +1,4 @@
 const queries={
-    allClubs:(parent,args,{dataSources},info) => {
-        return dataSources.ClubAPI.getAllClubs();
-    },
     clubs:(parent,args,{dataSources},info) => {
         return dataSources.ClubAPI.getClubs(args);
     },
@@ -16,4 +13,12 @@ const queries={
 const mutations={
 }
 
-module.exports = {queries,mutations};
+const fieldResolvers = {
+    Club:{        
+        clubMembers:async (parent,args,{dataSources},info)=>{
+            return await dataSources.AccessLevelAPI.resolveUser(parent.clubMembers);
+        }
+    },
+}
+
+module.exports = {queries,mutations,fieldResolvers};

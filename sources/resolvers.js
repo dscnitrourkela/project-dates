@@ -1,8 +1,8 @@
 const Query= require("./resolvers/query");
-// const Session= require("./resolvers/session");
 const Mutation= require("./resolvers/mutation");
+const FieldResolver = require("./resolvers/fieldResolver");
 
-module.exports = {
+exportResolvers = {
     Query,
     Mutation,
     UserOrError:{
@@ -14,4 +14,6 @@ module.exports = {
             }
         }
     }
-};
+}
+Object.assign( exportResolvers,FieldResolver );
+module.exports = exportResolvers;

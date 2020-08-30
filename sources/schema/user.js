@@ -4,16 +4,11 @@ const types=`
         name:String
         username:String
         gmailAuthMail:String
-        access:[AccessLevel]
+        clubs:[AccessLevel]
         instituteId:String
         mobile:String
         emergencyContact:String
         displayPicture:String
-    }
-    type AccessLevel{
-        id:ID
-        level:String
-        club:Club
     }
     input UserInputType{
         name:String
@@ -25,15 +20,10 @@ const types=`
         emergencyContact:String
         displayPicture:String
     }
-    input AccessLevelInputType{
-        level: String
-        club : String
-    }
     
 `;
 
 const queries=`
-    allUsers:[User]
     users(
         id:ID
         name:String

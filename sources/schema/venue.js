@@ -7,7 +7,6 @@ const types=`
 `;
 
 const queries=`
-    allVenues:[Venue]
     venues(
         id:ID
         venueName:String

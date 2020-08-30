@@ -1,7 +1,4 @@
 const queries={
-    allEvents:(parent,args,{dataSources},info) => {
-        return dataSources.EventAPI.getAllEvents();
-    },
     events:(parent,args,{dataSources},info) => {
         return dataSources.EventAPI.getEvents(args);
     },
@@ -16,4 +13,7 @@ const queries={
 const mutations={
 }
 
-module.exports = {queries,mutations};
+const fieldResolvers = {
+}
+
+module.exports = {queries,mutations,fieldResolvers};

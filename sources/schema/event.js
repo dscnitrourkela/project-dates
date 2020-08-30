@@ -18,7 +18,6 @@ const types=`
 `;
 
 const queries=`
-    allEvents:[Event]
     events(
         id:ID
         eventName:String

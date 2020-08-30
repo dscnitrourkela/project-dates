@@ -9,9 +9,6 @@ class EventAPI extends DataSource{
     initialize(config){
 
     }
-    getAllEvents(){
-        return events.find();
-    }
     getEvents(args){
         return events.find(args);
     }

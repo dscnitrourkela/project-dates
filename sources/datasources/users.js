@@ -11,9 +11,6 @@ class UserAPI extends DataSource{
     initialize(config){
 
     }
-    getAllUsers(){
-        return Users.find();
-    }
     getUsers(args){
         return Users.find(args);
     }

@@ -9,9 +9,6 @@ class VenueAPI extends DataSource{
     initialize(config){
 
     }
-    getAllVenues(){
-        return venues.find();
-    }
     getVenues(args){
         return venues.find(args);
     }

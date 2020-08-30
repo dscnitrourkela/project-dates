@@ -3,9 +3,12 @@ const UserAPI = require('./datasources/users.js');
 const ClubAPI = require('./datasources/clubs.js');
 const EventAPI = require('./datasources/events.js');
 const VenueAPI = require('./datasources/venues.js');
+const AccessLevelAPI = require('./datasources/accessLevels.js');
 const typeDefs = require('./schema.js');
 const resolvers = require('./resolvers.js');
 const mongoose = require('mongoose');
+require('./seed_database.js');
+
 mongoose.connect("mongodb://localhost/elaichi",{ useNewUrlParser: true ,useUnifiedTopology: true });
 mongoose.connection.once('open',()=>{
     console.log('connected to the database');
@@ -17,6 +20,7 @@ const dataSources =() => ({
     ClubAPI: new ClubAPI(),
     EventAPI: new EventAPI(),
     VenueAPI: new VenueAPI(),
+    AccessLevelAPI: new AccessLevelAPI(),
 });
 
 const server = new ApolloServer({

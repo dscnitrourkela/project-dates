@@ -1,11 +1,9 @@
 var mongoose = require("mongoose");
 var clubSchema = new mongoose.Schema({
     clubName : String,
-    clubMember : [{
-        userId : {
-            type:mongoose.Schema.Types.ObjectId,
-            ref:"User"
-        }
+    clubMembers : [{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"User"
     }],
     facAd : String,
     logo : String,

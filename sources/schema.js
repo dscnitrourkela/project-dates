@@ -4,12 +4,13 @@ const User= require('./schema/user');
 const Event= require('./schema/event');
 const Club= require('./schema/club');
 const Venue= require('./schema/venue');
+const Access= require('./schema/accessLevel');
 
 const types=[];
 const queries=[];
 const mutations=[];
 
-const schemas= [User,Event,Club,Venue];
+const schemas= [User,Event,Club,Venue,Access];
 schemas.forEach((s)=>{
     types.push(s.types);
     queries.push(s.queries);
