@@ -9,7 +9,7 @@ var eventSchema = new mongoose.Schema({
     startDateTime : Date,    
     venueId : {
         type:mongoose.Schema.Types.ObjectId,
-        ref:"Venue"
+        ref:"Venue" 
     },
     endDateTime : Date,
     registrationPrice : Number,

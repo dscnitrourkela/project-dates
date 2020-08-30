@@ -7,6 +7,16 @@ const types=`
 `;
 
 const queries=`
+    venues(
+        id:ID
+        venueName:String
+        facAd:String
+        logo:String
+        society:String
+        domain:String
+    ):[Venue]
+    venueByName(name:String):Venue
+    venueById(id:String):Venue
 
 `;
 

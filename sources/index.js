@@ -1,8 +1,14 @@
 const {ApolloServer,gql, ApolloError} = require('apollo-server');
 const UserAPI = require('./datasources/users.js');
+const ClubAPI = require('./datasources/clubs.js');
+const EventAPI = require('./datasources/events.js');
+const VenueAPI = require('./datasources/venues.js');
+const AccessLevelAPI = require('./datasources/accessLevels.js');
 const typeDefs = require('./schema.js');
 const resolvers = require('./resolvers.js');
 const mongoose = require('mongoose');
+require('./seed_database.js');
+
 mongoose.connect("mongodb://localhost/elaichi",{ useNewUrlParser: true ,useUnifiedTopology: true });
 mongoose.connection.once('open',()=>{
     console.log('connected to the database');
@@ -11,6 +17,10 @@ mongoose.connection.once('open',()=>{
 
 const dataSources =() => ({
     UserAPI: new UserAPI(),
+    ClubAPI: new ClubAPI(),
+    EventAPI: new EventAPI(),
+    VenueAPI: new VenueAPI(),
+    AccessLevelAPI: new AccessLevelAPI(),
 });
 
 const server = new ApolloServer({
@@ -20,12 +30,12 @@ const server = new ApolloServer({
     introspection:true,
     playground:true,
     debug:false,
-    formatError:(err)=>{
-        if(err.extensions.code=="INTERNAL_SERVER_ERROR"){
-            return new ApolloError("We are having some trouble","ERROR",{Token:"Unique Token"});
-        }
-        return err;
-    }
+    // formatError:(err)=>{
+    //     if(err.extensions.code=="INTERNAL_SERVER_ERROR"){
+    //         return new ApolloError("We are having some trouble","ERROR",{Token:"Unique Token"});
+    //     }
+    //     return err;
+    // }
 });
 
 server

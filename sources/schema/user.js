@@ -4,16 +4,11 @@ const types=`
         name:String
         username:String
         gmailAuthMail:String
-        access:[AccessLevel]
+        clubs:[AccessLevel]
         instituteId:String
         mobile:String
         emergencyContact:String
         displayPicture:String
-    }
-    type AccessLevel{
-        id:ID
-        level:String
-        Clubs:[Club]
     }
     input UserInputType{
         name:String
@@ -24,12 +19,6 @@ const types=`
         mobile:String
         emergencyContact:String
         displayPicture:String
-    }
-    
-    
-    input AccessLevelInputType{
-        level: String
-        club : [String]
     }
     
 `;
@@ -44,7 +33,8 @@ const queries=`
         mobile:String
         emergencyContact:String
     ):[User]
-    userById(username:String):User
+    userByUsername(username:String):User
+    userById(id:String):User
 `;
 
 const mutations=`

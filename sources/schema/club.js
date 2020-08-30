@@ -2,7 +2,7 @@ const types=`
 type Club{
     id:ID
     clubName:String
-    clubMembers:[User]
+    clubMembers:[AccessLevel]
     facAd:String
     logo:String
     events:[Event]
@@ -12,7 +12,16 @@ type Club{
 `;
 
 const queries=`
-
+    clubs(
+        id:ID
+        clubName:String
+        facAd:String
+        logo:String
+        society:String
+        domain:String
+    ):[Club]
+    clubByName(name:String):Club
+    clubById(id:String):Club
 `;
 
 const mutations=`
