@@ -5,7 +5,6 @@ const club=require("./models/club");
 const venue=require("./models/venue");
 
 club.create({
-    {
         name : String,
         username : String,
         gmailAuthMail : String ,
@@ -20,5 +19,5 @@ club.create({
         mobileNo : Number ,
         emergencyContact : Number ,
         displayPicture : String
-    }
+
 })

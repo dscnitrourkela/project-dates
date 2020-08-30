@@ -7,4 +7,4 @@ var venueSchema = new mongoose.Schema({
     picture : String  
 })
 
-module.exports = mongoose.model("Venue",venueSchema);
+module.exports = mongoose.model("Venue",venueSchema); 

@@ -38,15 +38,15 @@ class UserAPI extends DataSource{
             emergencyContact: user.emergencyContact,
             displayPicture: user.displayPicture                        
         });
-        userId=createdUser._id;
+        let userId=createdUser._id;
         const accessObj={
             level:user.access[0].accessLevel,
             associatedClub:foundClub
         };
-        let createdAccessLevel=await accessLevel.create(accessObj);
+        let createdAccessLevel=await AccessLevel.create(accessObj);
         createdUser.access.push(createdAccessLevel);                                                
         retPromise=await createdUser.save();
-        console.log(retPromise);            
+        // console.log(retPromise);            
         return retPromise;
     }
 }

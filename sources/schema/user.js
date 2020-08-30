@@ -13,7 +13,7 @@ const types=`
     type AccessLevel{
         id:ID
         level:String
-        Clubs:[Club]
+        club:Club
     }
     input UserInputType{
         name:String
@@ -27,7 +27,7 @@ const types=`
     }
     input AccessLevelInputType{
         level: String
-        club : [String]
+        club : String
     }
     
 `;

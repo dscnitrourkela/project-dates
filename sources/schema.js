@@ -21,7 +21,6 @@ module.exports = gql`
 ${types.join('\n')}
 
 type Query{
-
     ${queries.join('\n')}
 }
 
