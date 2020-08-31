@@ -65,6 +65,49 @@ class ClubAPI extends DataSource{
         retPromise=await createdClub.save();           
         return retPromise;
     }
+
+    async updateClub(args){
+        const clubId=args.id;
+        const club = args.club;
+        let retPromise={};
+        const foundClub=await Clubs.findById(clubId);
+        let updatedClub = new Clubs(foundClub);
+        updatedClub = Object.assign(updatedClub,club);
+        updatedClub = new Clubs(updatedClub);
+
+        //Add nested types
+        const accessArray = club.memberAccess;
+        if (accessArray != undefined && accessArray.length > 0) {
+            // accessArray exists and not empty                                            
+            await Promise.all(accessArray.map(async (accessItem,index)=>{
+                const userId=accessItem.user;
+                const foundUser=await Users.findById(userId);
+                const accessObj={
+                    level:accessItem.level,
+                    user:foundUser._id,
+                    club:clubId
+                };
+                let createdAccessLevel=await AccessLevel.create(accessObj);
+                updatedClub.memberAccess.push(createdAccessLevel);  
+                foundUser.clubAccess.push(createdAccessLevel);
+                await foundUser.save();    
+            }))
+        }
+        
+        const eventsArray = club.events;
+        if (eventsArray != undefined && eventsArray.length > 0) {
+            // eventsArray exists and not empty   
+            await Promise.all(eventsArray.map(async (eventItem,index)=>{
+                const eventId=eventItem;
+                const foundEvent=await Events.findById(eventId);
+                updatedClub.events.push(foundEvent._id);  
+                foundEvent.Organizer = clubId;
+                await foundEvent.save();    
+            }))
+        }
+        retPromise=await updatedClub.save();           
+        return retPromise;
+    }
     
 }
 

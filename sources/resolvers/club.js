@@ -13,6 +13,9 @@ const queries={
 const mutations={
     addClub:(parent,{club},{dataSources},info) =>{
         return dataSources.ClubAPI.addClub(club);
+    },
+    updateClub:(parent,args,{dataSources},info) =>{
+        return dataSources.ClubAPI.updateClub(args);
     }
 }
 
