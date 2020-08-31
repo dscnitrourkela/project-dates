@@ -5,7 +5,7 @@ const queries={
     userByUsername:(parent,{username},{dataSources},info) =>{
         return dataSources.UserAPI.getUserByUsername(username);
     },
-    userById:(parent,{id},{dataSourc0es},info) =>{
+    userById:(parent,{id},{dataSources},info) =>{
         return dataSources.UserAPI.getUserById(id);
     },
 }
@@ -17,8 +17,8 @@ const mutations={
 }
 const fieldResolvers = {
     User:{        
-        clubs:async (parent,args,{dataSources},info)=>{
-            return await dataSources.AccessLevelAPI.resolveClub(parent.clubs);
+        clubAccess:async (parent,args,{dataSources},info)=>{
+            return await dataSources.AccessLevelAPI.resolveAccess(parent.clubAccess);
         }
     },
 }

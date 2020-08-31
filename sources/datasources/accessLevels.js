@@ -8,17 +8,11 @@ class AccessLevelAPI extends DataSource{
     initialize(config){
 
     }
-    async resolveUser(userArray){
+    async resolveAccess(accessArray){
         return await accessLevel.find({
-            '_id': { $in: userArray}
+            '_id': { $in: accessArray}
         });
-    }
-    async resolveClub(clubArray){
-        console.log(clubArray)
-        return await accessLevel.find({
-            '_id': { $in: clubArray}
-        });
-    }    
+    } 
 }
 
 module.exports = AccessLevelAPI;

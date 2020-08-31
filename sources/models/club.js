@@ -1,7 +1,7 @@
 var mongoose = require("mongoose");
 var clubSchema = new mongoose.Schema({
     clubName : String,
-    clubMembers : [{
+    memberAccess : [{
         type:mongoose.Schema.Types.ObjectId,
         ref:"User"
     }],
