@@ -11,9 +11,23 @@ const queries={
 }
 
 const mutations={
+    addEvent:(parent,{event},{dataSources},info) =>{
+        return dataSources.EventAPI.addEvent(event);
+    }
 }
 
 const fieldResolvers = {
+    Event:{
+        organizer:async (parent,args,{dataSources},info)=>{
+            return await dataSources.ClubAPI.getClubById(parent.organizer);
+        },
+        venue:async (parent,args,{dataSources},info)=>{
+            return await dataSources.VenueAPI.getVenueById(parent.venue);
+        },
+        attendees:async (parent,args,{dataSources},info)=>{
+            return await dataSources.EventAPI.resolveEventAttendees(parent.attendees);
+        }
+    }
 }
 
 module.exports = {queries,mutations,fieldResolvers};

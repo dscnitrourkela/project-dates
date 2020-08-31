@@ -1,6 +1,6 @@
 const queries={
     venues:(parent,args,{dataSources},info) => {
-        return dataSources.ClubAPI.getVenues(args);
+        return dataSources.VenueAPI.getVenues(args);
     },
     venueByName:(parent,{name},{dataSources},info) =>{
         return dataSources.VenueAPI.getVenueByName(name);
