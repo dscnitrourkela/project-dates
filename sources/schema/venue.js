@@ -4,16 +4,15 @@ const types=`
         name:String
         description:String
     }
+    input VenueInputType{
+        name:String
+        description:String
+    }
 `;
 
 const queries=`
     venues(
-        id:ID
-        venueName:String
-        facAd:String
-        logo:String
-        society:String
-        domain:String
+        venue:VenueInputType
     ):[Venue]
     venueByName(name:String):Venue
     venueById(id:String):Venue
@@ -21,7 +20,7 @@ const queries=`
 `;
 
 const mutations=`
-
+    addVenue(venue:VenueInputType):Venue
 `;
 
 

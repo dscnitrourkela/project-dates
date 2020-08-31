@@ -11,6 +11,9 @@ const queries={
 }
 
 const mutations={
+    addVenue:(parent,{venue},{dataSources},info) =>{
+        return dataSources.VenueAPI.addVenue(venue);
+    }
 }
 
 const fieldResolvers = {

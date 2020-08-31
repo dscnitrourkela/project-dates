@@ -1,5 +1,5 @@
-const venues = require('../models/venue.js');
-const accessLevel = require('../models/accessLevel.js');
+const Venues = require('../models/venue.js');
+const AccessLevel = require('../models/accessLevel.js');
 const {DataSource} = require('apollo-datasource');
 
 class VenueAPI extends DataSource{
@@ -10,13 +10,14 @@ class VenueAPI extends DataSource{
 
     }
     getVenues(args){
-        return venues.find(args);
+        return Venues.find(args);
     }
     getVenueById(id){
-        return venues.findById(id);
+        return Venues.findById(id);
     }
-    addVenue(venue){
-        return venues.create(venue);
+    async addVenue(venue){
+        let createdVenue= new Venues(venue);
+        return await createdVenue.save();
     }
 }
 
