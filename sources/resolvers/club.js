@@ -11,13 +11,19 @@ const queries={
 }
 
 const mutations={
+    addClub:(parent,{club},{dataSources},info) =>{
+        return dataSources.ClubAPI.addClub(club);
+    }
 }
 
 const fieldResolvers = {
     Club:{        
         memberAccess:async (parent,args,{dataSources},info)=>{
             return await dataSources.AccessLevelAPI.resolveAccess(parent.memberAccess);
-        }
+        },
+        events:async (parent,args,{dataSources},info)=>{
+            return await dataSources.ClubAPI.resolveClubEvents(parent.events);
+        },
     },
 }
 

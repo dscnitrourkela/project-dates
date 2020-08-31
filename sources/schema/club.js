@@ -9,6 +9,15 @@ type Club{
     society:String
     domain:String
 }
+input ClubInputType{
+    clubName:String
+    memberAccess:[AccessLevelInputType]
+    facAd:String
+    logo:String
+    events:[ID]
+    society:String
+    domain:String
+}
 `;
 
 const queries=`
@@ -25,7 +34,7 @@ const queries=`
 `;
 
 const mutations=`
-
+    addClub(club:ClubInputType):Club,
 `;
 
 
