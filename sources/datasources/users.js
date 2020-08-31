@@ -38,17 +38,21 @@ class UserAPI extends DataSource{
         //Add nested types
         const userId = createdUser._id;
         const accessArray = user.clubAccess;
+        let accessObjects = [];
         await Promise.all(accessArray.map(async (accessItem,index)=>{
             const clubId=accessItem.club;
             const foundClub=await Clubs.findById(clubId);
-            const accessObj={
+            const accessObject={
                 level:accessItem.level,
                 club:foundClub._id,
                 user:userId
             };
-            let createdAccessLevel=await AccessLevel.create(accessObj);
-            createdUser.clubAccess.push(createdAccessLevel);      
-        }))                                       
+            accessObjects.push(accessObject);  
+        }))
+        const createdAccessLevels = await AccessLevel.create(accessObjects);   
+        createdAccessLevels.forEach(createdAccessLevel => {
+            createdUser.clubAccess.push(createdAccessLevel._id)
+        });                                      
         retPromise=await createdUser.save();           
         return retPromise;
     }
