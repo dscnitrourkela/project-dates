@@ -13,6 +13,9 @@ const queries={
 const mutations={
     addUser:(parent,{user},{dataSources},info) =>{
         return dataSources.UserAPI.addUser(user);
+    },
+    updateUser:(parent,args,{dataSources},info) =>{
+        return dataSources.UserAPI.updateUser(args);
     }
 }
 const fieldResolvers = {
