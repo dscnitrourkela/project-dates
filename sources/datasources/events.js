@@ -42,23 +42,30 @@ class EventAPI extends DataSource{
         //1.Attendees
         const eventId = createdEvent._id;
         const attendeesArray = event.attendees;
-        await Promise.all(attendeesArray.map(async (attendee,index)=>{
-            const userId=attendee;
-            const foundUser=await Users.findById(userId);
-            createdEvent.attendees.push(foundUser._id);
-        }))             
-        //2. organizer
-        const organizerId = event.organizer;
         
-        const foundOrganizer = await Clubs.findById(organizerId);
-        createdEvent.organizer=foundOrganizer._id;
-        foundOrganizer.events.push(eventId);
-        await foundOrganizer.save();
+        if (attendeesArray != undefined && attendeesArray.length > 0) {
+            await Promise.all(attendeesArray.map(async (attendee,index)=>{
+                const userId=attendee;
+                const foundUser=await Users.findById(userId);
+                createdEvent.attendees.push(foundUser._id);
+            }))
+        }
+        //2. organizer
+        if (event.organizer != undefined) {
+            const organizerId = event.organizer;
+            const foundOrganizer = await Clubs.findById(organizerId);
+            createdEvent.organizer=foundOrganizer._id;
+            foundOrganizer.events.push(eventId);
+            await foundOrganizer.save();
+        }
 
         //3. Venue
-        const venueId= event.venue;
-        const foundVenue = await Venues.findById(venueId);
-        createdEvent.venue=foundVenue._id;
+        
+        if (event.venue != undefined) {
+            const venueId= event.venue;
+            const foundVenue = await Venues.findById(venueId);
+            createdEvent.venue=foundVenue._id;
+        }
 
         retPromise=await createdEvent.save();           
         return retPromise;
