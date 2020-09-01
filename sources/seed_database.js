@@ -41,12 +41,13 @@ const userList=[
 ]
 const clubList=["DSC","GDG","MCC","RED","BLUE"]
 const eventList = ["Hactoberfest","Hackathon","RUNIO","Fest","Enigma"]
+const venueList = ["LA-204","RM-Hall","BBA","LA-lawns","Library-Lawns"]
 const seedData= async ()=>{
-    // await dropIfExists(user);
-    // await dropIfExists(club);
-    // await dropIfExists(event);
-    // await dropIfExists(venue);
-    // await dropIfExists(accessLevel);
+    await dropIfExists(user);
+    await dropIfExists(club);
+    await dropIfExists(event);
+    await dropIfExists(venue);
+    await dropIfExists(accessLevel);
 
     Promise.all(userList.map(async (data,index)=>{
         let createdUser=await  user.create(data);    
@@ -67,10 +68,13 @@ const seedData= async ()=>{
         const createdEvent = await event.create({
             eventName:eventList[index]
         })
+        const createdVenue = await venue.create({
+            name:venueList[index]
+        })
     }))
 
 }
 // const seedData= async ()=>{}
 //     let createdUser=await user.create(userList[0]);
 // }
-// seedData()
+seedData()
