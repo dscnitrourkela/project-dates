@@ -4,7 +4,7 @@ const types=`
         name:String
         username:String
         gmailAuthMail:String
-        clubs:[AccessLevel]
+        clubAccess:[AccessLevel]
         instituteId:String
         mobile:String
         emergencyContact:String
@@ -14,7 +14,7 @@ const types=`
         name:String
         username:String
         gmailAuthMail:String
-        access:[AccessLevelInputType]
+        clubAccess:[AccessLevelInputType]
         instituteId:String
         mobile:String
         emergencyContact:String
@@ -39,6 +39,8 @@ const queries=`
 
 const mutations=`
     addUser(user:UserInputType):User
+    updateUser(id:ID,user:UserInputType):User
+    deleteUser(id:ID):User
 `;
 
 module.exports = {types,queries,mutations};

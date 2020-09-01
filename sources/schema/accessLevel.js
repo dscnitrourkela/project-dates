@@ -7,8 +7,8 @@ const types=`
     }
     input AccessLevelInputType{
         level: String
-        club : String
-        user: String
+        club : ID
+        user: ID
     }
 `;
 

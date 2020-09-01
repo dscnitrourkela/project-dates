@@ -5,7 +5,7 @@ var userSchema = new mongoose.Schema({
     gmailAuthMail : String ,
     // firebaseToken : String,
     // password : String,
-    clubs : [{
+    clubAccess : [{
         type:mongoose.Schema.Types.ObjectId,
         ref:"AccessLevel"
     }],

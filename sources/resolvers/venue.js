@@ -1,6 +1,6 @@
 const queries={
     venues:(parent,args,{dataSources},info) => {
-        return dataSources.ClubAPI.getVenues(args);
+        return dataSources.VenueAPI.getVenues(args);
     },
     venueByName:(parent,{name},{dataSources},info) =>{
         return dataSources.VenueAPI.getVenueByName(name);
@@ -11,6 +11,15 @@ const queries={
 }
 
 const mutations={
+    addVenue:(parent,{venue},{dataSources},info) =>{
+        return dataSources.VenueAPI.addVenue(venue);
+    },
+    updateVenue:(parent,args,{dataSources},info) =>{
+        return dataSources.VenueAPI.updateVenue(args);
+    },
+    deleteVenue:(parent,{id},{dataSources},info) =>{
+        return dataSources.VenueAPI.deleteVenue(id);
+    },
 }
 
 const fieldResolvers = {

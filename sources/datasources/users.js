@@ -23,8 +23,7 @@ class UserAPI extends DataSource{
 
     async addUser(user){
         let retPromise={};
-        const clubId=user.access[0].associatedClubId;
-        const foundClub=await Clubs.findById(clubId);
+        // Create user with basic types;
         let createdUser=await Users.create({
             username: user.username,
             name: user.name,
@@ -35,16 +34,66 @@ class UserAPI extends DataSource{
             emergencyContact: user.emergencyContact,
             displayPicture: user.displayPicture                        
         });
-        let userId=createdUser._id;
-        const accessObj={
-            level:user.access[0].accessLevel,
-            associatedClub:foundClub
-        };
-        let createdAccessLevel=await AccessLevel.create(accessObj);
-        createdUser.access.push(createdAccessLevel);                                                
-        retPromise=await createdUser.save();
-        // console.log(retPromise);            
+
+        //Add nested types
+        const userId = createdUser._id;
+        const accessArray = user.clubAccess;
+        if (accessArray != undefined && accessArray.length > 0) {
+            await Promise.all(accessArray.map(async (accessItem,index)=>{
+                const clubId=accessItem.club;
+                const foundClub=await Clubs.findById(clubId);
+                const accessObj={
+                    level:accessItem.level,
+                    club:foundClub._id,
+                    user:userId
+                };
+                let createdAccessLevel=await AccessLevel.create(accessObj);
+                createdUser.clubAccess.push(createdAccessLevel);  
+                foundClub.memberAccess.push(createdAccessLevel);
+                await foundClub.save();    
+            }))      
+        }                                 
+        retPromise=await createdUser.save();           
         return retPromise;
+    }
+
+    async updateUser(args){
+        const userId=args.id;
+        const user = args.user;
+        let retPromise={};
+        // Create user with basic types;
+        const foundUser=await Users.findById(userId);
+        const originalMemberAccess = foundUser.clubAccess.slice(0);
+        
+        let updatedUser = new Users(foundUser);
+        updatedUser = Object.assign(updatedUser,user);
+        updatedUser = new Users(updatedUser); 
+        //Add nested types
+        const accessArray = user.clubAccess;
+        if (accessArray != undefined && accessArray.length > 0) {
+            // accessArray exists and is not empty 
+            await Promise.all(accessArray.map(async (accessItem,index)=>{
+                const clubId=accessItem.club;
+                const foundClub=await Clubs.findById(clubId);
+                const accessObj={
+                    level:accessItem.level,
+                    club:foundClub._id,
+                    user:userId
+                };
+                let createdAccessLevel=await AccessLevel.create(accessObj);
+                updatedUser.clubAccess.push(createdAccessLevel._id);  
+                foundClub.memberAccess.push(createdAccessLevel._id);
+                await foundClub.save();    
+            }))               
+        }
+                                 
+        retPromise=await updatedUser.save();           
+        return retPromise;
+    }
+
+    async deleteUser(id){
+        const foundUser=await Users.findById(id);
+        return await foundUser.remove();
     }
 }
 module.exports = UserAPI;

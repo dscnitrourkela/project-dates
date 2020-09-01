@@ -41,6 +41,7 @@ const userList=[
 ]
 const clubList=["DSC","GDG","MCC","RED","BLUE"]
 const eventList = ["Hactoberfest","Hackathon","RUNIO","Fest","Enigma"]
+const venueList = ["LA-204","RM-Hall","BBA","LA-lawns","Library-Lawns"]
 const seedData= async ()=>{
     await dropIfExists(user);
     await dropIfExists(club);
@@ -60,12 +61,15 @@ const seedData= async ()=>{
         }
         const createdAccessLevel= await accessLevel.create(accessLevelObj);
         
-        await createdClub.clubMembers.push(createdAccessLevel);
+        await createdClub.memberAccess.push(createdAccessLevel);
         await createdClub.save();
-        await createdUser.clubs.push(createdAccessLevel);
+        await createdUser.clubAccess.push(createdAccessLevel);
         await createdUser.save();
         const createdEvent = await event.create({
             eventName:eventList[index]
+        })
+        const createdVenue = await venue.create({
+            name:venueList[index]
         })
     }))
 

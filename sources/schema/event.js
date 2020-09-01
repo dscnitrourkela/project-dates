@@ -1,15 +1,29 @@
 const types=`
     type Event{
         id:ID
-        organizer : User
+        organizer : Club
         eventName : String
         startDateTime : String
-        venueId : Venue
+        venue : Venue
         endDateTime : String
         registrationPrice : Int
         registrationCount : Int
         otherDescription : String
         attendees : [User]
+        announcements : String
+        link : String
+        picture : String
+    }
+    input EventInputType{
+        organizer : ID
+        eventName : String
+        startDateTime : String
+        venue : ID
+        endDateTime : String
+        registrationPrice : Int
+        registrationCount : Int
+        otherDescription : String
+        attendees : [ID]
         announcements : String
         link : String
         picture : String
@@ -32,7 +46,9 @@ const queries=`
 `;
 
 const mutations=`
-
+    addEvent(event:EventInputType):Event
+    updateEvent(id:ID,event:EventInputType):Event
+    deleteEvent(id:ID):Event
 `;
 
 module.exports = {types,queries,mutations};

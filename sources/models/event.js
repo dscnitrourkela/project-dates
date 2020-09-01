@@ -1,17 +1,17 @@
 var mongoose = require("mongoose");
 var eventSchema = new mongoose.Schema({
     eventId : Number,
-    organizerId :{
+    organizer :{
         type:mongoose.Schema.Types.ObjectId,
-        ref:"User"
+        ref:"Club"
     },
     eventName : String, 
-    startDateTime : Date,    
-    venueId : {
+    startDateTime : String,    
+    venue : {
         type:mongoose.Schema.Types.ObjectId,
         ref:"Venue" 
     },
-    endDateTime : Date,
+    endDateTime : String,
     registrationPrice : Number,
     registrationCount : Number,
     otherDescription : String,
@@ -21,7 +21,7 @@ var eventSchema = new mongoose.Schema({
             ref:"User"
         }
     ],
-    announcements : [String],
+    announcements : String,
     link : String,
     picture : String  
 })
