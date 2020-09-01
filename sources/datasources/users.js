@@ -90,5 +90,10 @@ class UserAPI extends DataSource{
         retPromise=await updatedUser.save();           
         return retPromise;
     }
+
+    async deleteUser(id){
+        const foundUser=await Users.findById(id);
+        return await foundUser.remove();
+    }
 }
 module.exports = UserAPI;

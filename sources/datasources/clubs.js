@@ -112,6 +112,11 @@ class ClubAPI extends DataSource{
         retPromise=await updatedClub.save();           
         return retPromise;
     }
+
+    async deleteClub(id){
+        const foundClub=await Clubs.findById(id);
+        return await foundClub.remove();
+    }
     
 }
 

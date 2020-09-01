@@ -16,6 +16,9 @@ const mutations={
     },
     updateUser:(parent,args,{dataSources},info) =>{
         return dataSources.UserAPI.updateUser(args);
+    },
+    deleteUser:(parent,{id},{dataSources},info) =>{
+        return dataSources.UserAPI.deleteUser(id);
     }
 }
 const fieldResolvers = {

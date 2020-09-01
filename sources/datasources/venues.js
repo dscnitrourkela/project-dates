@@ -30,6 +30,11 @@ class VenueAPI extends DataSource{
         
         return await updatedVenue.save();
     }
+
+    async deleteVenue(id){
+        const foundVenue=await Venues.findById(id);
+        return await foundVenue.remove();
+    }
 }
 
 module.exports = VenueAPI;

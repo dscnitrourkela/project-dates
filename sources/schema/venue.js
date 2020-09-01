@@ -22,6 +22,7 @@ const queries=`
 const mutations=`
     addVenue(venue:VenueInputType):Venue
     updateVenue(id:ID,venue:VenueInputType):Venue
+    deleteVenue(id:ID):Venue
 `;
 
 

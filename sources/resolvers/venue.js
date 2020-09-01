@@ -16,7 +16,10 @@ const mutations={
     },
     updateVenue:(parent,args,{dataSources},info) =>{
         return dataSources.VenueAPI.updateVenue(args);
-    }
+    },
+    deleteVenue:(parent,{id},{dataSources},info) =>{
+        return dataSources.VenueAPI.deleteVenue(id);
+    },
 }
 
 const fieldResolvers = {

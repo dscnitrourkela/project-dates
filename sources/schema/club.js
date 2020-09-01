@@ -36,6 +36,7 @@ const queries=`
 const mutations=`
     addClub(club:ClubInputType):Club,
     updateClub(id:ID,club:ClubInputType):Club,
+    deleteClub(id:ID):Club,
 `;
 
 

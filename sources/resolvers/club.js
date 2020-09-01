@@ -16,6 +16,9 @@ const mutations={
     },
     updateClub:(parent,args,{dataSources},info) =>{
         return dataSources.ClubAPI.updateClub(args);
+    },
+    deleteClub:(parent,{id},{dataSources},info) =>{
+        return dataSources.ClubAPI.deleteClub(id);
     }
 }
 
