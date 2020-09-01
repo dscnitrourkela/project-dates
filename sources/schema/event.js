@@ -47,6 +47,7 @@ const queries=`
 
 const mutations=`
     addEvent(event:EventInputType):Event
+    updateEvent(id:ID,event:EventInputType):Event
 `;
 
 module.exports = {types,queries,mutations};

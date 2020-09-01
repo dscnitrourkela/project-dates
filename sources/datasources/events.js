@@ -63,5 +63,45 @@ class EventAPI extends DataSource{
         retPromise=await createdEvent.save();           
         return retPromise;
     }
+
+    async updateEvent(args){
+        const eventId=args.id;
+        const event = args.event;
+        let retPromise={};
+        // Update Event with basic types;
+        const foundEvent=await Events.findById(eventId);
+        let updatedEvent = new Events(foundEvent);
+        updatedEvent = Object.assign(updatedEvent,event);
+        updatedEvent = new Events(updatedEvent);
+
+        //Add nested types
+        //1.Attendees
+        const attendeesArray = event.attendees;
+        if (attendeesArray != undefined && attendeesArray.length > 0) {
+            await Promise.all(attendeesArray.map(async (attendee,index)=>{
+                const userId=attendee;
+                const foundUser=await Users.findById(userId);
+                updatedEvent.attendees.push(foundUser._id);
+            }))     
+        }        
+        //2. organizer
+        if (event.organizer != undefined) {
+            const organizerId = event.organizer;
+            const foundOrganizer = await Clubs.findById(organizerId);
+            updatedEvent.organizer=foundOrganizer._id;
+            foundOrganizer.events.push(eventId);
+            await foundOrganizer.save();
+        }
+
+        //3. Venue
+        if (event.venue != undefined) {
+            const venueId= event.venue;
+            const foundVenue = await Venues.findById(venueId);
+            updatedEvent.venue=foundVenue._id;
+        }
+
+        retPromise=await updatedEvent.save();           
+        return retPromise;
+    }
 }
 module.exports = EventAPI;

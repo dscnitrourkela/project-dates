@@ -13,6 +13,9 @@ const queries={
 const mutations={
     addEvent:(parent,{event},{dataSources},info) =>{
         return dataSources.EventAPI.addEvent(event);
+    },
+    updateEvent:(parent,args,{dataSources},info) =>{
+        return dataSources.EventAPI.updateEvent(args);
     }
 }
 
