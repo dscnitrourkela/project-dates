@@ -13,6 +13,9 @@ const queries={
 const mutations={
     addVenue:(parent,{venue},{dataSources},info) =>{
         return dataSources.VenueAPI.addVenue(venue);
+    },
+    updateVenue:(parent,args,{dataSources},info) =>{
+        return dataSources.VenueAPI.updateVenue(args);
     }
 }
 

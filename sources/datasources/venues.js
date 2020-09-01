@@ -19,6 +19,17 @@ class VenueAPI extends DataSource{
         let createdVenue= new Venues(venue);
         return await createdVenue.save();
     }
+    async updateVenue(args){
+        const venueId=args.id;
+        const venue = args.venue;
+
+        const foundVenue=await Venues.findById(venueId);
+        let updatedVenue = new Venues(foundVenue);
+        updatedVenue = Object.assign(updatedVenue,venue);
+        updatedVenue = new Venues(updatedVenue);
+        
+        return await updatedVenue.save();
+    }
 }
 
 module.exports = VenueAPI;
