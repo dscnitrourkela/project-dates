@@ -42,7 +42,7 @@ const server = new ApolloServer({
 });
 
 server
-    .listen({port: process.env.PORT || 5000})
+    .listen(5000)
     .then(({url})=>{
         console.log(`Graphql running on ${url}`);
     });
