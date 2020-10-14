@@ -1,0 +1,17 @@
+name: Build and Deploy to Google Compute Engine
+
+on:
+  push:
+    branches:
+    - development
+
+       
+    -  name: testing SSH connection
+       uses: appleboy/ssh-action@master
+       with:
+        host: 34.72.24.153
+        username: GitHub
+        key: ${{ secrets.SSH_KEY }}
+        port: 22
+        script: |            
+          ls -a
