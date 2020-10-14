@@ -1,0 +1,57 @@
+name: Build and Deploy to Google Compute Engine
+
+on:
+  push:
+    branches:
+    - development
+
+env:
+  PROJECT_ID: ${{ secrets.GKE_PROJECT }}
+  GCE_INSTANCE: server-central-vm	  # TODO: update to instance name
+  GCE_INSTANCE_ZONE: us-central1-a	   # TODO: update to instance zone
+  
+
+jobs:
+  setup-build-publish-deploy:
+    name: Setup, Build, Publish, and Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    # Setup gcloud CLI
+    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      with:
+        version: '290.0.1'
+        service_account_key: ${{ secrets.GKE_KEY }}
+        project_id: ${{ secrets.GKE_PROJECT }}
+   
+
+    # Configure Docker to use the gcloud command-line tool as a credential
+    # helper for authentication
+    - run: |-
+        gcloud --quiet auth configure-docker
+    #Build the Docker image
+    - name: Build
+      run: |-
+        docker build --tag "gcr.io/$PROJECT_ID/$GCE_INSTANCE-image" .
+   #Push the Docker image to Google Container Registry
+    - name: Publish
+      run: |-
+        docker push "gcr.io/$PROJECT_ID/$GCE_INSTANCE-image:latest"
+        
+    -  name: testing SSH connection
+       uses: appleboy/ssh-action@master
+       with:
+        host: 34.72.24.153
+        username: notify_abelmathew_gmail_com
+        key: ${{ secrets.SSH_KEY }}
+        port: 22
+        script: |            
+          ls -a
+          sudo docker stop $(sudo docker ps -aq --filter "name=nodeserver")
+          sudo docker rm $(sudo docker ps -aq --filter "name=nodeserver")
+          sudo docker rmi $(sudo docker images -a | sudo awk '$1 == "gcr.io/project-elaichi/secured-nginx-on-ubuntu-16-04-lts-1-vm-image" {print $3}')
+          sudo docker pull "gcr.io/project-elaichi/secured-nginx-on-ubuntu-16-04-lts-1-vm-image:latest"
+          sudo docker run -p 5000:5000 -d --name nodeserver $(sudo docker images -aq "gcr.io/project-elaichi/secured-nginx-on-ubuntu-16-04-lts-1-vm-image" | awk 'NR==1 {print $1}')
