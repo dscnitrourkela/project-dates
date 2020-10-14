@@ -4,8 +4,12 @@ on:
   push:
     branches:
     - development
+jobs:
+  setup-build-publish-deploy:
+    name: Setup, Build, Publish, and Deploy
+    runs-on: ubuntu-latest
 
-       
+    steps:
     -  name: testing SSH connection
        uses: appleboy/ssh-action@master
        with:
