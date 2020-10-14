@@ -12,8 +12,8 @@ jobs:
       -  name: testing SSH connection
          uses: appleboy/ssh-action@master
          with:
-          host: 35.239.58.93
-          username: arishh2_gmail_com
+          host: ${{ secrets.HOST }}
+          username: GitHub
           key: ${{ secrets.SSH_KEY }}
           port: 22
           script: |            
