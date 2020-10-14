@@ -1,0 +1,20 @@
+name: Build and Deploy to Google Compute Engine
+
+on:
+  push:
+    branches:
+    - development1
+jobs:
+  setup-build-publish-deploy:
+    name: Setup, Build, Publish, and Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+    -  name: testing SSH connection
+       uses: appleboy/ssh-action@master
+       with:
+        host: 34.72.24.153
+        key: ${{ secrets.SSH_KEY }}
+        port: 22
+        script: |            
+          ls -a

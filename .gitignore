@@ -15,3 +15,5 @@ db
 .profile
 .ssh/
 .viminfo
+.env
+.gitconfig

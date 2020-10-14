@@ -7,9 +7,12 @@ const AccessLevelAPI = require('./datasources/accessLevels.js');
 const typeDefs = require('./schema.js');
 const resolvers = require('./resolvers.js');
 const mongoose = require('mongoose');
-require('./seed_database.js');
+const dotenv = require('dotenv');
 
-mongoose.connect("mongodb://localhost/elaichi",{ useNewUrlParser: true ,useUnifiedTopology: true });
+dotenv.config();
+// require('./seed_database.js');
+
+mongoose.connect(process.env.MONGODB_URL||"mongodb://localhost/elaichi",{ useNewUrlParser: true ,useUnifiedTopology: true });
 mongoose.connection.once('open',()=>{
     console.log('connected to the database');
 });
@@ -39,7 +42,7 @@ const server = new ApolloServer({
 });
 
 server
-    .listen({port: process.env.PORT || 4000})
+    .listen(5000)
     .then(({url})=>{
         console.log(`Graphql running on ${url}`);
     });
