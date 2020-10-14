@@ -44,7 +44,7 @@ jobs:
     -  name: testing SSH connection
        uses: appleboy/ssh-action@master
        with:
-        host: 34.72.24.153
+        host: ${{HOST}}
         username: notify_abelmathew_gmail_com
         key: ${{ secrets.SSH_KEY }}
         port: 22
