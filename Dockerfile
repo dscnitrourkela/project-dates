@@ -2,10 +2,12 @@ FROM node:alpine
 
 WORKDIR /app
 
-COPY package.json /app
+COPY package*.json /app
 
-RUN yarn install && yarn cache clean
+RUN npm ci
 
 COPY . /app
 
-CMD ["node", "sources/index.js"]
+RUN npm install pm2 -g
+
+CMD ["pm2","start","sources/index.js","-i","max","--exp-backoff-restart-delay=100"]
