@@ -43,14 +43,4 @@ jobs:
     - run: |-
         gcloud config set project $PROJECT_ID
     - run: |-
-        gcloud compute ssh server-central-vm --zone=$GCE_INSTANCE_ZONE --command="ls .. -a"
-    - run: |-
-        gcloud compute ssh server-central-vm --zone=$GCE_INSTANCE_ZONE --command=`sudo docker stop ${gcloud compute ssh server-central-vm --zone=$GCE_INSTANCE_ZONE --command="sudo docker ps -aq --filter 'name=nodeserver'"}`
-    - run: |-
-        gcloud compute ssh server-central-vm --zone=$GCE_INSTANCE_ZONE --command=`sudo docker rm $(gcloud compute ssh server-central-vm --zone=$GCE_INSTANCE_ZONE --command="sudo docker ps -aq --filter 'name=nodeserver'")`
-    - run: |-
-        gcloud compute ssh server-central-vm --zone=$GCE_INSTANCE_ZONE --command=`sudo docker rmi $(gcloud compute ssh server-central-vm --zone=$GCE_INSTANCE_ZONE --command="sudo docker images -a | sudo awk '$1 == 'gcr.io/server-central-vm-image' {print $3}'")`
-    - run: |-
-        gcloud compute ssh server-central-vm --zone=$GCE_INSTANCE_ZONE --command=`sudo docker pull 'gcr.io/project-elaichi/server-central-vm:latest'`    
-    - run: |-
-        gcloud compute ssh server-central-vm --zone=$GCE_INSTANCE_ZONE --command=`sudo docker run -p 5000:5000 -d --name nodeserver $(gcloud compute ssh server-central-vm --zone=$GCE_INSTANCE_ZONE --command="sudo docker images -aq 'gcr.io/project-elaichi/server-central-vm-image' | awk 'NR==1 {print $1}'")`   
+        gcloud compute ssh server-central-vm --zone=$GCE_INSTANCE_ZONE --command="sudo bash /home/sa_106760886337188762615/startup.sh"
