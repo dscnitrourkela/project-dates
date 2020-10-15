@@ -43,7 +43,7 @@ jobs:
     - run: |-
         gcloud config set project $PROJECT_ID
     - run: |-
-        gcloud compute ssh server-central-vm --zone=$GCE_INSTANCE_ZONE --command="sudo docker ps -aq --filter 'name=nodeserver'"
+        gcloud compute ssh server-central-vm --zone=$GCE_INSTANCE_ZONE --command="ls .. -a"
     - run: |-
         gcloud compute ssh server-central-vm --zone=$GCE_INSTANCE_ZONE --command=`sudo docker stop ${gcloud compute ssh server-central-vm --zone=$GCE_INSTANCE_ZONE --command="sudo docker ps -aq --filter 'name=nodeserver'"}`
     - run: |-
