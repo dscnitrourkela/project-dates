@@ -44,5 +44,5 @@ const server = new ApolloServer({
 server
     .listen(5000)
     .then(({url})=>{
-        console.log(`Graphql v2 running on ${url}`);
+        console.log(`Graphql v2 running on ${url}`,'New log');
     });
