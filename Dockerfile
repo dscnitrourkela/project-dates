@@ -1,12 +1,12 @@
 FROM node:alpine
 
-WORKDIR /code
+WORKDIR /app
 
-COPY package*.json /code/
+COPY package*.json /app/
 
 RUN npm ci
 
-COPY . /code
+COPY . /app
 
 RUN npm install pm2 -g
 
