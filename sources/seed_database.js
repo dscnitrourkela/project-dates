@@ -77,4 +77,6 @@ const seedData= async ()=>{
 // const seedData= async ()=>{}
 //     let createdUser=await user.create(userList[0]);
 // }
-seedData()
+module.exports={
+    seedData
+}

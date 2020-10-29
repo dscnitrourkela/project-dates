@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const express=require('express')();
 const {graphqlHTTP} = require('express-graphql');
-const schema = require('./schema/schema'); 
+const schema = require('./schema'); 
 
 // const movie=require("./models/movies");
 const user=require("./models/user");
