@@ -2,11 +2,23 @@ const queries={
     users:(parent,args,{dataSources},info) => {
         return dataSources.UserAPI.getUsers(args);
     },
-    userByUsername:(parent,{username},{dataSources},info) =>{
-        return dataSources.UserAPI.getUserByUsername(username);
+    userByUsername:(parent,{username},{dataSources,permissions},info) =>{
+        if(permissions.find((permission)=>permission=="users.by"))
+            return dataSources.UserAPI.getUserByUsername(username);
+        else{
+            const error=new Error("Permission Denied");
+            error.code="ERROR401";
+            throw error;
+        }        
     },
-    userById:(parent,{id},{dataSources},info) =>{
-        return dataSources.UserAPI.getUserById(id);
+    userById:(parent,{id},{dataSources,permissions},info) =>{   
+        if(permissions.find((permission)=>permission=="users.byId"))
+            return dataSources.UserAPI.getUserById(id);
+        else{
+            const error=new Error("Permission Denied");
+            error.code="ERROR401";
+            throw error;
+        }
     },
 }
 

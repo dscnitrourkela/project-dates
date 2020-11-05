@@ -3,6 +3,7 @@ const event=require("./models/event");
 const accessLevel=require("./models/accessLevel");
 const club=require("./models/club");
 const venue=require("./models/venue");
+const permission=require("./models/permission");
 const mongoose = require("mongoose");
 
 //method to drop the collection if it exists
@@ -77,6 +78,21 @@ const seedData= async ()=>{
 // const seedData= async ()=>{}
 //     let createdUser=await user.create(userList[0]);
 // }
+
+const seedPermissions=async ()=>{
+    permission.find({role:"ROLE101"},async (err,found)=>{
+        if(!found.length){
+            await permission.create({
+                role:"ROLE101",
+                permissions:["clubs.all","clubs.byId","clubs.byName"]
+            })
+        }
+    })
+    
+
+
+}
 module.exports={
-    seedData
+    seedData,
+    seedPermissions
 }
