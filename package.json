@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "doc":"jsdoc -c  jsdoc.json -r"
   },
   "author": "",
   "license": "ISC",
@@ -19,5 +19,8 @@
     "graphql-tag": "^2.11.0",
     "mongoose": "^5.9.27",
     "nodemon": "^2.0.4"
+  },
+  "devDependencies": {
+    "jsdoc": "^3.6.6"
   }
 }

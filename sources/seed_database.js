@@ -1,3 +1,8 @@
+/**
+ * Seeding module
+ * @module Seed Database
+ */
+
 const user=require("./models/user");
 const event=require("./models/event");
 const accessLevel=require("./models/accessLevel");
@@ -79,6 +84,10 @@ const seedData= async ()=>{
 //     let createdUser=await user.create(userList[0]);
 // }
 
+//
+/**
+ *  A function to seed the database with default permission for the the default role
+ */
 const seedPermissions=async ()=>{
     permission.find({role:"ROLE101"},async (err,found)=>{
         if(!found.length){

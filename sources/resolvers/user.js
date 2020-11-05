@@ -2,6 +2,11 @@ const queries={
     users:(parent,args,{dataSources},info) => {
         return dataSources.UserAPI.getUsers(args);
     },
+    /**
+     * Resolver for User by Username.
+     * @param {string} username - username query
+     * @reutrns {Object} User - User with the queries username
+     */
     userByUsername:(parent,{username},{dataSources,permissions},info) =>{
         if(permissions.find((permission)=>permission=="users.by"))
             return dataSources.UserAPI.getUserByUsername(username);

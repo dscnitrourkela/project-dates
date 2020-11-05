@@ -22,7 +22,7 @@ mongoose.connect(process.env.MONGODB_URL||"mongodb://localhost/elaichi",{ useNew
 mongoose.connection.once('open',()=>{
     console.log('connected to the database');
     // seed.seedData();
-    seed.seedPermissions();
+    // seed.seedPermissions();
 });
 
 // Firebase Init
@@ -51,28 +51,22 @@ const server = new ApolloServer({
     introspection:true,
     playground:true,
     debug:false,
+    /**
+     * GraphQL Context:  A top level function which decodes and verifies the JWT sent through the request header
+     *  @param {string} decodedToken - JWT token from request
+     */
     context: async ({req})=>{
         const obj = gql`
             ${req.body.query}
-        `;
-        // console.log(obj.definitions[0].selectionSet.selections[0].selectionSet.selections);
-        // console.log(obj.definitions[0].selectionSet.selections[0].name);
+        `;        
         if(req.headers && req.headers.authorization){
             const idToken=req.headers.authorization;
             try {
                 const decodedToken= await admin.auth().verifyIdToken(idToken)    
-                // console.log(decodedToken.roles);
-                // console.log(decodedToken);
                 const userPermission= await permission.findOne({role:decodedToken.roles});
-                // console.log(userPermission);
                 return {permissions:userPermission.permissions};
             } catch (error) { 
-                // console.log(error.errorInfo);
-                // const errorObj=new Error(error.errorInfo.message);
-                // errorObj.errorCode="ERROR401";
-                // throw errorObj;
                 throw new Error(error.errorInfo.message);
-
             }
         }
 
@@ -82,8 +76,7 @@ const server = new ApolloServer({
         // if(err.extensions.code=="INTERNAL_SERVER_ERROR"){            
         //     return new ApolloError("We are having some trouble","ERROR",{Token:"Unique Token"});
         // }
-        // console.log(err.originalError);
-        // return new ApolloError("error happened","yolo","123");
+        // console.log(err.originalError);        
         return new ApolloError(err.message);
     }
 });
