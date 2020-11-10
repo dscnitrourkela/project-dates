@@ -49,6 +49,7 @@ const server = new ApolloServer({
     resolvers,
     dataSources,
     introspection:true,
+    resolverValidationOptions:{requireResolversForResolveType: false},
     playground:true,
     debug:false,
     /**
@@ -56,19 +57,21 @@ const server = new ApolloServer({
      *  @param {string} decodedToken - JWT token from request
      */
     context: async ({req})=>{
-        const obj = gql`
-            ${req.body.query}
-        `;        
-        if(req.headers && req.headers.authorization){
-            const idToken=req.headers.authorization;
-            try {
-                const decodedToken= await admin.auth().verifyIdToken(idToken)    
-                const userPermission= await permission.findOne({role:decodedToken.roles});
-                return {permissions:userPermission.permissions};
-            } catch (error) { 
-                throw new Error(error.errorInfo.message);
-            }
-        }
+        // const obj = gql`
+        //     ${req.body.query}
+        // `;        
+        // if(req.headers && req.headers.authorization){
+        //     const idToken=req.headers.authorization;
+        //     try {
+        //         const decodedToken= await admin.auth().verifyIdToken(idToken)    
+        //         const userPermission= await permission.findOne({role:decodedToken.roles});
+        //         return {permissions:userPermission.permissions};
+        //     } catch (error) { 
+        //         throw new Error(error.errorInfo.message);
+        //     }
+        // }
+
+        return {permissions: ['users.al','users.byId','users.byNam']}
 
     },
     
@@ -82,7 +85,7 @@ const server = new ApolloServer({
 });
 
 server
-    .listen(5000)
+    .listen(4000)
     .then(({url})=>{
        firebaseInit();
         console.log(`Graphql running on ${url}`);

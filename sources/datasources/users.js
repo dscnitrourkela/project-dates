@@ -11,14 +11,14 @@ class UserAPI extends DataSource{
     initialize(config){
 
     }
-    getUsers(args){
-        return Users.find(args);
+    async getUsers(args){
+        return await Users.find(args);
     }
-    getUserById(id){
-        return Users.findById(id);
+    async getUserById(id){
+        return await Users.findById(id);
     }
-    getUserByUsername(username){
-        return Users.find({username:username});
+    async getUserByUsername(username){
+        return await Users.findOne({username:username});        
     }
 
     async addUser(user){

@@ -1,4 +1,7 @@
 const types=`
+
+    union UserResult= User | ErrorClass
+
     type User{
         id:ID
         name:String
@@ -32,9 +35,9 @@ const queries=`
         instituteId:String
         mobile:String
         emergencyContact:String
-    ):[User]
-    userByUsername(username:String):User
-    userById(id:String):User
+    ):[UserResult]
+    userByUsername(username:String):UserResult
+    userById(id:String):UserResult
 `;
 
 const mutations=`
