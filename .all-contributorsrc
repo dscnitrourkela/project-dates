@@ -1,26 +1,37 @@
 {
-  "files": [
-    "README.md"
-  ],
-  "imageSize": 100,
-  "commit": false,
-  "contributors": [
-    {
-      "login": "HarishTeens",
-      "name": "Harish",
-      "avatar_url": "https://avatars3.githubusercontent.com/u/33366456?v=4",
-      "profile": "https://github.com/HarishTeens",
-      "contributions": [
-        "code",
-        "projectManagement",
-        "review"
-      ]
-    }
-  ],
-  "contributorsPerLine": 7,
-  "projectName": "project-dates",
-  "projectOwner": "dscnitrourkela",
-  "repoType": "github",
-  "repoHost": "https://github.com",
-  "skipCi": true
-}
+    "files": [
+      "README.md"
+    ],
+    "imageSize": 100,
+    "commit": false,
+    "contributors": [
+      {
+        "login": "roshankshaw",
+        "name": "Roshan Kumar Shaw",
+        "avatar_url": "https://avatars0.githubusercontent.com/u/31109201?v=4",
+        "profile": "https://github.com/roshankshaw",
+        "contributions": [
+          "code",
+          "projectManagement",
+          "review"
+        ]
+      },
+      {
+        "login": "HarishTeens",
+        "name": "Harish",
+        "avatar_url": "https://avatars3.githubusercontent.com/u/33366456?v=4",
+        "profile": "https://github.com/HarishTeens",
+        "contributions": [
+          "code",
+          "projectManagement",
+          "review"
+        ]
+      }
+    ],
+    "contributorsPerLine": 7,
+    "projectName": "project-dates",
+    "projectOwner": "dscnitrourkela",
+    "repoType": "github",
+    "repoHost": "https://github.com",
+    "skipCi": true
+  }
