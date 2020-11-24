@@ -1,4 +1,4 @@
-const types=`
+const types = `
     type AccessLevel{
         id:ID
         level:String
@@ -12,10 +12,10 @@ const types=`
     }
 `;
 
-const queries=`
+const queries = `
 `;
 
-const mutations=`
+const mutations = `
 `;
 
-module.exports = {types,queries,mutations};
+module.exports = { types, queries, mutations };

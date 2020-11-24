@@ -1,4 +1,4 @@
-const types=`
+const types = `
 type Club{
     id:ID
     clubName:String
@@ -20,7 +20,7 @@ input ClubInputType{
 }
 `;
 
-const queries=`
+const queries = `
     clubs(
         id:ID
         clubName:String
@@ -33,11 +33,10 @@ const queries=`
     clubById(id:String):Club
 `;
 
-const mutations=`
+const mutations = `
     addClub(club:ClubInputType):Club,
     updateClub(id:ID,club:ClubInputType):Club,
     deleteClub(id:ID):Club,
 `;
 
-
-module.exports = {types,queries,mutations};
+module.exports = { types, queries, mutations };

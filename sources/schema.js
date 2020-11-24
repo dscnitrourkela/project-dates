@@ -1,21 +1,21 @@
-const {gql}= require('apollo-server');
+const { gql } = require('apollo-server');
 
-const User= require('./schema/user');
-const Event= require('./schema/event');
-const Club= require('./schema/club');
-const Venue= require('./schema/venue');
-const Access= require('./schema/accessLevel');
-const ErrorClass= require('./schema/error');
+const User = require('./schema/user');
+const Event = require('./schema/event');
+const Club = require('./schema/club');
+const Venue = require('./schema/venue');
+const Access = require('./schema/accessLevel');
+const ErrorClass = require('./schema/error');
 
-const types=[];
-const queries=[];
-const mutations=[];
+const types = [];
+const queries = [];
+const mutations = [];
 
-const schemas= [User,Event,Club,Venue,Access,ErrorClass];
-schemas.forEach((s)=>{
-    types.push(s.types);
-    queries.push(s.queries);
-    mutations.push(s.mutations);
+const schemas = [User, Event, Club, Venue, Access, ErrorClass];
+schemas.forEach((s) => {
+  types.push(s.types);
+  queries.push(s.queries);
+  mutations.push(s.mutations);
 });
 
 module.exports = gql`
@@ -37,4 +37,4 @@ type Error {
     message:String
     token:String
 }
-`
+`;

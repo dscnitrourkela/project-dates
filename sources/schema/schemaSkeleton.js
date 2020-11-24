@@ -1,13 +1,13 @@
-const types=`
+const types = `
 
 `;
 
-const queries=`
+const queries = `
 
 `;
 
-const mutations=`
+const mutations = `
 
 `;
 
-module.exports = {types,queries,mutations};
+module.exports = { types, queries, mutations };
