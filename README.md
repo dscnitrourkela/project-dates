@@ -3,9 +3,36 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
+[![Starware](https://img.shields.io/badge/Starware-⭐-black?labelColor=f9b00d)](https://github.com/zepfietje/starware)
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+
+# About
+The backend repository for project NITR Central.
+
+## Contributing 🎃
+
+This repository is one of the many repositories maintained by DSC NIT Rourkela NIT Rourkela. <br>
+Our Slack Community: [Slack Invite](http://bit.ly/NITRDevs) <br>
+
+Please refer to the project's style and contribution guidelines for submitting patches and additions. In general, we follow the "fork-and-pull" Git workflow.
+
+ 1. **Fork** the repo on GitHub
+ 2. **Clone** the project to your own machine
+ 3. **Commit** changes to your own branch
+ 4. **Push** your work back up to your fork
+ 5. Submit a **Pull request** so that we can review your changes
+
+NOTE 1: Please abide by the [Contributing Guidelines](https://github.com/dscnitrourkela/project-dates/blob/development/CONTRIBUTING.md).
+
+NOTE 2: Please abide by the [Code of Conduct](https://github.com/dscnitrourkela/project-dates/blob/development/CODE_OF_CONDUCT.md).
+
+## Starware
+
+dscnitrourkela/project-dates is Starware.  
+This means you're free to use the project, as long as you star its GitHub repository.  
+Your appreciation makes us grow and glow up. ⭐
 
 ## Documentation Notes
-
 
 - ### Apollo Client Error Handling
     > The errors would be thrown only at places where resolving happens, as the validation checks are happening at the resolver level.  
