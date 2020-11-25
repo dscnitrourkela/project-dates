@@ -1,4 +1,4 @@
-const types=`
+const types = `
 
     type ErrorClass{
         message: String!
@@ -6,12 +6,12 @@ const types=`
     }
 `;
 
-const queries=`
+const queries = `
 
 `;
 
-const mutations=`
+const mutations = `
 
 `;
 
-module.exports = {types,queries,mutations};
+module.exports = { types, queries, mutations };

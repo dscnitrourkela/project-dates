@@ -1,4 +1,4 @@
-const types=`
+const types = `
     type Venue{
         id:ID
         name:String
@@ -10,7 +10,7 @@ const types=`
     }
 `;
 
-const queries=`
+const queries = `
     venues(
         venue:VenueInputType
     ):[Venue]
@@ -19,11 +19,10 @@ const queries=`
 
 `;
 
-const mutations=`
+const mutations = `
     addVenue(venue:VenueInputType):Venue
     updateVenue(id:ID,venue:VenueInputType):Venue
     deleteVenue(id:ID):Venue
 `;
 
-
-module.exports = {types,queries,mutations};
+module.exports = { types, queries, mutations };

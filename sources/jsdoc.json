@@ -1,8 +1,8 @@
 {
     "source":{
-        "include":["sources"],
+        "include":["."],
         "includePattern":".+\\.js(doc|x)?$",
-        "excludePattern":"(node_modules/|docs)"
+        "excludePattern":"node_modules"
     },
     "plugins":["plugins/markdown"],
     "templates":{
@@ -11,7 +11,6 @@
     },
     "opts":{
         "recurse":true,
-        "destination":"./docs/",
-        "template":"jsDoc-template"
+        "destination":"../docs/"
     }
 }

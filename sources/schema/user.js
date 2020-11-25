@@ -1,4 +1,4 @@
-const types=`
+const types = `
 
     union UserResult= User | ErrorClass
 
@@ -26,7 +26,7 @@ const types=`
     
 `;
 
-const queries=`
+const queries = `
     users(
         id:ID
         name:String
@@ -40,10 +40,10 @@ const queries=`
     userById(id:String):UserResult
 `;
 
-const mutations=`
+const mutations = `
     addUser(user:UserInputType):User
     updateUser(id:ID,user:UserInputType):User
     deleteUser(id:ID):User
 `;
 
-module.exports = {types,queries,mutations};
+module.exports = { types, queries, mutations };

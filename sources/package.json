@@ -4,7 +4,9 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "doc":"jsdoc -c  jsdoc.json -r"
+    "doc": "jsdoc -c  jsdoc.json -r",
+    "prettier": "npx prettier --write .",
+    "eslint": "npx eslint ."
   },
   "author": "",
   "license": "ISC",
@@ -21,6 +23,9 @@
     "nodemon": "^2.0.4"
   },
   "devDependencies": {
-    "jsdoc": "^3.6.6"
+    "eslint": "^7.14.0",
+    "eslint-config-prettier": "^6.15.0",
+    "jsdoc": "^3.6.6",
+    "prettier": "2.2.0"
   }
 }

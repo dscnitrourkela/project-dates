@@ -1,4 +1,4 @@
-const types=`
+const types = `
     type Event{
         id:ID
         organizer : Club
@@ -31,7 +31,7 @@ const types=`
 
 `;
 
-const queries=`
+const queries = `
     events(
         id:ID
         eventName:String
@@ -45,10 +45,10 @@ const queries=`
 
 `;
 
-const mutations=`
+const mutations = `
     addEvent(event:EventInputType):Event
     updateEvent(id:ID,event:EventInputType):Event
     deleteEvent(id:ID):Event
 `;
 
-module.exports = {types,queries,mutations};
+module.exports = { types, queries, mutations };
