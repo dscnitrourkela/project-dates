@@ -2,7 +2,7 @@ FROM node:alpine
 
 WORKDIR /app
 
-COPY sources/package*.json /app/sources
+COPY sources/package*.json /app/sources/
 
 RUN cd sources && npm ci
 
