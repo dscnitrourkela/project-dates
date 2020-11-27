@@ -2,11 +2,11 @@ FROM node:alpine
 
 WORKDIR /app
 
-COPY package*.json /app/
+COPY sources/package*.json /app/sources
 
-RUN npm ci
+RUN cd sources && npm ci
 
-COPY . /app
+COPY ./sources /app/sources
 
 RUN npm install pm2 -g
 
