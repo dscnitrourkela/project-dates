@@ -1,5 +1,5 @@
-node_modules
-db
+sources/node_modules
+sources/db
 .vs/
 .bash_history
 .bash_logout
@@ -10,11 +10,11 @@ db
 .gnupg/
 .mongorc.js
 .mysql_history
-.node_repl_history
-.npm/
+sources/.node_repl_history
+sources/.npm/
 .profile
 .ssh/
 .viminfo
-.env
+sources/.env
 .gitconfig
 project-dates-493f1-firebase-adminsdk-s22ew-8bf811a509.json
