@@ -1,12 +1,15 @@
-arrowParens: always
-bracketSpacing: true
-endOfLine: auto
-jsxBracketSameLine: true
-printWidth: 120
-proseWrap: preserve
-quoteProps: as-needed
-semi: true
-singleQuote: true
-tabWidth: 2
-trailingComma: es5
-jsxSingleQuote: true
+{
+	"trailingComma": "es5",
+	"tabWidth": 2,
+	"printWidth": 120,
+	"semi": true,
+	"singleQuote": true,
+	"useTabs": true,
+	"quoteProps": "as-needed",
+	"jsxSingleQuote": false,
+	"bracketSpacing": true,
+	"jsxBracketSameLine": true,
+	"insertPragma": true,
+	"proseWrap": "preserve",
+	"arrowParens": "always"
+}

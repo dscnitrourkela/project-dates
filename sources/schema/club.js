@@ -1,3 +1,5 @@
+/** @format */
+
 const types = `
 type Club{
     id:ID

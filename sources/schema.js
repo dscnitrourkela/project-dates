@@ -1,3 +1,5 @@
+/** @format */
+
 const { gql } = require('apollo-server');
 
 const User = require('./schema/user');
@@ -13,9 +15,9 @@ const mutations = [];
 
 const schemas = [User, Event, Club, Venue, Access, ErrorClass];
 schemas.forEach((s) => {
-  types.push(s.types);
-  queries.push(s.queries);
-  mutations.push(s.mutations);
+	types.push(s.types);
+	queries.push(s.queries);
+	mutations.push(s.mutations);
 });
 
 module.exports = gql`
