@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: resolvers/venue.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,47 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: resolvers/venue.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/** @format */
 
+const queries = {
+	venues: (parent, args, { dataSources }, info) => {
+		return dataSources.VenueAPI.getVenues(args);
+	},
+	venueByName: (parent, { name }, { dataSources }, info) => {
+		return dataSources.VenueAPI.getVenueByName(name);
+	},
+	venueById: (parent, { id }, { dataSources }, info) => {
+		return dataSources.VenueAPI.getVenueById(id);
+	},
+};
 
-    <h3> </h3>
+const mutations = {
+	addVenue: (parent, { venue }, { dataSources }, info) => {
+		return dataSources.VenueAPI.addVenue(venue);
+	},
+	updateVenue: (parent, args, { dataSources }, info) => {
+		return dataSources.VenueAPI.updateVenue(args);
+	},
+	deleteVenue: (parent, { id }, { dataSources }, info) => {
+		return dataSources.VenueAPI.deleteVenue(id);
+	},
+};
 
+const fieldResolvers = {};
 
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+module.exports = { queries, mutations, fieldResolvers };
+</code></pre>
+        </article>
+    </section>
 
 
 

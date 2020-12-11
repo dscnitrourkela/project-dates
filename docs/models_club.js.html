@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: models/club.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,42 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: models/club.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/** @format */
 
+var mongoose = require('mongoose');
+var clubSchema = new mongoose.Schema({
+	clubName: String,
+	memberAccess: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'User',
+		},
+	],
+	facAd: String,
+	logo: String,
+	events: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Event',
+		},
+	],
+	society: String,
+	domain: String,
+});
 
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+module.exports = mongoose.model('Club', clubSchema);
+</code></pre>
+        </article>
+    </section>
 
 
 

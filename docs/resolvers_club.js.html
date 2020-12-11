@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: resolvers/club.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,56 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: resolvers/club.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/** @format */
 
+const queries = {
+	clubs: (parent, args, { dataSources }, info) => {
+		return dataSources.ClubAPI.getClubs(args);
+	},
+	clubByName: (parent, { name }, { dataSources }, info) => {
+		return dataSources.ClubAPI.getClubByName(name);
+	},
+	clubById: (parent, { id }, { dataSources }, info) => {
+		return dataSources.ClubAPI.getClubById(id);
+	},
+};
 
-    <h3> </h3>
+const mutations = {
+	addClub: (parent, { club }, { dataSources }, info) => {
+		return dataSources.ClubAPI.addClub(club);
+	},
+	updateClub: (parent, args, { dataSources }, info) => {
+		return dataSources.ClubAPI.updateClub(args);
+	},
+	deleteClub: (parent, { id }, { dataSources }, info) => {
+		return dataSources.ClubAPI.deleteClub(id);
+	},
+};
 
+const fieldResolvers = {
+	Club: {
+		memberAccess: async (parent, args, { dataSources }, info) => {
+			return await dataSources.AccessLevelAPI.resolveAccess(parent.memberAccess);
+		},
+		events: async (parent, args, { dataSources }, info) => {
+			return await dataSources.ClubAPI.resolveClubEvents(parent.events);
+		},
+	},
+};
 
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+module.exports = { queries, mutations, fieldResolvers };
+</code></pre>
+        </article>
+    </section>
 
 
 

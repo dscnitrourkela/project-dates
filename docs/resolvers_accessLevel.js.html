@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: resolvers/accessLevel.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,43 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: resolvers/accessLevel.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/** @format */
 
+const queries = {};
 
-    <h3> </h3>
+const mutations = {};
 
+const fieldResolvers = {
+	AccessLevel: {
+		user: async (parent, args, { dataSources }, info) => {
+			return await dataSources.UserAPI.getUserById(parent.user);
+		},
+		club: async (parent, args, { dataSources }, info) => {
+			// if(permissions.find((permission)=>permission=="users.by"))
+			//     return await dataSources.ClubAPI.getClubById(parent.club);
+			// else{
+			//     const error=new Error("Permission Denied for club field");
+			//     error.code="ERROR401";
+			//     throw error;
+			// }
+			return await dataSources.ClubAPI.getClubById(parent.club);
+		},
+	},
+};
 
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+module.exports = { queries, mutations, fieldResolvers };
+</code></pre>
+        </article>
+    </section>
 
 
 

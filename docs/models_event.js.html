@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: models/event.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,49 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: models/event.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/** @format */
 
+var mongoose = require('mongoose');
+var eventSchema = new mongoose.Schema({
+	eventId: Number,
+	organizer: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'Club',
+	},
+	eventName: String,
+	startDateTime: String,
+	venue: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'Venue',
+	},
+	endDateTime: String,
+	registrationPrice: Number,
+	registrationCount: Number,
+	otherDescription: String,
+	attendees: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'User',
+		},
+	],
+	announcements: String,
+	link: String,
+	picture: String,
+});
 
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+module.exports = mongoose.model('Event', eventSchema);
+</code></pre>
+        </article>
+    </section>
 
 
 

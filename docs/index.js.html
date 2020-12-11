@@ -26,7 +26,9 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>const { ApolloServer, gql, ApolloError } = require('apollo-server');
+            <pre class="prettyprint source linenums"><code>/** @format */
+
+const { ApolloServer, gql, ApolloError } = require('apollo-server');
 const UserAPI = require('./datasources/users.js');
 const ClubAPI = require('./datasources/clubs.js');
 const EventAPI = require('./datasources/events.js');
@@ -45,74 +47,71 @@ const user = require('./models/user.js');
 dotenv.config();
 
 mongoose.connect(process.env.MONGODB_URL || 'mongodb://localhost/elaichi', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
+	useNewUrlParser: true,
+	useUnifiedTopology: true,
 });
 mongoose.connection.once('open', () => {
-  console.log('connected to the database');
-  // seed.seedData();
-  // seed.seedPermissions();
+	console.log('connected to the database');
+	// seed.seedData();
+	// seed.seedPermissions();
 });
 // Firebase Init
 const firebaseInit = async () => {
-  const serviceAccount = require('../project-dates-493f1-firebase-adminsdk-s22ew-8bf811a509.json');
+	const serviceAccount = require('../project-dates-493f1-firebase-adminsdk-s22ew-8bf811a509.json');
 
-  admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    databaseURL: 'https://project-dates-493f1.firebaseio.com',
-  });
+	admin.initializeApp({
+		credential: admin.credential.cert(serviceAccount),
+		databaseURL: 'https://project-dates-493f1.firebaseio.com',
+	});
 };
 
 const dataSources = () => ({
-  UserAPI: new UserAPI(),
-  ClubAPI: new ClubAPI(),
-  EventAPI: new EventAPI(),
-  VenueAPI: new VenueAPI(),
-  AccessLevelAPI: new AccessLevelAPI(),
+	UserAPI: new UserAPI(),
+	ClubAPI: new ClubAPI(),
+	EventAPI: new EventAPI(),
+	VenueAPI: new VenueAPI(),
+	AccessLevelAPI: new AccessLevelAPI(),
 });
 
 const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-  dataSources,
-  introspection: true,
-  resolverValidationOptions: { requireResolversForResolveType: false },
-  playground: true,
-  debug: false,
-  /**
-   * GraphQL Context:  A top level function which decodes and verifies the JWT sent through the request header
-   *  @param {string} decodedToken - JWT token from request
-   */
-  context: async ({ req }) => 
-    // const obj = gql`
-    //     ${req.body.query}
-    // `;
-    // if(req.headers &amp;&amp; req.headers.authorization){
-    //     const idToken=req.headers.authorization;
-    //     try {
-    //         const decodedToken= await admin.auth().verifyIdToken(idToken)
-    //         const userPermission= await permission.findOne({role:decodedToken.roles});
-    //         return {permissions:userPermission.permissions};
-    //     } catch (error) {
-    //         throw new Error(error.errorInfo.message);
-    //     }
-    // }
+	typeDefs,
+	resolvers,
+	dataSources,
+	introspection: true,
+	resolverValidationOptions: { requireResolversForResolveType: false },
+	playground: true,
+	debug: false,
+	/**
+	 * GraphQL Context:  A top level function which decodes and verifies the JWT sent through the request header
+	 *  @param {string} decodedToken - JWT token from request
+	 */
+	context: async ({ req }) =>
+		// const obj = gql`
+		//     ${req.body.query}
+		// `;
+		// if(req.headers &amp;&amp; req.headers.authorization){
+		//     const idToken=req.headers.authorization;
+		//     try {
+		//         const decodedToken= await admin.auth().verifyIdToken(idToken)
+		//         const userPermission= await permission.findOne({role:decodedToken.roles});
+		//         return {permissions:userPermission.permissions};
+		//     } catch (error) {
+		//         throw new Error(error.errorInfo.message);
+		//     }
+		// }
 
-     ({ permissions: ['users.al', 'users.byId', 'users.byNam'] })
-  ,
-
-  formatError: err => 
-    // if(err.extensions.code=="INTERNAL_SERVER_ERROR"){
-    //     return new ApolloError("We are having some trouble","ERROR",{Token:"Unique Token"});
-    // }
-    // console.log(err.originalError);
-     new ApolloError(err.message)
-  ,
+		({ permissions: ['users.al', 'users.byId', 'users.byNam'] }),
+	formatError: (err) =>
+		// if(err.extensions.code=="INTERNAL_SERVER_ERROR"){
+		//     return new ApolloError("We are having some trouble","ERROR",{Token:"Unique Token"});
+		// }
+		// console.log(err.originalError);
+		new ApolloError(err.message),
 });
 
 server.listen(4000).then(({ url }) => {
-  firebaseInit();
-  console.log(`Graphql running on ${url}`);
+	firebaseInit();
+	console.log(`Graphql running on ${url}`);
 });
 </code></pre>
         </article>
@@ -124,13 +123,13 @@ server.listen(4000).then(({ url }) => {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Seed%2520Database.html">Seed Database</a></li></ul><h3>Global</h3><ul><li><a href="global.html#context">context</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Seed%2520Database.html">Seed Database</a></li></ul><h3>Global</h3><ul><li><a href="global.html#accessLevel">accessLevel</a></li><li><a href="global.html#buildNav">buildNav</a></li><li><a href="global.html#Clubs">Clubs</a></li><li><a href="global.html#context">context</a></li><li><a href="global.html#ERRORS">ERRORS</a></li><li><a href="global.html#Events">Events</a></li><li><a href="global.html#mongoose">mongoose</a></li><li><a href="global.html#PERMISSION_DENIED">PERMISSION_DENIED</a></li><li><a href="global.html#publish">publish</a></li><li><a href="global.html#queries">queries</a></li><li><a href="global.html#Query">Query</a></li><li><a href="global.html#types">types</a></li><li><a href="global.html#User">User</a></li><li><a href="global.html#Users">Users</a></li><li><a href="global.html#Venues">Venues</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Wed Nov 25 2020 22:38:37 GMT+0530 (India Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Fri Dec 11 2020 06:49:39 GMT+0000 (Coordinated Universal Time)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: schema/event.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,74 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: schema/event.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/** @format */
 
+const types = `
+    type Event{
+        id:ID
+        organizer : Club
+        eventName : String
+        startDateTime : String
+        venue : Venue
+        endDateTime : String
+        registrationPrice : Int
+        registrationCount : Int
+        otherDescription : String
+        attendees : [User]
+        announcements : String
+        link : String
+        picture : String
+    }
+    input EventInputType{
+        organizer : ID
+        eventName : String
+        startDateTime : String
+        venue : ID
+        endDateTime : String
+        registrationPrice : Int
+        registrationCount : Int
+        otherDescription : String
+        attendees : [ID]
+        announcements : String
+        link : String
+        picture : String
+    }
 
-    <h3> </h3>
+`;
 
+const queries = `
+    events(
+        id:ID
+        eventName:String
+        facAd:String
+        logo:String
+        society:String
+        domain:String
+    ):[Event]
+    eventByName(name:String):Event
+    eventById(id:String):Event
 
+`;
 
+const mutations = `
+    addEvent(event:EventInputType):Event
+    updateEvent(id:ID,event:EventInputType):Event
+    deleteEvent(id:ID):Event
+`;
 
-
-
-
-
-
-
-    
-
-
-
-
-
+module.exports = { types, queries, mutations };
+</code></pre>
+        </article>
+    </section>
 
 
 
