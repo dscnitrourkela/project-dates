@@ -1,3 +1,5 @@
+/** @format */
+
 const types = `
     type Event{
         id:ID

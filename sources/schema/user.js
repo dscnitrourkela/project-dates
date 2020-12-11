@@ -1,3 +1,5 @@
+/** @format */
+
 const types = `
 
     union UserResult= User | ErrorClass
