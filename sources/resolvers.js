@@ -4,7 +4,7 @@ const Query = require('./resolvers/query');
 const Mutation = require('./resolvers/mutation');
 const FieldResolver = require('./resolvers/fieldResolver');
 
-exportResolvers = {
+const exportResolvers = {
 	Query,
 	Mutation,
 	UserOrError: {

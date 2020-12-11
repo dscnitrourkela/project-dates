@@ -6,7 +6,7 @@ var clubSchema = new mongoose.Schema({
 	memberAccess: [
 		{
 			type: mongoose.Schema.Types.ObjectId,
-			ref: 'User',
+			ref: 'AccessLevel',
 		},
 	],
 	facAd: String,
