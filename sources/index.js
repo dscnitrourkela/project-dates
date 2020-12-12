@@ -72,7 +72,7 @@ const server = new ApolloServer({
 		//     }
 		// }
 
-		({ permissions: ['users.al', 'users.byId', 'users.byNam'] }),
+		({ permissions: ['users.all', 'users.byId', 'users.byNam'] }),
 	formatError: (err) =>
 		// if(err.extensions.code=="INTERNAL_SERVER_ERROR"){
 		//     return new ApolloError("We are having some trouble","ERROR",{Token:"Unique Token"});
