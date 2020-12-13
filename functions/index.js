@@ -6,15 +6,15 @@ admin.initializeApp();
 // Create and Deploy Your First Cloud Functions
 // https://firebase.google.com/docs/functions/write-firebase-functions
 
-exports.sendWelcomeEmail = functions.auth.user().onCreate((user) => {
+exports.setCustomClaimOnSignUp = functions.auth.user().onCreate((user) => {
     const customClaims={
-        role:"ROLE101"
+        role:"LEVEL1"
     }
     admin.auth().setCustomUserClaims(user.uid, customClaims)
       .then(() => {
-        console.log("done");
+        console.log("Set "+customClaims.role+" for "+user.displayName+" Succes");
       })
       .catch(error => {
-        console.log(error);
+        console.log("Set "+customClaims.role+" for "+user.displayName+" Failure");
       });
 });
