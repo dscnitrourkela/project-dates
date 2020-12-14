@@ -21,27 +21,26 @@ class UserAPI extends DataSource {
 		return await Users.findOne({ username: username });
 	}
 
-	async addUser(user,uid) {
+	async authUser(user,uid) {
 		let retPromise = {}, incomingUser;
 		// Create user with basic types;
 		const exisitingUser=await Users.find({firebaseUID:uid});
-		incomingUser = await Users.create({
-			username: user.username,
-			name: user.name,
-			gmailAuthMail: user.gmailAuthMail,
-			instituteId: user.instituteId,
-			address: user.address,
-			mobile: user.mobile,
-			firebaseUID : uid,	
-			emergencyContact: user.emergencyContact,
-			displayPicture: user.displayPicture,
-		});
 		// User document exists
-		// if(exisitingUser.length>0){
-		// 	incomingUser=exisitingUser[0];
-		// }else{
-			
-		// }
+		if(exisitingUser.length>0){
+			incomingUser=exisitingUser[0];
+		}else{
+			incomingUser = await Users.create({
+				username: user.username,
+				name: user.name,
+				gmailAuthMail: user.gmailAuthMail,
+				instituteId: user.instituteId,
+				address: user.address,
+				mobile: user.mobile,
+				firebaseUID : uid,	
+				emergencyContact: user.emergencyContact,
+				displayPicture: user.displayPicture,
+			});
+		}
 		
 		//Add nested types
 		const userId = incomingUser._id;

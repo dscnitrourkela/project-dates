@@ -5,7 +5,7 @@ var userSchema = new mongoose.Schema({
 	name: String,
 	username: String,
 	gmailAuthMail: String,
-	firebaseUID : String,
+	firebaseUID : { type : String , unique : true,dropDups: true },
 	clubAccess: [
 		{
 			type: mongoose.Schema.Types.ObjectId,

@@ -28,22 +28,27 @@ const userList = [
 	{
 		name: 'Harish',
 		username: 'HarishTeens',
+		firebaseUID:"aasdf"
 	},
 	{
 		name: 'Roshan',
 		username: 'Rk shaw',
+		firebaseUID:"aasdf1"
 	},
 	{
 		name: 'Smarak Das',
 		username: 'Smarky',
+		firebaseUID:"aasdf2"
 	},
 	{
 		name: 'CHinmay Kabi',
 		username: 'chinukabi',
+		firebaseUID:"aasdf3"
 	},
 	{
 		name: 'Abel Mathew',
 		username: 'Designer Knight',
+		firebaseUID:"aasdf32"
 	},
 ];
 const clubList = ['DSC', 'GDG', 'MCC', 'RED', 'BLUE'];

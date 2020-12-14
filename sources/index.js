@@ -73,7 +73,7 @@ const server = new ApolloServer({
 		//     }
 		// }
 
-		return { uid:"myuidisgood", permissions: ['users.all', 'users.byId', 'users.byNam'] };
+		return { uid:"myuidisgood1", permissions: ['users.all', 'users.byId', 'users.byNam'] };
 	},			
 	formatError: (err) =>
 		// if(err.extensions.code=="INTERNAL_SERVER_ERROR"){

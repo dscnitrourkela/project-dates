@@ -32,8 +32,8 @@ const queries = {
 };
 
 const mutations = {
-	addUser: (parent, { user }, { dataSources ,uid }, info) => {
-		return dataSources.UserAPI.addUser(user,uid);
+	authUser: (parent, { user }, { dataSources ,uid }, info) => {
+		return dataSources.UserAPI.authUser(user,uid);
 	},
 	updateUser: (parent, args, { dataSources }, info) => {
 		return dataSources.UserAPI.updateUser(args);
