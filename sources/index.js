@@ -57,22 +57,24 @@ const server = new ApolloServer({
 	 * GraphQL Context:  A top level function which decodes and verifies the JWT sent through the request header
 	 *  @param {string} decodedToken - JWT token from request
 	 */
-	context: async ({ req }) =>
+	context: async ({ req }) => {
 		// const obj = gql`
 		//     ${req.body.query}
 		// `;
 		// if(req.headers && req.headers.authorization){
 		//     const idToken=req.headers.authorization;
 		//     try {
-		//         const decodedToken= await admin.auth().verifyIdToken(idToken)
+		// 		const decodedToken= await admin.auth().verifyIdToken(idToken)
+		// 		const uid= decodedToken.uid;
 		//         const userPermission= await permission.findOne({role:decodedToken.roles});
-		//         return {permissions:userPermission.permissions};
+		//         return {uid:uid, permissions:userPermission.permissions};
 		//     } catch (error) {
 		//         throw new Error(error.errorInfo.message);
 		//     }
 		// }
 
-		({ permissions: ['users.all', 'users.byId', 'users.byNam'] }),
+		return { uid:"myuidisgood", permissions: ['users.all', 'users.byId', 'users.byNam'] };
+	},			
 	formatError: (err) =>
 		// if(err.extensions.code=="INTERNAL_SERVER_ERROR"){
 		//     return new ApolloError("We are having some trouble","ERROR",{Token:"Unique Token"});

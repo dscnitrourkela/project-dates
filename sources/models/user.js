@@ -5,8 +5,7 @@ var userSchema = new mongoose.Schema({
 	name: String,
 	username: String,
 	gmailAuthMail: String,
-	// firebaseToken : String,
-	// password : String,
+	firebaseUID : String,
 	clubAccess: [
 		{
 			type: mongoose.Schema.Types.ObjectId,

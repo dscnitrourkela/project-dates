@@ -21,22 +21,30 @@ class UserAPI extends DataSource {
 		return await Users.findOne({ username: username });
 	}
 
-	async addUser(user) {
-		let retPromise = {};
+	async addUser(user,uid) {
+		let retPromise = {}, incomingUser;
 		// Create user with basic types;
-		let createdUser = await Users.create({
+		const exisitingUser=await Users.find({firebaseUID:uid});
+		incomingUser = await Users.create({
 			username: user.username,
 			name: user.name,
 			gmailAuthMail: user.gmailAuthMail,
 			instituteId: user.instituteId,
 			address: user.address,
 			mobile: user.mobile,
+			firebaseUID : uid,	
 			emergencyContact: user.emergencyContact,
 			displayPicture: user.displayPicture,
 		});
-
+		// User document exists
+		// if(exisitingUser.length>0){
+		// 	incomingUser=exisitingUser[0];
+		// }else{
+			
+		// }
+		
 		//Add nested types
-		const userId = createdUser._id;
+		const userId = incomingUser._id;
 		const accessArray = user.clubAccess;
 		if (accessArray != undefined && accessArray.length > 0) {
 			await Promise.all(
@@ -49,14 +57,15 @@ class UserAPI extends DataSource {
 						user: userId,
 					};
 					let createdAccessLevel = await AccessLevel.create(accessObj);
-					createdUser.clubAccess.push(createdAccessLevel);
+					incomingUser.clubAccess.push(createdAccessLevel);
 					foundClub.memberAccess.push(createdAccessLevel);
 					await foundClub.save();
 				})
 			);
 		}
-		retPromise = await createdUser.save();
+		retPromise = await incomingUser.save();
 		return retPromise;
+		
 	}
 
 	async updateUser(args) {
