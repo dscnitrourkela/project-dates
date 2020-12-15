@@ -24,11 +24,10 @@ class UserAPI extends DataSource {
 	}
 
 	async authUser(user,uid) {
-		let retPromise = {}, incomingUser;
-		// Create user with basic types;
+		let incomingUser;		
 		const exisitingUser=await Users.findOne({firebaseUID:uid});
 		// User document exists
-		if(exisitingUser.length>0){
+		if(exisitingUser){
 			incomingUser=exisitingUser;
 		}else{
 			incomingUser = await Users.create({
@@ -43,64 +42,17 @@ class UserAPI extends DataSource {
 				displayPicture: user.displayPicture,
 			});
 		}
-		return incomingUser;
-		//Add nested types
-		// const userId = incomingUser._id;
-		// const accessArray = user.clubAccess;
-		// if (accessArray != undefined && accessArray.length > 0) {
-		// 	await Promise.all(
-		// 		accessArray.map(async (accessItem, index) => {
-		// 			const clubId = accessItem.club;
-		// 			const foundClub = await Clubs.findById(clubId);
-		// 			const accessObj = {
-		// 				level: accessItem.level,
-		// 				club: foundClub._id,
-		// 				user: userId,
-		// 			};
-		// 			let createdAccessLevel = await AccessLevel.create(accessObj);
-		// 			incomingUser.clubAccess.push(createdAccessLevel);
-		// 			foundClub.memberAccess.push(createdAccessLevel);
-		// 			await foundClub.save();
-		// 		})
-		// 	);
-		// }
-		// retPromise = await incomingUser.save();
-		// return retPromise;
-		
+		return incomingUser;		
 	}
 
 	async updateUser(args,uid) {
-		const userId = args.id;
 		const user = args.user;
 		let retPromise = {};
-		// Create user with basic types;
-		const foundUser = await Users.findOne({firebaseUID:uid});;
-		const originalMemberAccess = foundUser.clubAccess.slice(0);
-
+		const foundUser = await Users.findOne({firebaseUID:uid});
 		let updatedUser = new Users(foundUser);
 		updatedUser = Object.assign(updatedUser, user);
 		updatedUser = new Users(updatedUser);
 		
-		//Add nested types
-		// const accessArray = user.clubAccess;
-		// if (accessArray != undefined && accessArray.length > 0) {
-		// 	// accessArray exists and is not empty
-		// 	await Promise.all(
-		// 		accessArray.map(async (accessItem, index) => {
-		// 			const clubId = accessItem.club;
-		// 			const foundClub = await Clubs.findById(clubId);
-		// 			const accessObj = {
-		// 				level: accessItem.level,
-		// 				club: foundClub._id,
-		// 				user: userId,
-		// 			};
-		// 			let createdAccessLevel = await AccessLevel.create(accessObj);
-		// 			updatedUser.clubAccess.push(createdAccessLevel._id);
-		// 			foundClub.memberAccess.push(createdAccessLevel._id);
-		// 			await foundClub.save();
-		// 		})
-		// 	);
-		// }
 		let regex=/^(1|2|3|4|5|7)[0-9][0-9]((AR|AS|BM|BT|CH|CE|CR|CS|CY|EC|EI|EE|ER|FP|HS|ID|LS|MA|ME|MN|MM|PA|PH|SM)|(ar|as|bm|bt|ch|ce|cr|cs|cy|ec|ei|ee|er|fp|hs|id|ls|ma|me|mn|mm|pa|ph|sm))[0-9]{4}$/;
 		if( user.instituteId!=undefined&&foundUser.instituteId==undefined){
 			if(regex.test(user.instituteId)==false){
@@ -113,8 +65,7 @@ class UserAPI extends DataSource {
 			}
 		}
 		retPromise = await updatedUser.save();
-		return retPromise;
-		
+		return retPromise;		
 	}
 
 	async deleteUser(uid) {
@@ -127,14 +78,11 @@ class UserAPI extends DataSource {
 	 *  @param {string} email - NITR mail id of the user
 	 */ 
 	async updateCustomClaim(email,uid){
-		admin
-		.auth()
-		.getUserByEmail(email)
-		.then((userRecord) => {     
-			const customClaims={
-				role:"LEVEL2"
-			}
-			admin.auth().setCustomUserClaims(uid, customClaims)
+		const userRecord= await  admin.auth().getUserByEmail(email)		
+		const customClaims={
+			role:"LEVEL2"
+		}
+		admin.auth().setCustomUserClaims(uid, customClaims)
 			.then(() => {
 				console.log("Set "+customClaims.role+" for "+userRecord.displayName+" Success");
 				return true;
@@ -143,11 +91,7 @@ class UserAPI extends DataSource {
 				console.log("Set "+customClaims.role+" for "+userRecord.displayName+" Failure");
 				return false;
 			});
-		})
-		.catch((error) => {
-			console.log('Error fetching user data:', error);
-			return false;
-		});
+			
 	}
 }
 module.exports = UserAPI;
