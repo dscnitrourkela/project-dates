@@ -69,6 +69,8 @@ const seedData = async () => {
 			});
 			const accessLevelObj = {
 				level: '1',
+				name:data.name,
+				relation:'member',
 				club: createdClub,
 				user: createdUser,
 			};

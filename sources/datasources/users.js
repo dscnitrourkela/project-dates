@@ -52,6 +52,20 @@ class UserAPI extends DataSource {
 		let updatedUser = new Users(foundUser);
 		updatedUser = Object.assign(updatedUser, user);
 		updatedUser = new Users(updatedUser);
+
+		//Update name in accessLevel if name is changed
+		if(user.name!=undefined){
+			const accessArray = updatedUser.clubAccess;
+			if (accessArray != undefined && accessArray.length > 0) {
+				// accessArray exists and is not empty
+				accessArray.map(async (accessItem, index) => {
+					let foundAccessItem= await AccessLevel.findById(accessItem._id);
+					let updatedAccessItem = new AccessLevel(foundAccessItem);
+					updatedAccessItem.name=user.name;
+					await updatedAccessItem.save();
+				})
+			}
+		}
 		
 		let regex=/^(1|2|3|4|5|7)[0-9][0-9]((AR|AS|BM|BT|CH|CE|CR|CS|CY|EC|EI|EE|ER|FP|HS|ID|LS|MA|ME|MN|MM|PA|PH|SM)|(ar|as|bm|bt|ch|ce|cr|cs|cy|ec|ei|ee|er|fp|hs|id|ls|ma|me|mn|mm|pa|ph|sm))[0-9]{4}$/;
 		if( user.instituteId!=undefined&&foundUser.instituteId==undefined){

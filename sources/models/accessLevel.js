@@ -3,6 +3,8 @@
 var mongoose = require('mongoose');
 var accessLevelSchema = new mongoose.Schema({
 	level: String,
+	name: String,
+	relation:String,
 	club: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'Club',
