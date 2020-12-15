@@ -29,11 +29,11 @@ mongoose.connection.once('open', () => {
 });
 // Firebase Init
 const firebaseInit = async () => {
-	const serviceAccount = require('../project-dates-493f1-firebase-adminsdk-s22ew-8bf811a509.json');
+	const serviceAccount = require('../project-elaichi.json');
 
 	admin.initializeApp({
 		credential: admin.credential.cert(serviceAccount),
-		databaseURL: 'https://project-dates-493f1.firebaseio.com',
+		databaseURL: 'https://project-elaichi-493f1.firebaseio.com',
 	});
 };
 

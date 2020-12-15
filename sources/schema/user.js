@@ -19,7 +19,6 @@ const types = `
         name:String
         username:String
         gmailAuthMail:String
-        clubAccess:[AccessLevelInputType]
         instituteId:String
         mobile:String
         emergencyContact:String
@@ -30,7 +29,6 @@ const types = `
 
 const queries = `
     users(
-        id:ID
         name:String
         username:String
         gmailAuthMail:String
@@ -44,7 +42,7 @@ const queries = `
 
 const mutations = `
     authUser(user:UserInputType):User
-    updateUser(id:ID,user:UserInputType):User
+    updateUser(user:UserInputType):User
     deleteUser(id:ID):User
 `;
 
