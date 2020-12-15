@@ -55,9 +55,9 @@ class UserAPI extends DataSource {
 		
 		let regex=/^(1|2|3|4|5|7)[0-9][0-9]((AR|AS|BM|BT|CH|CE|CR|CS|CY|EC|EI|EE|ER|FP|HS|ID|LS|MA|ME|MN|MM|PA|PH|SM)|(ar|as|bm|bt|ch|ce|cr|cs|cy|ec|ei|ee|er|fp|hs|id|ls|ma|me|mn|mm|pa|ph|sm))[0-9]{4}$/;
 		if( user.instituteId!=undefined&&foundUser.instituteId==undefined){
-			if(regex.test(user.instituteId)==false){
-				return new ApolloError("Invalid Institute ID");
-			}
+			// if(regex.test(user.instituteId)==false){
+			// 	return new ApolloError("Invalid Institute ID");
+			// }
 			const email=user.instituteId+'@nitrkl.ac.in';
 			const claimSuccessResponse= await this.updateCustomClaim(email,uid);
 			if(claimSuccessResponse==false){
