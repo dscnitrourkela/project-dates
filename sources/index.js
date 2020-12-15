@@ -18,6 +18,11 @@ const user = require('./models/user.js');
 
 dotenv.config();
 
+//Mongoose Configs
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
+
 mongoose.connect(process.env.MONGODB_URL || 'mongodb://localhost/elaichi', {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
@@ -27,16 +32,17 @@ mongoose.connection.once('open', () => {
 	// seed.seedData();
 	// seed.seedPermissions();
 });
+
 // Firebase Init
 const firebaseInit = async () => {
-	const serviceAccount = require('../project-dates-493f1-firebase-adminsdk-s22ew-8bf811a509.json');
-
+	const serviceAccount = require('../project-elaichi.json');
 	admin.initializeApp({
 		credential: admin.credential.cert(serviceAccount),
-		databaseURL: 'https://project-dates-493f1.firebaseio.com',
+		databaseURL: 'https://project-elaichi-493f1.firebaseio.com',
 	});
 };
 
+//Datasources
 const dataSources = () => ({
 	UserAPI: new UserAPI(),
 	ClubAPI: new ClubAPI(),
@@ -57,22 +63,22 @@ const server = new ApolloServer({
 	 * GraphQL Context:  A top level function which decodes and verifies the JWT sent through the request header
 	 *  @param {string} decodedToken - JWT token from request
 	 */
-	context: async ({ req }) =>
-		// const obj = gql`
-		//     ${req.body.query}
-		// `;
-		// if(req.headers && req.headers.authorization){
-		//     const idToken=req.headers.authorization;
-		//     try {
-		//         const decodedToken= await admin.auth().verifyIdToken(idToken)
-		//         const userPermission= await permission.findOne({role:decodedToken.roles});
-		//         return {permissions:userPermission.permissions};
-		//     } catch (error) {
-		//         throw new Error(error.errorInfo.message);
-		//     }
-		// }
-
-		({ permissions: ['users.all', 'users.byId', 'users.byNam'] }),
+	context: async ({ req }) => {
+		const obj = gql`
+		    ${req.body.query}
+		`;
+		if(req.headers && req.headers.authorization){
+		    const idToken=req.headers.authorization;
+		    try {
+				const decodedToken= await admin.auth().verifyIdToken(idToken)
+				const uid= decodedToken.uid;				
+		        const userPermission= await permission.findOne({role:decodedToken.roles});
+				return {uid:uid, permissions: userPermission};
+		    } catch (error) {
+		        throw new Error(error.errorInfo.message);
+		    }
+		}
+	},			
 	formatError: (err) =>
 		// if(err.extensions.code=="INTERNAL_SERVER_ERROR"){
 		//     return new ApolloError("We are having some trouble","ERROR",{Token:"Unique Token"});
