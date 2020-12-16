@@ -25,6 +25,8 @@ var userSchema = new mongoose.Schema({
 	mobileNo: Number,
 	emergencyContact: Number,
 	displayPicture: String,
+},{
+    timestamps: true
 });
 
 module.exports = mongoose.model('User', userSchema);

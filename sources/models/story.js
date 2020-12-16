@@ -9,6 +9,8 @@ var eventSchema = new mongoose.Schema({
 	},
 	posted_at: String,
 	picture: String,
+},{
+    timestamps: true
 });
 
 module.exports = mongoose.model('Event', eventSchema);

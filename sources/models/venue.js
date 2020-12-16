@@ -7,6 +7,8 @@ var venueSchema = new mongoose.Schema({
 	description: String,
 	link: String,
 	picture: String,
+},{
+    timestamps: true
 });
 
 module.exports = mongoose.model('Venue', venueSchema);
