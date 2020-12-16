@@ -13,6 +13,7 @@ const dotenv = require('dotenv');
 const seed = require('./seed_database');
 const admin = require('firebase-admin');
 const gqltag = require('graphql-tag');
+const cloudinary = require('cloudinary').v2;
 const permission = require('./models/permission');
 const user = require('./models/user.js');
 
@@ -41,6 +42,13 @@ const firebaseInit = async () => {
 		databaseURL: 'https://project-elaichi-493f1.firebaseio.com',
 	});
 };
+
+//Cloudinary Config
+cloudinary.config({ 
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY, 
+  api_secret: process.env.CLOUDINARY_API_SECRET 
+});
 
 //Datasources
 const dataSources = () => ({
