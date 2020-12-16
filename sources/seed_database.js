@@ -10,6 +10,7 @@ const event = require('./models/event');
 const accessLevel = require('./models/accessLevel');
 const club = require('./models/club');
 const venue = require('./models/venue');
+const story = require('./models/story');
 const permission = require('./models/permission');
 const mongoose = require('mongoose');
 
@@ -54,12 +55,15 @@ const userList = [
 const clubList = ['DSC', 'GDG', 'MCC', 'RED', 'BLUE'];
 const eventList = ['Hactoberfest', 'Hackathon', 'RUNIO', 'Fest', 'Enigma'];
 const venueList = ['LA-204', 'RM-Hall', 'BBA', 'LA-lawns', 'Library-Lawns'];
+const storyDescriptionList = ['Hactoberfest Story', 'Hackathon Story', 'RUNIO Story', 'Fest Story', 'Enigma Story'];
 const seedData = async () => {
 	await dropIfExists(user);
 	await dropIfExists(club);
 	await dropIfExists(event);
 	await dropIfExists(venue);
+	await dropIfExists(story);
 	await dropIfExists(accessLevel);
+	await dropIfExists(permission);
 
 	Promise.all(
 		userList.map(async (data, index) => {
@@ -85,6 +89,13 @@ const seedData = async () => {
 			});
 			const createdVenue = await venue.create({
 				name: venueList[index],
+			});
+			const createdStory = await story.create({
+				author:createdClub,
+				event:createdEvent,
+				description:storyDescriptionList[index],
+				asset:'Dummy Asset',
+				isExpired:false
 			});
 		})
 	);
