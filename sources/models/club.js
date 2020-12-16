@@ -19,6 +19,8 @@ var clubSchema = new mongoose.Schema({
 	],
 	society: String,
 	domain: String,
+},{
+    timestamps: true
 });
 
 module.exports = mongoose.model('Club', clubSchema);

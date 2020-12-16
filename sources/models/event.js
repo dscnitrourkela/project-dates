@@ -26,6 +26,8 @@ var eventSchema = new mongoose.Schema({
 	announcements: String,
 	link: String,
 	picture: String,
+},{
+    timestamps: true
 });
 
 module.exports = mongoose.model('Event', eventSchema);
