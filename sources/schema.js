@@ -6,14 +6,16 @@ const User = require('./schema/user');
 const Event = require('./schema/event');
 const Club = require('./schema/club');
 const Venue = require('./schema/venue');
+const Story = require('./schema/story');
 const Access = require('./schema/accessLevel');
 const ErrorClass = require('./schema/error');
+const {GraphQLDateTime} = require('graphql-iso-date');
 
 const types = [];
 const queries = [];
 const mutations = [];
 
-const schemas = [User, Event, Club, Venue, Access, ErrorClass];
+const schemas = [User, Event, Club, Venue, Access, ErrorClass,Story];
 schemas.forEach((s) => {
 	types.push(s.types);
 	queries.push(s.queries);
@@ -21,7 +23,6 @@ schemas.forEach((s) => {
 });
 
 module.exports = gql`
-
 ${types.join('\n')}
 
 type Query{

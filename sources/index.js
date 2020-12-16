@@ -6,6 +6,7 @@ const ClubAPI = require('./datasources/clubs.js');
 const EventAPI = require('./datasources/events.js');
 const VenueAPI = require('./datasources/venues.js');
 const AccessLevelAPI = require('./datasources/accessLevels.js');
+const StoryAPI = require('./datasources/stories.js');
 const typeDefs = require('./schema.js');
 const resolvers = require('./resolvers.js');
 const mongoose = require('mongoose');
@@ -57,6 +58,7 @@ const dataSources = () => ({
 	EventAPI: new EventAPI(),
 	VenueAPI: new VenueAPI(),
 	AccessLevelAPI: new AccessLevelAPI(),
+	StoryAPI:new StoryAPI()
 });
 
 const server = new ApolloServer({

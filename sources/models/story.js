@@ -1,16 +1,20 @@
 /** @format */
 
 var mongoose = require('mongoose');
-var eventSchema = new mongoose.Schema({
-	storyId: Number,
+var storySchema = new mongoose.Schema({
 	author: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'Club',
 	},
-	posted_at: String,
-	picture: String,
+	event: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'Event',
+	},
+	asset: String,
+	description:String,
+	isExpired:Boolean,
 },{
     timestamps: true
 });
 
-module.exports = mongoose.model('Event', eventSchema);
+module.exports = mongoose.model('Story', storySchema);
