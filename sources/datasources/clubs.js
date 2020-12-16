@@ -46,6 +46,8 @@ class ClubAPI extends DataSource {
 					const foundUser = await Users.findById(userId);
 					const accessObj = {
 						level: accessItem.level,
+						name:foundUser.name,
+						relation:accessItem.relation,
 						user: foundUser._id,
 						club: clubId,
 					};
@@ -90,15 +92,29 @@ class ClubAPI extends DataSource {
 				accessArray.map(async (accessItem, index) => {
 					const userId = accessItem.user;
 					const foundUser = await Users.findById(userId);
-					const accessObj = {
-						level: accessItem.level,
-						user: foundUser._id,
-						club: clubId,
-					};
-					let createdAccessLevel = await AccessLevel.create(accessObj);
-					updatedClub.memberAccess.push(createdAccessLevel);
-					foundUser.clubAccess.push(createdAccessLevel);
-					await foundUser.save();
+					const foundAccessObj=await AccessLevel.findOne({user:userId,club:foundClub._id});
+					//Check if there is no such access level defined
+					if(foundAccessObj==undefined){
+						const accessObj = {
+							level: accessItem.level,
+							name:foundUser.name, //You cannot update name here
+							relation:accessItem.relation,
+							user: foundUser._id,
+							club: clubId,
+						};
+						let createdAccessLevel = await AccessLevel.create(accessObj);
+						updatedClub.memberAccess.push(createdAccessLevel);
+						foundUser.clubAccess.push(createdAccessLevel);
+						await foundUser.save();
+					}
+					else{
+						let updatedAccessObj = new AccessLevel(foundAccessObj);
+						delete accessItem.user; //To avoid user._id update in Object.assign()
+						delete accessItem.club; //To avoid club._id update in Object.assign()
+						delete accessItem.name; //To avoid user.name update in Object.assign()
+						updatedAccessObj = Object.assign(updatedAccessObj,accessItem);
+						updatedAccessObj.save();
+					}
 				})
 			);
 		}
