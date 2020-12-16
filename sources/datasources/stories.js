@@ -2,6 +2,7 @@
 
 const Events = require('../models/event.js');
 const Stories = require('../models/story.js');
+const currentStories = require("../models/currentStory");
 const Users = require('../models/user.js');
 const Clubs = require('../models/club.js');
 const Venues = require('../models/venue.js');
@@ -22,7 +23,7 @@ class StoryAPI extends DataSource {
         console.log(storyArray[0]);
         //Not keeping it in await so that it happens asynchronously
         await Promise.all(
-            storyArray.forEach(async (storyItem, index) => {
+            storyArray.map(async (storyItem, index) => {
                 const currentTime=new Date();
                 let storyCreatedAt=new Date(storyItem.createdAt);
                 const storyDuration = 24*60; //minutes
@@ -38,12 +39,12 @@ class StoryAPI extends DataSource {
             })
         );
         console.log("storyArray");
-        return storyArray.filter(story => console.log(story));
+        return storyArray.filter(story => story.isExpired==false);
 	}
 	async addStory(story) {
 		let retPromise = {};
 		// Create Event with basic types;
-		let createdStory = await Events.create({
+		let createdStory = await Stories.create({
 			asset: story.asset,
             description: story.description,
             isExpired:false
@@ -54,7 +55,14 @@ class StoryAPI extends DataSource {
 		//1. author
 		if (story.author != undefined) {
 			const authorId = story.author;
-			const foundAuthor = await Clubs.findById(authorId);
+            const foundAuthor = await Clubs.findById(authorId);
+             //3. add to current Stories
+            await currentStories.create({
+                storyID:createdStory._id,
+                authorName: foundAuthor.clubName
+            }).then((createdObj)=>{
+                console.log(createdObj);
+            })
             if(foundAuthor==undefined){
                 return new ApolloError("Author Not Found");
             }
@@ -68,7 +76,9 @@ class StoryAPI extends DataSource {
                 return new ApolloError("Event Not Found");
             }
             createdStory.event = foundEvent._id;
-		}
+        }
+        
+       
 
 		retPromise = await createdStory.save();
 		return retPromise;

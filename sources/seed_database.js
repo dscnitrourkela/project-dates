@@ -62,8 +62,7 @@ const seedData = async () => {
 	await dropIfExists(event);
 	await dropIfExists(venue);
 	await dropIfExists(story);
-	await dropIfExists(accessLevel);
-	await dropIfExists(permission);
+	await dropIfExists(accessLevel);	
 
 	Promise.all(
 		userList.map(async (data, index) => {
@@ -109,10 +108,12 @@ const seedData = async () => {
  *  A function to seed the database with default permission for the the default role
  */
 const seedPermissions = async () => {
-	permission.find({ role: 'ROLE101' }, async (err, found) => {
+	await dropIfExists(permission);
+	
+	permission.find({ role: 'LEVEL1' }, async (err, found) => {
 		if (!found.length) {
 			await permission.create({
-				role: 'ROLE101',
+				role: 'LEVEL1',
 				permissions: ['clubs.all', 'clubs.byId', 'clubs.byName'],
 			});
 		}

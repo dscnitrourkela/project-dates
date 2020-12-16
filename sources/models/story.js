@@ -17,4 +17,6 @@ var storySchema = new mongoose.Schema({
     timestamps: true
 });
 
+
+
 module.exports = mongoose.model('Story', storySchema);
