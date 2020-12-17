@@ -11,8 +11,7 @@ var storySchema = new mongoose.Schema({
 		ref: 'Event',
 	},
 	asset: String,
-	description:String,
-	isExpired:Boolean,
+	description:String
 },{
     timestamps: true
 });

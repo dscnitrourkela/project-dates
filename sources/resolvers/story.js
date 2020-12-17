@@ -1,5 +1,8 @@
 /** @format */
 
+const ERRORS = require('../errors');
+const permissions= require("../models/permission");
+
 const queries = {
 	storiesByField: (parent, args, { dataSources }, info) => {
 		return dataSources.StoryAPI.getStories(args);
@@ -10,8 +13,12 @@ const queries = {
 };
 
 const mutations = {
-	addStory: (parent, { story }, { dataSources }, info) => {
-		return dataSources.StoryAPI.addStory(story);
+	addStory: async (parent, { story }, { dataSources ,uid,permissions}, info) => {
+		if (permissions.find((permission) => permission == 'stories.add')) {			
+			return dataSources.StoryAPI.addStory(story);
+		} else {
+			return [ERRORS.PERMISSION_DENIED];
+		}		
 	}
 };
 

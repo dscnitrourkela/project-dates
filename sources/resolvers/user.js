@@ -3,7 +3,7 @@
 const ERRORS = require('../errors');
 
 const queries = {
-	users: (parent, args, { dataSources,uid, permissions }, info) => {
+	users: (parent, args, { dataSources,permissions }, info) => {
 		if (permissions.find((permission) => permission == 'users.all')) {
 			return dataSources.UserAPI.getUsers(args);
 		} else {

@@ -93,8 +93,7 @@ const seedData = async () => {
 				author:createdClub,
 				event:createdEvent,
 				description:storyDescriptionList[index],
-				asset:'Dummy Asset',
-				isExpired:false
+				asset:'Dummy Asset'
 			});
 		})
 	);

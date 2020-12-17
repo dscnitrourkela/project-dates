@@ -19,27 +19,8 @@ class StoryAPI extends DataSource {
 		return Stories.find(args);
 	}
 	async getCurrentStories() {
-        let storyArray=await Stories.find({isExpired:{$eq: false}});
-        console.log(storyArray[0]);
-        //Not keeping it in await so that it happens asynchronously
-        await Promise.all(
-            storyArray.map(async (storyItem, index) => {
-                const currentTime=new Date();
-                let storyCreatedAt=new Date(storyItem.createdAt);
-                const storyDuration = 24*60; //minutes
-                let expiryTime = new Date();
-                expiryTime.setMinutes(storyCreatedAt.getMinutes() + storyDuration);
-                if(expiryTime<currentTime){
-                    console.log("yes");
-                    storyItem.isExpired=true;
-                    let updatedStoryItem = new Stories(storyItem);
-                    updatedStoryItem.isExpired = true;
-                    await updatedStoryItem.save({timestamps:false});
-                }
-            })
-        );
-        console.log("storyArray");
-        return storyArray.filter(story => story.isExpired==false);
+        let activeStories=await currentStories.find();
+        return activeStories;        
 	}
 	async addStory(story) {
 		let retPromise = {};
@@ -56,18 +37,22 @@ class StoryAPI extends DataSource {
 		if (story.author != undefined) {
 			const authorId = story.author;
             const foundAuthor = await Clubs.findById(authorId);
-             //3. add to current Stories
-            await currentStories.create({
-                storyID:createdStory._id,
-                authorName: foundAuthor.clubName
-            }).then((createdObj)=>{
-                console.log(createdObj);
-            })
             if(foundAuthor==undefined){
                 return new ApolloError("Author Not Found");
             }
             createdStory.author = foundAuthor._id;
+
+            //add to current Stories
+            await currentStories.create({
+                storyAsset:story.asset,                
+                authorLogo: foundAuthor.logo,
+                authorName: foundAuthor.clubName
+            })  
+            
+        }else{
+            return new ApolloError("Author Not Given");
         }
+
         //2. event
 		if (story.event != undefined) {
 			const eventId = story.event;

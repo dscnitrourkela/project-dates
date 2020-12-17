@@ -8,8 +8,12 @@ const types = `
         event : Event
         asset : String
         description : String
-        isExpired : Boolean
         createdAt : Date
+    }
+    type ActiveStory{
+        storyAsset:String
+        authorName: String
+        authorLogo: String
     }
     input StoryInputType{
         author : ID
@@ -21,7 +25,7 @@ const types = `
 `;
 
 const queries = `
-    currentStories:[Story]
+    currentStories:[ActiveStory]
     storiesByField(
         id:ID
         author : ID

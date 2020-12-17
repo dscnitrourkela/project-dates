@@ -2,11 +2,11 @@
 
 var mongoose = require('mongoose');
 var currentStorySchema = new mongoose.Schema({
-	storyID: {
-		type: mongoose.Schema.Types.ObjectId,
-		ref: 'Story',
-    },
-    authorName: String, 
+	storyAsset:String,
+	authorName: String, 
+	authorLogo: String
+},{
+	timestamps:true
 });
 
 // currentStorySchema.index({ createdAt: { type: Date, expires: 86400 }}); // schema level

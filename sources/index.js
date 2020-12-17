@@ -81,9 +81,9 @@ const server = new ApolloServer({
 		    const idToken=req.headers.authorization;
 		    try {
 				const decodedToken= await admin.auth().verifyIdToken(idToken)
-				const uid= decodedToken.uid;				
-		        const userPermission= await permission.findOne({role:decodedToken.roles});
-				return {uid:uid, permissions: userPermission};
+				const uid= decodedToken.uid;			
+				const userPermission= await permission.findOne({role:decodedToken.role});				
+				return {uid:uid, permissions: userPermission.permissions};
 		    } catch (error) {
 		        throw new Error(error.errorInfo.message);
 		    }
