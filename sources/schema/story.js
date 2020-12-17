@@ -15,6 +15,9 @@ const types = `
         authorName: String
         authorLogo: String
     }
+    type Response{
+        success: Boolean
+    }
     input StoryInputType{
         author : ID
         event : ID
@@ -32,12 +35,12 @@ const queries = `
         event : ID
         asset : String
         description : String
-    ):[Story]
-    
+    ):[Story]    
+    deleteStory(id:ID):Response    
 `;
 
 const mutations = `
-    addStory(story:StoryInputType):Story
+    addStory(story:StoryInputType):Story    
 `;
 
 module.exports = { types, queries, mutations };

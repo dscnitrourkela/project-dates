@@ -9,6 +9,13 @@ const queries = {
     },
     currentStories: (parent, args, { dataSources }, info) => {
 		return dataSources.StoryAPI.getCurrentStories();
+	},
+	deleteStory: async (parent, args , { dataSources ,uid,permissions}, info) => {
+		if (permissions.find((permission) => permission == 'stories.delete')) {				
+			return dataSources.StoryAPI.deleteStory(args);
+		} else {
+			return [ERRORS.PERMISSION_DENIED];
+		}		
 	}
 };
 

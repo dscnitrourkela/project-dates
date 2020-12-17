@@ -4,7 +4,11 @@ var mongoose = require('mongoose');
 var currentStorySchema = new mongoose.Schema({
 	storyAsset:String,
 	authorName: String, 
-	authorLogo: String
+	authorLogo: String,
+	storyID:{
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'Story',
+	},
 },{
 	timestamps:true
 });

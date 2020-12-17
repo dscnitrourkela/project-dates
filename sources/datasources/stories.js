@@ -46,7 +46,8 @@ class StoryAPI extends DataSource {
             await currentStories.create({
                 storyAsset:story.asset,                
                 authorLogo: foundAuthor.logo,
-                authorName: foundAuthor.clubName
+                authorName: foundAuthor.clubName,
+                storyID: createdStory._id
             })  
             
         }else{
@@ -67,7 +68,13 @@ class StoryAPI extends DataSource {
 
 		retPromise = await createdStory.save();
 		return retPromise;
-	}
+    }
+    
+    async deleteStory(story){
+        await Stories.deleteOne({ "_id" : story.id } )
+        await currentStories.deleteOne({ "storyID" : story.id } )
+        return {success:true}
+    }
 
 }
 module.exports = StoryAPI;
