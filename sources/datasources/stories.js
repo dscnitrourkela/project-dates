@@ -26,7 +26,8 @@ class StoryAPI extends DataSource {
 		let retPromise = {};
 		// Create Event with basic types;
 		let createdStory = await Stories.create({
-			asset: story.asset,
+            asset: story.asset,
+            assetType: story.assetType,
             description: story.description,
             isExpired:false
 		});
@@ -47,6 +48,7 @@ class StoryAPI extends DataSource {
                 storyAsset:story.asset,                
                 authorLogo: foundAuthor.logo,
                 authorName: foundAuthor.clubName,
+                assetType: story.assetType,
                 storyID: createdStory._id
             })  
             
@@ -71,8 +73,7 @@ class StoryAPI extends DataSource {
     }
     
     async deleteStory(story){
-        await Stories.deleteOne({ "_id" : story.id } )
-        await currentStories.deleteOne({ "storyID" : story.id } )
+        await currentStories.deleteOne({ "_id" : story.id } )
         return {success:true}
     }
 

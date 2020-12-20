@@ -6,11 +6,14 @@ const types = `
         id:ID
         author : Club
         event : Event
-        asset : String
+        asset : String        
+	    assetType: String
         description : String
         createdAt : Date
     }
     type ActiveStory{
+        id:ID
+        assetType: String
         storyAsset:String
         authorName: String
         authorLogo: String
@@ -22,6 +25,7 @@ const types = `
         author : ID
         event : ID
         asset : String
+        assetType: String
         description : String
     }
 
@@ -34,6 +38,7 @@ const queries = `
         author : ID
         event : ID
         asset : String
+        assetType: String
         description : String
     ):[Story]    
     deleteStory(id:ID):Response    
