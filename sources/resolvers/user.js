@@ -40,7 +40,11 @@ const mutations = {
 		}		
 	},
 	updateUser: (parent, args, { dataSources,uid, permissions}, info) => {
-		return dataSources.UserAPI.updateUser(args,uid);
+		if (permissions.find((permission) => permission == 'users.Update')) {
+			return dataSources.UserAPI.updateUser(args,uid);
+		} else {
+			return [ERRORS.PERMISSION_DENIED];
+		}			
 	},
 	deleteUser: (parent, args, { dataSources,uid, permissions}, info) => {
 		return dataSources.UserAPI.deleteUser(uid);

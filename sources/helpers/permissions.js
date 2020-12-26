@@ -1,7 +1,8 @@
 const Users = require('../models/user.js');
 
 const rolesPermissionsMap={
-    "1":["users.Auth","users.all","users.verify"]
+    "1":["users.Auth","users.all","users.Update"],
+    "2":["users.secretEvents"]
 }
 
 const populatePermissions=async (id)=>{

@@ -78,6 +78,7 @@ const server = new ApolloServer({
 				}
 				
 		    } catch (error) {
+				console.log(error);
 		        throw new Error(error.errorInfo.message);
 		    }
 		}
