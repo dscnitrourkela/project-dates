@@ -11,12 +11,10 @@ const typeDefs = require('./schema.js');
 const resolvers = require('./resolvers.js');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-const seed = require('./seed_database');
-const admin = require('firebase-admin');
-const gqltag = require('graphql-tag');
+const seed = require('./helpers/seed_database');
+const {firebaseAPP}=require("./helpers/firebase")
 const cloudinary = require('cloudinary').v2;
-const permission = require('./models/permission');
-const user = require('./models/user.js');
+const {populatePermissions } = require("./helpers/permissions");
 
 dotenv.config();
 
@@ -34,15 +32,6 @@ mongoose.connection.once('open', () => {
 	// seed.seedData();
 	// seed.seedPermissions();
 });
-
-// Firebase Init
-const firebaseInit = async () => {
-	const serviceAccount = require('../project-elaichi.json');
-	admin.initializeApp({
-		credential: admin.credential.cert(serviceAccount),
-		databaseURL: 'https://project-elaichi-493f1.firebaseio.com',
-	});
-};
 
 //Cloudinary Config
 cloudinary.config({ 
@@ -80,10 +69,14 @@ const server = new ApolloServer({
 		if(req.headers && req.headers.authorization){
 		    const idToken=req.headers.authorization;
 		    try {
-				const decodedToken= await admin.auth().verifyIdToken(idToken)
-				const uid= decodedToken.uid;			
-				const userPermission= await permission.findOne({role:decodedToken.role});				
-				return {uid:uid, permissions: userPermission.permissions};
+				const decodedToken= await firebaseAPP.auth().verifyIdToken(idToken)
+				const uid= decodedToken.uid;	
+				if(decodedToken.mongoID){
+					return {uid:uid, permissions: await populatePermissions(decodedToken.mongoID)};
+				}else{
+					return {uid:uid, permissions: ["users.Auth"]};
+				}
+				
 		    } catch (error) {
 		        throw new Error(error.errorInfo.message);
 		    }
@@ -98,6 +91,5 @@ const server = new ApolloServer({
 });
 
 server.listen(4000).then(({ url }) => {
-	firebaseInit();
 	console.log(`Graphql running on ${url}`);
 });

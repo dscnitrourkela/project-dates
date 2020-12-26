@@ -33,7 +33,11 @@ const queries = {
 
 const mutations = {
 	authUser: (parent, { user }, { dataSources,uid, permissions}, info) => {
-		return dataSources.UserAPI.authUser(user,uid);
+		if (permissions.find((permission) => permission == 'users.Auth')) {
+			return dataSources.UserAPI.authUser(user,uid);
+		} else {
+			return [ERRORS.PERMISSION_DENIED];
+		}		
 	},
 	updateUser: (parent, args, { dataSources,uid, permissions}, info) => {
 		return dataSources.UserAPI.updateUser(args,uid);

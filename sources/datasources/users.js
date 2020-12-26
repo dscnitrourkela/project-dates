@@ -6,6 +6,7 @@ const AccessLevel = require('../models/accessLevel.js');
 const { DataSource } = require('apollo-datasource');
 const admin = require('firebase-admin');
 const { ApolloError } = require('apollo-server');
+const {updateJWT} = require("../helpers/firebase");
 
 class UserAPI extends DataSource {
 	constructor() {
@@ -29,7 +30,7 @@ class UserAPI extends DataSource {
 		// User document exists
 		if(exisitingUser){
 			incomingUser=exisitingUser;
-		}else{
+		}else{	
 			incomingUser = await Users.create({
 				username: user.username,
 				name: user.name,
@@ -40,7 +41,16 @@ class UserAPI extends DataSource {
 				firebaseUID : uid,	
 				emergencyContact: user.emergencyContact,
 				displayPicture: user.displayPicture,
-			});
+			});			
+			const accessLevelObj = {
+				level: '1',
+				name:incomingUser.name,				
+				user: incomingUser,
+			};
+			const createdAccessLevel = await AccessLevel.create(accessLevelObj);
+			await incomingUser.clubAccess.push(createdAccessLevel);
+			await incomingUser.save();
+			await updateJWT(uid,{mongoID:incomingUser._id});
 		}
 		return incomingUser;		
 	}
