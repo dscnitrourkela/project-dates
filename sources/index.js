@@ -6,6 +6,7 @@ const ClubAPI = require('./datasources/clubs.js');
 const EventAPI = require('./datasources/events.js');
 const VenueAPI = require('./datasources/venues.js');
 const AccessLevelAPI = require('./datasources/accessLevels.js');
+const StoryAPI = require('./datasources/stories.js');
 const typeDefs = require('./schema.js');
 const resolvers = require('./resolvers.js');
 const mongoose = require('mongoose');
@@ -57,6 +58,7 @@ const dataSources = () => ({
 	EventAPI: new EventAPI(),
 	VenueAPI: new VenueAPI(),
 	AccessLevelAPI: new AccessLevelAPI(),
+	StoryAPI:new StoryAPI()
 });
 
 const server = new ApolloServer({
@@ -79,9 +81,9 @@ const server = new ApolloServer({
 		    const idToken=req.headers.authorization;
 		    try {
 				const decodedToken= await admin.auth().verifyIdToken(idToken)
-				const uid= decodedToken.uid;				
-		        const userPermission= await permission.findOne({role:decodedToken.roles});
-				return {uid:uid, permissions: userPermission};
+				const uid= decodedToken.uid;			
+				const userPermission= await permission.findOne({role:decodedToken.role});				
+				return {uid:uid, permissions: userPermission.permissions};
 		    } catch (error) {
 		        throw new Error(error.errorInfo.message);
 		    }
