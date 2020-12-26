@@ -1,6 +1,8 @@
 /** @format */
 
 const types = `
+    union StoryResult= Story | ErrorClass
+
     scalar Date
     type Story{
         id:ID
@@ -45,7 +47,7 @@ const queries = `
 `;
 
 const mutations = `
-    addStory(story:StoryInputType):Story    
+    addStory(story:StoryInputType):StoryResult  
 `;
 
 module.exports = { types, queries, mutations };
