@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: resolvers/venue.js</title>
+    <title>JSDoc: Source: schema/story.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: resolvers/venue.js</h1>
+    <h1 class="page-title">Source: schema/story.js</h1>
 
     
 
@@ -28,33 +28,57 @@
         <article>
             <pre class="prettyprint source linenums"><code>/** @format */
 
-const queries = {
-	venues: (parent, args, { dataSources }, info) => {
-		return dataSources.VenueAPI.getVenues(args);
-	},
-	venueByName: (parent, { name }, { dataSources }, info) => {
-		return dataSources.VenueAPI.getVenueByName(name);
-	},
-	venueById: (parent, { id }, { dataSources }, info) => {
-		return dataSources.VenueAPI.getVenueById(id);
-	},
-};
+const types = `
+    union StoryResult= Story | ErrorClass
 
-const mutations = {
-	addVenue: (parent, { venue }, { dataSources }, info) => {
-		return dataSources.VenueAPI.addVenue(venue);
-	},
-	updateVenue: (parent, args, { dataSources }, info) => {
-		return dataSources.VenueAPI.updateVenue(args);
-	},
-	deleteVenue: (parent, { id }, { dataSources }, info) => {
-		return dataSources.VenueAPI.deleteVenue(id);
-	},
-};
+    scalar Date
+    type Story{
+        id:ID
+        author : Club
+        event : Event
+        asset : String        
+	    assetType: String
+        description : String
+        createdAt : Date
+    }
+    type ActiveStory{
+        id:ID
+        assetType: String
+        storyAsset:String
+        authorName: String
+        authorLogo: String
+    }
+    type Response{
+        success: Boolean
+    }
+    input StoryInputType{
+        author : ID
+        event : ID
+        asset : String
+        assetType: String
+        description : String
+    }
 
-const fieldResolvers = {};
+`;
 
-module.exports = { queries, mutations, fieldResolvers };
+const queries = `
+    currentStories:[ActiveStory]
+    storiesByField(
+        id:ID
+        author : ID
+        event : ID
+        asset : String
+        assetType: String
+        description : String
+    ):[Story]    
+    deleteStory(id:ID):Response    
+`;
+
+const mutations = `
+    addStory(story:StoryInputType):StoryResult  
+`;
+
+module.exports = { types, queries, mutations };
 </code></pre>
         </article>
     </section>

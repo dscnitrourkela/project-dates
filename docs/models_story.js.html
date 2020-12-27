@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: resolvers/venue.js</title>
+    <title>JSDoc: Source: models/story.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: resolvers/venue.js</h1>
+    <h1 class="page-title">Source: models/story.js</h1>
 
     
 
@@ -28,33 +28,26 @@
         <article>
             <pre class="prettyprint source linenums"><code>/** @format */
 
-const queries = {
-	venues: (parent, args, { dataSources }, info) => {
-		return dataSources.VenueAPI.getVenues(args);
+var mongoose = require('mongoose');
+var storySchema = new mongoose.Schema({
+	author: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'Club',
 	},
-	venueByName: (parent, { name }, { dataSources }, info) => {
-		return dataSources.VenueAPI.getVenueByName(name);
+	event: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'Event',
 	},
-	venueById: (parent, { id }, { dataSources }, info) => {
-		return dataSources.VenueAPI.getVenueById(id);
-	},
-};
+	asset: String,
+	assetType: String,
+	description:String
+},{
+    timestamps: true
+});
 
-const mutations = {
-	addVenue: (parent, { venue }, { dataSources }, info) => {
-		return dataSources.VenueAPI.addVenue(venue);
-	},
-	updateVenue: (parent, args, { dataSources }, info) => {
-		return dataSources.VenueAPI.updateVenue(args);
-	},
-	deleteVenue: (parent, { id }, { dataSources }, info) => {
-		return dataSources.VenueAPI.deleteVenue(id);
-	},
-};
 
-const fieldResolvers = {};
 
-module.exports = { queries, mutations, fieldResolvers };
+module.exports = mongoose.model('Story', storySchema);
 </code></pre>
         </article>
     </section>

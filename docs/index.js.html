@@ -34,17 +34,22 @@ const ClubAPI = require('./datasources/clubs.js');
 const EventAPI = require('./datasources/events.js');
 const VenueAPI = require('./datasources/venues.js');
 const AccessLevelAPI = require('./datasources/accessLevels.js');
+const StoryAPI = require('./datasources/stories.js');
 const typeDefs = require('./schema.js');
 const resolvers = require('./resolvers.js');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-const seed = require('./seed_database');
-const admin = require('firebase-admin');
-const gqltag = require('graphql-tag');
-const permission = require('./models/permission');
-const user = require('./models/user.js');
+const seed = require('./helpers/seed_database');
+const {firebaseAPP}=require("./helpers/firebase")
+const cloudinary = require('cloudinary').v2;
+const {populatePermissions } = require("./helpers/permissions");
 
 dotenv.config();
+
+//Mongoose Configs
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
 
 mongoose.connect(process.env.MONGODB_URL || 'mongodb://localhost/elaichi', {
 	useNewUrlParser: true,
@@ -55,22 +60,22 @@ mongoose.connection.once('open', () => {
 	// seed.seedData();
 	// seed.seedPermissions();
 });
-// Firebase Init
-const firebaseInit = async () => {
-	const serviceAccount = require('../project-dates-493f1-firebase-adminsdk-s22ew-8bf811a509.json');
 
-	admin.initializeApp({
-		credential: admin.credential.cert(serviceAccount),
-		databaseURL: 'https://project-dates-493f1.firebaseio.com',
-	});
-};
+//Cloudinary Config
+cloudinary.config({ 
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY, 
+  api_secret: process.env.CLOUDINARY_API_SECRET 
+});
 
+//Datasources
 const dataSources = () => ({
 	UserAPI: new UserAPI(),
 	ClubAPI: new ClubAPI(),
 	EventAPI: new EventAPI(),
 	VenueAPI: new VenueAPI(),
 	AccessLevelAPI: new AccessLevelAPI(),
+	StoryAPI:new StoryAPI()
 });
 
 const server = new ApolloServer({
@@ -85,22 +90,27 @@ const server = new ApolloServer({
 	 * GraphQL Context:  A top level function which decodes and verifies the JWT sent through the request header
 	 *  @param {string} decodedToken - JWT token from request
 	 */
-	context: async ({ req }) =>
-		// const obj = gql`
-		//     ${req.body.query}
-		// `;
-		// if(req.headers &amp;&amp; req.headers.authorization){
-		//     const idToken=req.headers.authorization;
-		//     try {
-		//         const decodedToken= await admin.auth().verifyIdToken(idToken)
-		//         const userPermission= await permission.findOne({role:decodedToken.roles});
-		//         return {permissions:userPermission.permissions};
-		//     } catch (error) {
-		//         throw new Error(error.errorInfo.message);
-		//     }
-		// }
-
-		({ permissions: ['users.al', 'users.byId', 'users.byNam'] }),
+	context: async ({ req }) => {
+		const obj = gql`
+		    ${req.body.query}
+		`;
+		if(req.headers &amp;&amp; req.headers.authorization){
+		    const idToken=req.headers.authorization;
+		    try {
+				const decodedToken= await firebaseAPP.auth().verifyIdToken(idToken)
+				const uid= decodedToken.uid;	
+				if(decodedToken.mongoID){
+					return {uid:uid, permissions: await populatePermissions(decodedToken.mongoID)};
+				}else{
+					return {uid:uid, permissions: ["users.Auth"]};
+				}
+				
+		    } catch (error) {
+				console.log(error);
+		        throw new Error(error.errorInfo.message);
+		    }
+		}
+	},			
 	formatError: (err) =>
 		// if(err.extensions.code=="INTERNAL_SERVER_ERROR"){
 		//     return new ApolloError("We are having some trouble","ERROR",{Token:"Unique Token"});
@@ -110,7 +120,6 @@ const server = new ApolloServer({
 });
 
 server.listen(4000).then(({ url }) => {
-	firebaseInit();
 	console.log(`Graphql running on ${url}`);
 });
 </code></pre>
@@ -123,13 +132,13 @@ server.listen(4000).then(({ url }) => {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Seed%2520Database.html">Seed Database</a></li></ul><h3>Global</h3><ul><li><a href="global.html#accessLevel">accessLevel</a></li><li><a href="global.html#buildNav">buildNav</a></li><li><a href="global.html#Clubs">Clubs</a></li><li><a href="global.html#context">context</a></li><li><a href="global.html#ERRORS">ERRORS</a></li><li><a href="global.html#Events">Events</a></li><li><a href="global.html#mongoose">mongoose</a></li><li><a href="global.html#PERMISSION_DENIED">PERMISSION_DENIED</a></li><li><a href="global.html#publish">publish</a></li><li><a href="global.html#queries">queries</a></li><li><a href="global.html#Query">Query</a></li><li><a href="global.html#types">types</a></li><li><a href="global.html#User">User</a></li><li><a href="global.html#Users">Users</a></li><li><a href="global.html#Venues">Venues</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Seed%2520Database.html">Seed Database</a></li></ul><h3>Global</h3><ul><li><a href="global.html#accessLevel">accessLevel</a></li><li><a href="global.html#Clubs">Clubs</a></li><li><a href="global.html#context">context</a></li><li><a href="global.html#ERRORS">ERRORS</a></li><li><a href="global.html#Events">Events</a></li><li><a href="global.html#mongoose">mongoose</a></li><li><a href="global.html#PERMISSION_DENIED">PERMISSION_DENIED</a></li><li><a href="global.html#queries">queries</a></li><li><a href="global.html#Query">Query</a></li><li><a href="global.html#types">types</a></li><li><a href="global.html#User">User</a></li><li><a href="global.html#Users">Users</a></li><li><a href="global.html#Venues">Venues</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Fri Dec 11 2020 07:47:19 GMT+0000 (Coordinated Universal Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Sun Dec 27 2020 07:37:21 GMT+0000 (Coordinated Universal Time)
 </footer>
 
 <script> prettyPrint(); </script>

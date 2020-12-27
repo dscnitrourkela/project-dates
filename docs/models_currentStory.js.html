@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: resolvers/venue.js</title>
+    <title>JSDoc: Source: models/currentStory.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: resolvers/venue.js</h1>
+    <h1 class="page-title">Source: models/currentStory.js</h1>
 
     
 
@@ -28,33 +28,24 @@
         <article>
             <pre class="prettyprint source linenums"><code>/** @format */
 
-const queries = {
-	venues: (parent, args, { dataSources }, info) => {
-		return dataSources.VenueAPI.getVenues(args);
+var mongoose = require('mongoose');
+var currentStorySchema = new mongoose.Schema({
+	storyAsset:String,	
+	assetType: String,
+	authorName: String, 
+	authorLogo: String,
+	storyID:{
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'Story',
 	},
-	venueByName: (parent, { name }, { dataSources }, info) => {
-		return dataSources.VenueAPI.getVenueByName(name);
-	},
-	venueById: (parent, { id }, { dataSources }, info) => {
-		return dataSources.VenueAPI.getVenueById(id);
-	},
-};
+},{
+	timestamps:true
+});
 
-const mutations = {
-	addVenue: (parent, { venue }, { dataSources }, info) => {
-		return dataSources.VenueAPI.addVenue(venue);
-	},
-	updateVenue: (parent, args, { dataSources }, info) => {
-		return dataSources.VenueAPI.updateVenue(args);
-	},
-	deleteVenue: (parent, { id }, { dataSources }, info) => {
-		return dataSources.VenueAPI.deleteVenue(id);
-	},
-};
+// currentStorySchema.index({ createdAt: { type: Date, expires: 86400 }}); // schema level
 
-const fieldResolvers = {};
 
-module.exports = { queries, mutations, fieldResolvers };
+module.exports = mongoose.model('currentStory', currentStorySchema);
 </code></pre>
         </article>
     </section>
