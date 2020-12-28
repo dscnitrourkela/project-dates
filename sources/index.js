@@ -69,7 +69,7 @@ const server = new ApolloServer({
 		if(req.headers && req.headers.authorization){
 		    const idToken=req.headers.authorization;
 		    try {
-				const decodedToken= await firebaseAPP.auth().verifyIdToken(idToken)
+				const decodedToken= await firebaseApp.auth().verifyIdToken(idToken)
 				const uid= decodedToken.uid;	
 				if(decodedToken.mongoID){
 					return {uid:uid, permissions: await populatePermissions(decodedToken.mongoID)};
