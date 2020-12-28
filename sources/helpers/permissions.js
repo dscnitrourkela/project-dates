@@ -18,12 +18,11 @@ const populatePermissions=async (id)=>{
     let permissions=[]
     for(let role of rolesSet){   
         const splits=role.split("$")     ;
-        console.log(splits);
-        if(splits.length==1){
+        if(splits.length===1){
             rolesPermissionsMap[splits[0]].forEach(permission=>{
                 permissions.push(permission);
             })        
-        }else if(splits.length==2){
+        }else if(splits.length===2){
             rolesPermissionsMap[splits[0]].forEach(permission=>{
                 permissions.push(permission+"$"+splits[1]);
             })        

@@ -12,7 +12,7 @@ const resolvers = require('./resolvers.js');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const seed = require('./helpers/seed_database');
-const {firebaseAPP}=require("./helpers/firebase")
+const {firebaseApp}=require("./helpers/firebase")
 const cloudinary = require('cloudinary').v2;
 const {populatePermissions } = require("./helpers/permissions");
 
