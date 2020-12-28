@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: resolvers/venue.js</title>
+    <title>JSDoc: Source: resolvers/story.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: resolvers/venue.js</h1>
+    <h1 class="page-title">Source: resolvers/story.js</h1>
 
     
 
@@ -28,31 +28,50 @@
         <article>
             <pre class="prettyprint source linenums"><code>/** @format */
 
+const ERRORS = require('../errors');
+const permissions= require("../models/permission");
+
 const queries = {
-	venues: (parent, args, { dataSources }, info) => {
-		return dataSources.VenueAPI.getVenues(args);
+	storiesByField: (parent, args, { dataSources }, info) => {
+		return dataSources.StoryAPI.getStories(args);
+    },
+    currentStories: (parent, args, { dataSources }, info) => {
+		return dataSources.StoryAPI.getCurrentStories();
 	},
-	venueByName: (parent, { name }, { dataSources }, info) => {
-		return dataSources.VenueAPI.getVenueByName(name);
-	},
-	venueById: (parent, { id }, { dataSources }, info) => {
-		return dataSources.VenueAPI.getVenueById(id);
-	},
+	deleteStory: async (parent, args , { dataSources ,uid,permissions}, info) => {
+		if (permissions.find((permission) => permission == 'stories.delete')) {				
+			return dataSources.StoryAPI.deleteStory(args);
+		} else {
+			return ERRORS.PERMISSION_DENIED;
+		}		
+	}
 };
 
 const mutations = {
-	addVenue: (parent, { venue }, { dataSources }, info) => {
-		return dataSources.VenueAPI.addVenue(venue);
-	},
-	updateVenue: (parent, args, { dataSources }, info) => {
-		return dataSources.VenueAPI.updateVenue(args);
-	},
-	deleteVenue: (parent, { id }, { dataSources }, info) => {
-		return dataSources.VenueAPI.deleteVenue(id);
-	},
+	addStory: async (parent, { story }, { dataSources ,uid,permissions}, info) => {
+		if (permissions.find((permission) => permission == 'stories.add$'+story.author)) {			
+			return dataSources.StoryAPI.addStory(story);
+		} else {
+			return ERRORS.PERMISSION_DENIED;
+		}		
+	}
 };
 
-const fieldResolvers = {};
+const fieldResolvers = {
+	Story: {
+		author: async (parent, args, { dataSources }, info) => {
+			return await dataSources.ClubAPI.getClubById(parent.author);
+        },
+        event: async (parent, args, { dataSources }, info) => {
+			return await dataSources.EventAPI.getEventById(parent.event);
+		},
+	},
+	StoryResult: {
+		__resolveType: (obj) => {
+			return obj.__typename == 'ErrorClass' ? 'ErrorClass' : 'Story';
+		},
+	},
+};
 
 module.exports = { queries, mutations, fieldResolvers };
 </code></pre>
