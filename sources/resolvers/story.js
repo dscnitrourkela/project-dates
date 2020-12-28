@@ -14,17 +14,17 @@ const queries = {
 		if (permissions.find((permission) => permission == 'stories.delete')) {				
 			return dataSources.StoryAPI.deleteStory(args);
 		} else {
-			return [ERRORS.PERMISSION_DENIED];
+			return ERRORS.PERMISSION_DENIED;
 		}		
 	}
 };
 
 const mutations = {
 	addStory: async (parent, { story }, { dataSources ,uid,permissions}, info) => {
-		if (permissions.find((permission) => permission == 'stories.add')) {			
+		if (permissions.find((permission) => permission == 'stories.add$'+story.author)) {			
 			return dataSources.StoryAPI.addStory(story);
 		} else {
-			return [ERRORS.PERMISSION_DENIED];
+			return ERRORS.PERMISSION_DENIED;
 		}		
 	}
 };
@@ -36,6 +36,11 @@ const fieldResolvers = {
         },
         event: async (parent, args, { dataSources }, info) => {
 			return await dataSources.EventAPI.getEventById(parent.event);
+		},
+	},
+	StoryResult: {
+		__resolveType: (obj) => {
+			return obj.__typename == 'ErrorClass' ? 'ErrorClass' : 'Story';
 		},
 	},
 };

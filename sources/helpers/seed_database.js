@@ -5,13 +5,13 @@
  * @module Seed Database
  */
 
-const user = require('./models/user');
-const event = require('./models/event');
-const accessLevel = require('./models/accessLevel');
-const club = require('./models/club');
-const venue = require('./models/venue');
-const story = require('./models/story');
-const permission = require('./models/permission');
+const user = require('../models/user');
+const event = require('../models/event');
+const accessLevel = require('../models/accessLevel');
+const club = require('../models/club');
+const venue = require('../models/venue');
+const story = require('../models/story');
+const permission = require('../models/permission');
 const mongoose = require('mongoose');
 
 //method to drop the collection if it exists
