@@ -79,10 +79,10 @@ const server = new ApolloServer({
 				}
 				
 		    } catch (error) {
-		        throw new ApolloError(error.errorInfo.message,"UNAUTHORIZED");
+		        return new ApolloError(error.errorInfo.message,"UNAUTHORIZED");
 		    }
 		}else{
-			throw new ApolloError("JWT not set","UNAUTHENTICATED");
+			return new ApolloError("JWT not set","UNAUTHENTICATED");
 		}
 	},			
 	formatError: (err) =>{
