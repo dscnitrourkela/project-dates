@@ -61,6 +61,7 @@ const server = new ApolloServer({
 	/**
 	 * GraphQL Context:  A top level function which decodes and verifies the JWT sent through the request header
 	 *  @param {string} decodedToken - JWT token from request
+	 * If the user is just signin up, they would be given permissions only to access the Auth Mutation
 	 */
 	context: async ({ req }) => {
 		const obj = gql`
