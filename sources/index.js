@@ -78,17 +78,16 @@ const server = new ApolloServer({
 				}
 				
 		    } catch (error) {
-				console.log(error);
-		        throw new Error(error.errorInfo.message);
+		        throw new ApolloError(error.errorInfo.message,"UNAUTHORIZED");
 		    }
+		}else{
+			throw new ApolloError("JWT not set","UNAUTHENTICATED");
 		}
 	},			
-	formatError: (err) =>
-		// if(err.extensions.code=="INTERNAL_SERVER_ERROR"){
-		//     return new ApolloError("We are having some trouble","ERROR",{Token:"Unique Token"});
-		// }
-		// console.log(err.originalError);
-		new ApolloError(err.message),
+	formatError: (err) =>{
+		return new ApolloError(err.message,err.extensions.code);
+	}
+		
 });
 
 server.listen(5000).then(({ url }) => {
