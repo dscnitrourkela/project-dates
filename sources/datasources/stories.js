@@ -45,7 +45,7 @@ class StoryAPI extends DataSource {
 
             //add to current Stories
             await currentStories.create({
-                storyAsset:story.asset,                
+                asset:story.asset,                
                 authorLogo: foundAuthor.logo,
                 authorName: foundAuthor.clubName,
                 assetType: story.assetType,
@@ -65,9 +65,6 @@ class StoryAPI extends DataSource {
             }
             createdStory.event = foundEvent._id;
         }
-        
-       
-
 		retPromise = await createdStory.save();
 		return retPromise;
     }

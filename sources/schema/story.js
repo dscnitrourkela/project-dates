@@ -16,7 +16,7 @@ const types = `
     type CurrentStory{
         id:ID
         assetType: String
-        storyAsset:String
+        asset:String
         authorName: String 
         authorLogo: String
         story: Story
