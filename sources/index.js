@@ -76,10 +76,10 @@ const server = new ApolloServer({
 				}
 				
 		    } catch (error) {
-		        return new AuthenticationError(error.errorInfo.message,"UNAUTHORIZED");
+		        return new ApolloError(error.errorInfo.message,"UNAUTHORIZED");
 		    }
 		}else{
-			return new AuthenticationError("JWT not set","UNAUTHENTICATED");
+			return new ApolloError("JWT not set","UNAUTHENTICATED");
 		}
 	},			
 	formatError: (err) => new ApolloError(err.message,err.extensions.code)
