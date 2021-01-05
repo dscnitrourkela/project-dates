@@ -1,6 +1,7 @@
 /** @format */
-
+// linksMap needs to be finalized
 const types = `
+
 type Club{
     id:ID
     clubName:String
@@ -10,6 +11,8 @@ type Club{
     events:[Event]
     society:String
     domain:String
+    links: String
+	backgroundColor: String
 }
 input ClubInputType{
     clubName:String
@@ -19,6 +22,8 @@ input ClubInputType{
     events:[ID]
     society:String
     domain:String
+    links:  String
+	backgroundColor: String
 }
 `;
 

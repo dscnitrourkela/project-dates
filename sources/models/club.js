@@ -18,7 +18,11 @@ var clubSchema = new mongoose.Schema({
 		},
 	],
 	society: String,
-	domain: String,
+	domain: String, //subdomain for clubs
+	links: String,
+	backgroundColor: String
+	// social links array of objects {"fb"=>"fb link"}
+	// background color
 },{
     timestamps: true
 });

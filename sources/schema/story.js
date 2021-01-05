@@ -13,12 +13,13 @@ const types = `
         description : String
         createdAt : Date
     }
-    type ActiveStory{
+    type CurrentStory{
         id:ID
         assetType: String
         storyAsset:String
-        authorName: String
+        authorName: String 
         authorLogo: String
+        story: Story
     }
     type Response{
         success: Boolean
@@ -34,7 +35,7 @@ const types = `
 `;
 
 const queries = `
-    currentStories:[ActiveStory]
+    currentStories:[CurrentStory]
     storiesByField(
         id:ID
         author : ID

@@ -38,6 +38,11 @@ const fieldResolvers = {
 			return await dataSources.EventAPI.getEventById(parent.event);
 		},
 	},
+	CurrentStory: {
+		story: async (parent, args, { dataSources }, info) => {
+			return await dataSources.StoryAPI.getStoryById(parent.story);
+        }
+	},
 	StoryResult: {
 		__resolveType: (obj) => {
 			return obj.__typename == 'ErrorClass' ? 'ErrorClass' : 'Story';

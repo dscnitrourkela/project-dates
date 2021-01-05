@@ -6,7 +6,7 @@ var currentStorySchema = new mongoose.Schema({
 	assetType: String,
 	authorName: String, 
 	authorLogo: String,
-	storyID:{
+	story:{
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'Story',
 	},

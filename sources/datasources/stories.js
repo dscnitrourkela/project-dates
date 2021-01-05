@@ -19,8 +19,8 @@ class StoryAPI extends DataSource {
 		return Stories.find(args);
 	}
 	async getCurrentStories() {
-        let activeStories=await currentStories.find();
-        return activeStories;        
+        let currentStoriesList=await currentStories.find();
+        return currentStoriesList;        
 	}
 	async addStory(story) {
 		let retPromise = {};
@@ -49,7 +49,7 @@ class StoryAPI extends DataSource {
                 authorLogo: foundAuthor.logo,
                 authorName: foundAuthor.clubName,
                 assetType: story.assetType,
-                storyID: createdStory._id
+                story: createdStory._id
             })  
             
         }else{
@@ -70,6 +70,10 @@ class StoryAPI extends DataSource {
 
 		retPromise = await createdStory.save();
 		return retPromise;
+    }
+
+    async getStoryById(id){
+        return await Stories.findById(id);
     }
     
     async deleteStory(story){
