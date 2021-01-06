@@ -36,7 +36,8 @@ class ClubAPI extends DataSource {
 			society: club.society,
 			domain: club.domain,
 			links: club.links,
-			backgroundColor: club.backgroundColor
+			backgroundColor: club.backgroundColor,
+			contactInfo: club.contactInfo
 		});
 
 		//Add nested types

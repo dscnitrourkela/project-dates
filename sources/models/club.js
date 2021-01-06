@@ -19,10 +19,14 @@ var clubSchema = new mongoose.Schema({
 	],
 	society: String,
 	domain: String, //subdomain for clubs
-	links: String,
-	backgroundColor: String
-	// social links array of objects {"fb"=>"fb link"}
-	// background color
+	links: String,	// social links array of objects {"fb"=>"fb link"} , presently keeping it in a JSON simple	
+	backgroundColor: String, 
+	contactInfo: [{ //An array which is expected to store just 2 contacts as per design
+		name: String,
+		designation: String,
+		mobileNo: String,
+		email: String
+	}]
 },{
     timestamps: true
 });

@@ -2,6 +2,20 @@
 // linksMap needs to be finalized
 const types = `
 
+type ContactInfoObj{
+    name: String,
+    designation: String
+    mobileNo: String
+    email: String
+}
+
+input ContactInfoObjInput{
+    name: String,
+    designation: String
+    mobileNo: String
+    email: String
+}
+
 type Club{
     id:ID
     clubName:String
@@ -12,7 +26,8 @@ type Club{
     society:String
     domain:String
     links: String
-	backgroundColor: String
+    backgroundColor: String
+    contactInfo:[ContactInfoObj]
 }
 input ClubInputType{
     clubName:String
@@ -23,7 +38,8 @@ input ClubInputType{
     society:String
     domain:String
     links:  String
-	backgroundColor: String
+    backgroundColor: String
+    contactInfo:[ContactInfoObjInput]
 }
 `;
 
