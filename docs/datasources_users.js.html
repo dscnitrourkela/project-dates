@@ -32,6 +32,9 @@ const Users = require('../models/user.js');
 const Clubs = require('../models/club.js');
 const AccessLevel = require('../models/accessLevel.js');
 const { DataSource } = require('apollo-datasource');
+const admin = require('firebase-admin');
+const { ApolloError } = require('apollo-server');
+const {updateJWT} = require("../helpers/firebase");
 
 class UserAPI extends DataSource {
 	constructor() {
@@ -49,82 +52,68 @@ class UserAPI extends DataSource {
 		return await Users.findOne({ username: username });
 	}
 
-	async addUser(user) {
-		let retPromise = {};
-		// Create user with basic types;
-		let createdUser = await Users.create({
-			username: user.username,
-			name: user.name,
-			gmailAuthMail: user.gmailAuthMail,
-			instituteId: user.instituteId,
-			address: user.address,
-			mobile: user.mobile,
-			emergencyContact: user.emergencyContact,
-			displayPicture: user.displayPicture,
-		});
-
-		//Add nested types
-		const userId = createdUser._id;
-		const accessArray = user.clubAccess;
-		if (accessArray != undefined &amp;&amp; accessArray.length > 0) {
-			await Promise.all(
-				accessArray.map(async (accessItem, index) => {
-					const clubId = accessItem.club;
-					const foundClub = await Clubs.findById(clubId);
-					const accessObj = {
-						level: accessItem.level,
-						club: foundClub._id,
-						user: userId,
-					};
-					let createdAccessLevel = await AccessLevel.create(accessObj);
-					createdUser.clubAccess.push(createdAccessLevel);
-					foundClub.memberAccess.push(createdAccessLevel);
-					await foundClub.save();
-				})
-			);
+	async authUser(user,uid) {
+		let incomingUser;		
+		const exisitingUser=await Users.findOne({firebaseUID:uid});
+		// User document exists
+		if(exisitingUser){
+			incomingUser=exisitingUser;
+		}else{	
+			incomingUser = await Users.create({
+				username: user.username,
+				name: user.name,
+				gmailAuthMail: user.gmailAuthMail,
+				instituteId: user.instituteId,
+				address: user.address,
+				mobile: user.mobile,
+				firebaseUID : uid,	
+				emergencyContact: user.emergencyContact,
+				displayPicture: user.displayPicture,
+			});			
+			const accessLevelObj = {
+				level: '1',
+				name:incomingUser.name,				
+				user: incomingUser,
+			};
+			const createdAccessLevel = await AccessLevel.create(accessLevelObj);
+			await incomingUser.clubAccess.push(createdAccessLevel);
+			await incomingUser.save();
+			await updateJWT(uid,{mongoID:incomingUser._id});
 		}
-		retPromise = await createdUser.save();
-		return retPromise;
+		return incomingUser;		
 	}
 
-	async updateUser(args) {
-		const userId = args.id;
+	async updateUser(args,uid) {
 		const user = args.user;
 		let retPromise = {};
-		// Create user with basic types;
-		const foundUser = await Users.findById(userId);
-		const originalMemberAccess = foundUser.clubAccess.slice(0);
-
+		const foundUser = await Users.findOne({firebaseUID:uid});
 		let updatedUser = new Users(foundUser);
 		updatedUser = Object.assign(updatedUser, user);
 		updatedUser = new Users(updatedUser);
-		//Add nested types
-		const accessArray = user.clubAccess;
-		if (accessArray != undefined &amp;&amp; accessArray.length > 0) {
-			// accessArray exists and is not empty
-			await Promise.all(
-				accessArray.map(async (accessItem, index) => {
-					const clubId = accessItem.club;
-					const foundClub = await Clubs.findById(clubId);
-					const accessObj = {
-						level: accessItem.level,
-						club: foundClub._id,
-						user: userId,
-					};
-					let createdAccessLevel = await AccessLevel.create(accessObj);
-					updatedUser.clubAccess.push(createdAccessLevel._id);
-					foundClub.memberAccess.push(createdAccessLevel._id);
-					await foundClub.save();
-				})
-			);
+		
+		let regex=/^(1|2|3|4|5|7)[0-9][0-9]((AR|AS|BM|BT|CH|CE|CR|CS|CY|EC|EI|EE|ER|FP|HS|ID|LS|MA|ME|MN|MM|PA|PH|SM)|(ar|as|bm|bt|ch|ce|cr|cs|cy|ec|ei|ee|er|fp|hs|id|ls|ma|me|mn|mm|pa|ph|sm))[0-9]{4}$/;
+		if( user.instituteId!=undefined&amp;&amp;foundUser.instituteId==undefined){
+			// if(regex.test(user.instituteId)==false){
+			// 	return new ApolloError("Invalid Institute ID");
+			// }
+			const email=user.instituteId+'@nitrkl.ac.in';
+			// Firebase Email Auth provider needs to be checked before updating Level
+			// Error handling also needs to be done
+			const accessLevelObj = {
+				level: '2',
+				name:updatedUser.name,				
+				user: updatedUser,
+			};
+			const createdAccessLevel = await AccessLevel.create(accessLevelObj);
+			await updatedUser.clubAccess.push(createdAccessLevel);
+			await updatedUser.save();
 		}
-
 		retPromise = await updatedUser.save();
-		return retPromise;
+		return retPromise;		
 	}
 
-	async deleteUser(id) {
-		const foundUser = await Users.findById(id);
+	async deleteUser(uid) {
+		const foundUser = await Users.find({firebaseUID:uid});;
 		return await foundUser.remove();
 	}
 }
@@ -139,13 +128,13 @@ module.exports = UserAPI;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Seed%2520Database.html">Seed Database</a></li></ul><h3>Global</h3><ul><li><a href="global.html#accessLevel">accessLevel</a></li><li><a href="global.html#buildNav">buildNav</a></li><li><a href="global.html#Clubs">Clubs</a></li><li><a href="global.html#context">context</a></li><li><a href="global.html#ERRORS">ERRORS</a></li><li><a href="global.html#Events">Events</a></li><li><a href="global.html#mongoose">mongoose</a></li><li><a href="global.html#PERMISSION_DENIED">PERMISSION_DENIED</a></li><li><a href="global.html#publish">publish</a></li><li><a href="global.html#queries">queries</a></li><li><a href="global.html#Query">Query</a></li><li><a href="global.html#types">types</a></li><li><a href="global.html#User">User</a></li><li><a href="global.html#Users">Users</a></li><li><a href="global.html#Venues">Venues</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Seed%2520Database.html">Seed Database</a></li></ul><h3>Global</h3><ul><li><a href="global.html#accessLevel">accessLevel</a></li><li><a href="global.html#Clubs">Clubs</a></li><li><a href="global.html#context">context</a></li><li><a href="global.html#ERRORS">ERRORS</a></li><li><a href="global.html#Events">Events</a></li><li><a href="global.html#mongoose">mongoose</a></li><li><a href="global.html#PERMISSION_DENIED">PERMISSION_DENIED</a></li><li><a href="global.html#queries">queries</a></li><li><a href="global.html#Query">Query</a></li><li><a href="global.html#types">types</a></li><li><a href="global.html#User">User</a></li><li><a href="global.html#Users">Users</a></li><li><a href="global.html#Venues">Venues</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Fri Dec 11 2020 07:47:19 GMT+0000 (Coordinated Universal Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Sun Dec 27 2020 07:37:21 GMT+0000 (Coordinated Universal Time)
 </footer>
 
 <script> prettyPrint(); </script>

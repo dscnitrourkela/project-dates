@@ -4,6 +4,8 @@ WORKDIR /app
 
 COPY sources/package*.json /app/sources/
 
+COPY ./project-elaichi.json /app
+
 RUN cd sources && npm ci
 
 COPY ./sources /app/sources

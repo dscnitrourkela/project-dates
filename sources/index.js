@@ -6,16 +6,15 @@ const ClubAPI = require('./datasources/clubs.js');
 const EventAPI = require('./datasources/events.js');
 const VenueAPI = require('./datasources/venues.js');
 const AccessLevelAPI = require('./datasources/accessLevels.js');
+const StoryAPI = require('./datasources/stories.js');
 const typeDefs = require('./schema.js');
 const resolvers = require('./resolvers.js');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-const seed = require('./seed_database');
-const admin = require('firebase-admin');
-const gqltag = require('graphql-tag');
+const seed = require('./helpers/seed_database');
+const {firebaseApp}=require("./helpers/firebase")
 const cloudinary = require('cloudinary').v2;
-const permission = require('./models/permission');
-const user = require('./models/user.js');
+const {populatePermissions } = require("./helpers/permissions");
 
 dotenv.config();
 
@@ -34,15 +33,6 @@ mongoose.connection.once('open', () => {
 	// seed.seedPermissions();
 });
 
-// Firebase Init
-const firebaseInit = async () => {
-	const serviceAccount = require('../project-elaichi.json');
-	admin.initializeApp({
-		credential: admin.credential.cert(serviceAccount),
-		databaseURL: 'https://project-elaichi-493f1.firebaseio.com',
-	});
-};
-
 //Cloudinary Config
 cloudinary.config({ 
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -57,6 +47,7 @@ const dataSources = () => ({
 	EventAPI: new EventAPI(),
 	VenueAPI: new VenueAPI(),
 	AccessLevelAPI: new AccessLevelAPI(),
+	StoryAPI:new StoryAPI()
 });
 
 const server = new ApolloServer({
@@ -78,11 +69,16 @@ const server = new ApolloServer({
 		if(req.headers && req.headers.authorization){
 		    const idToken=req.headers.authorization;
 		    try {
-				const decodedToken= await admin.auth().verifyIdToken(idToken)
-				const uid= decodedToken.uid;				
-		        const userPermission= await permission.findOne({role:decodedToken.roles});
-				return {uid:uid, permissions: userPermission};
+				const decodedToken= await firebaseApp.auth().verifyIdToken(idToken)
+				const uid= decodedToken.uid;	
+				if(decodedToken.mongoID){
+					return {uid:uid, permissions: await populatePermissions(decodedToken.mongoID)};
+				}else{
+					return {uid:uid, permissions: ["users.Auth"]};
+				}
+				
 		    } catch (error) {
+				console.log(error);
 		        throw new Error(error.errorInfo.message);
 		    }
 		}
@@ -95,7 +91,6 @@ const server = new ApolloServer({
 		new ApolloError(err.message),
 });
 
-server.listen(4000).then(({ url }) => {
-	firebaseInit();
+server.listen(5000).then(({ url }) => {
 	console.log(`Graphql running on ${url}`);
 });

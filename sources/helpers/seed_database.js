@@ -5,12 +5,13 @@
  * @module Seed Database
  */
 
-const user = require('./models/user');
-const event = require('./models/event');
-const accessLevel = require('./models/accessLevel');
-const club = require('./models/club');
-const venue = require('./models/venue');
-const permission = require('./models/permission');
+const user = require('../models/user');
+const event = require('../models/event');
+const accessLevel = require('../models/accessLevel');
+const club = require('../models/club');
+const venue = require('../models/venue');
+const story = require('../models/story');
+const permission = require('../models/permission');
 const mongoose = require('mongoose');
 
 //method to drop the collection if it exists
@@ -54,12 +55,14 @@ const userList = [
 const clubList = ['DSC', 'GDG', 'MCC', 'RED', 'BLUE'];
 const eventList = ['Hactoberfest', 'Hackathon', 'RUNIO', 'Fest', 'Enigma'];
 const venueList = ['LA-204', 'RM-Hall', 'BBA', 'LA-lawns', 'Library-Lawns'];
+const storyDescriptionList = ['Hactoberfest Story', 'Hackathon Story', 'RUNIO Story', 'Fest Story', 'Enigma Story'];
 const seedData = async () => {
 	await dropIfExists(user);
 	await dropIfExists(club);
 	await dropIfExists(event);
 	await dropIfExists(venue);
-	await dropIfExists(accessLevel);
+	await dropIfExists(story);
+	await dropIfExists(accessLevel);	
 
 	Promise.all(
 		userList.map(async (data, index) => {
@@ -86,6 +89,12 @@ const seedData = async () => {
 			const createdVenue = await venue.create({
 				name: venueList[index],
 			});
+			const createdStory = await story.create({
+				author:createdClub,
+				event:createdEvent,
+				description:storyDescriptionList[index],
+				asset:'Dummy Asset'
+			});
 		})
 	);
 };
@@ -98,10 +107,12 @@ const seedData = async () => {
  *  A function to seed the database with default permission for the the default role
  */
 const seedPermissions = async () => {
-	permission.find({ role: 'ROLE101' }, async (err, found) => {
+	await dropIfExists(permission);
+	
+	permission.find({ role: 'LEVEL1' }, async (err, found) => {
 		if (!found.length) {
 			await permission.create({
-				role: 'ROLE101',
+				role: 'LEVEL1',
 				permissions: ['clubs.all', 'clubs.byId', 'clubs.byName'],
 			});
 		}
