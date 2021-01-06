@@ -2,7 +2,17 @@
 
 const queries = {};
 
-const mutations = {};
+const mutations = {
+	addAccessLevel: (parent, { accessLevel }, { dataSources }, info) => {
+		return dataSources.AccessLevelAPI.addAccessLevel(accessLevel);
+	},
+	updateAccessLevel: (parent, args, { dataSources }, info) => {
+		return dataSources.AccessLevelAPI.updateAccessLevel(args);
+	},
+	deleteAccessLevel: (parent, { id }, { dataSources }, info) => {
+		return dataSources.AccessLevelAPI.deleteAccessLevel(id);
+	},
+};
 
 const fieldResolvers = {
 	AccessLevel: {

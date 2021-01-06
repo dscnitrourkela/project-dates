@@ -5,6 +5,7 @@ const Users = require('../models/user.js');
 const Events = require('../models/event.js');
 const AccessLevel = require('../models/accessLevel.js');
 const { DataSource } = require('apollo-datasource');
+const AccessLevelAPI = require('./accessLevels.js');
 
 class ClubAPI extends DataSource {
 	constructor() {
@@ -41,22 +42,12 @@ class ClubAPI extends DataSource {
 		//Add nested types
 		const clubId = createdClub._id;
 		const accessArray = club.memberAccess;
+		const AccessLevels = new AccessLevelAPI();
 		if (accessArray != undefined && accessArray.length > 0) {
 			await Promise.all(
 				accessArray.map(async (accessItem, index) => {
-					const userId = accessItem.user;
-					const foundUser = await Users.findById(userId);
-					const accessObj = {
-						level: accessItem.level,
-						name:foundUser.name,
-						relation:accessItem.relation,
-						user: foundUser._id,
-						club: clubId,
-					};
-					let createdAccessLevel = await AccessLevel.create(accessObj);
-					createdClub.memberAccess.push(createdAccessLevel);
-					foundUser.clubAccess.push(createdAccessLevel);
-					await foundUser.save();
+					accessItem.club=clubId;
+					await AccessLevels.addAccessLevel(accessItem);
 				})
 			);
 		}
@@ -88,6 +79,7 @@ class ClubAPI extends DataSource {
 
 		//Add nested types
 		const accessArray = club.memberAccess;
+		const AccessLevels = new AccessLevelAPI();
 		if (accessArray != undefined && accessArray.length > 0) {
 			// accessArray exists and not empty
 			await Promise.all(
@@ -97,25 +89,11 @@ class ClubAPI extends DataSource {
 					const foundAccessObj=await AccessLevel.findOne({user:userId,club:foundClub._id});
 					//Check if there is no such access level defined
 					if(foundAccessObj==undefined){
-						const accessObj = {
-							level: accessItem.level,
-							name:foundUser.name, //You cannot update name here
-							relation:accessItem.relation,
-							user: foundUser._id,
-							club: clubId,
-						};
-						let createdAccessLevel = await AccessLevel.create(accessObj);
-						updatedClub.memberAccess.push(createdAccessLevel);
-						foundUser.clubAccess.push(createdAccessLevel);
-						await foundUser.save();
+						accessItem.club=clubId;
+						await AccessLevels.addAccessLevel(accessItem);
 					}
 					else{
-						let updatedAccessObj = new AccessLevel(foundAccessObj);
-						delete accessItem.user; //To avoid user._id update in Object.assign()
-						delete accessItem.club; //To avoid club._id update in Object.assign()
-						delete accessItem.name; //To avoid user.name update in Object.assign()
-						updatedAccessObj = Object.assign(updatedAccessObj,accessItem);
-						updatedAccessObj.save();
+						await  AccessLevels.updateAccessLevel(accessItem);
 					}
 				})
 			);
@@ -140,6 +118,14 @@ class ClubAPI extends DataSource {
 
 	async deleteClub(id) {
 		const foundClub = await Clubs.findById(id);
+		const accessArray = foundClub.memberAccess;
+		const AccessLevels = new AccessLevelAPI();
+		// accessArray exists and not empty
+		await Promise.all(
+			accessArray.map(async (accessItem, index) => {
+				await AccessLevels.deleteAccessLevel(accessItem);
+			})
+		);
 		return await foundClub.remove();
 	}
 }

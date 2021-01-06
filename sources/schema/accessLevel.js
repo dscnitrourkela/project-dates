@@ -22,6 +22,9 @@ const queries = `
 `;
 
 const mutations = `
+    addAccessLevel(accessLevel:AccessLevelInputType):AccessLevel,
+    updateAccessLevel(id:ID,accessLevel:AccessLevelInputType):AccessLevel,
+    deleteAccessLevel(id:ID):AccessLevel,
 `;
 
 module.exports = { types, queries, mutations };
