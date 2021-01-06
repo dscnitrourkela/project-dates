@@ -7,15 +7,15 @@ const queries = {
 	storiesByField: (parent, args, { dataSources }, info) => {
 		return dataSources.StoryAPI.getStories(args);
     },
-    currentStories: (parent, args, { dataSources }, info) => {
-		return dataSources.StoryAPI.getCurrentStories();
-	},
-	deleteStory: async (parent, args , { dataSources ,uid,permissions}, info) => {
-		if (permissions.find((permission) => permission == 'stories.delete')) {				
-			return dataSources.StoryAPI.deleteStory(args);
+    currentStories: (parent, args, { dataSources, permissions }, info) => {
+		if (permissions.find((permission) => permission == 'stories.view')) {				
+			return dataSources.StoryAPI.getCurrentStories();
 		} else {
 			return ERRORS.PERMISSION_DENIED;
-		}		
+		}			
+	},
+	deleteStory: async (parent, args , { dataSources ,uid,permissions}, info) => {
+		return dataSources.StoryAPI.deleteStory(args); //need to add authorization check
 	}
 };
 

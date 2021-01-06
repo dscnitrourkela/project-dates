@@ -13,8 +13,12 @@ const queries = {
 };
 
 const mutations = {
-	addClub: (parent, { club }, { dataSources }, info) => {
-		return dataSources.ClubAPI.addClub(club);
+	addClub: (parent, { club }, { dataSources,permissions }, info) => {		
+		if (permissions.find((permission) => permission == 'clubs.add')) {
+			return dataSources.ClubAPI.addClub(club);
+		} else {
+			return [ERRORS.PERMISSION_DENIED];
+		}		
 	},
 	updateClub: (parent, args, { dataSources }, info) => {
 		return dataSources.ClubAPI.updateClub(args);
