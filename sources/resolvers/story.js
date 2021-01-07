@@ -16,7 +16,7 @@ const queries = {
 	},
 	deleteStory: async (parent, args , { dataSources ,uid,permissions}, info) => {
 		if (permissions.find((permission) => permission == 'stories.delete$'+args.author)) {			
-			return dataSources.StoryAPI.deleteStory(args); //need to add authorization check
+			return dataSources.StoryAPI.deleteStory(args); 
 		} else {
 			return ERRORS.PERMISSION_DENIED;
 		}		

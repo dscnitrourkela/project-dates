@@ -5,7 +5,7 @@ const rolesPermissionsMap={
     "2":["users.secretEvents"],
     "3":["stories.add","stories.delete"],
     "4":["clubs.update","clubs.delete"],
-    "5":["clubs.add"]
+    "5":["clubs.add","accessLevels.CRUD"]
 }
 
 const populatePermissions=async (id)=>{

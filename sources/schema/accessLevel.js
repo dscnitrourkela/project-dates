@@ -1,6 +1,7 @@
 /** @format */
 
 const types = `
+    union AccessLevelResponse= AccessLevel | ErrorClass
     type AccessLevel{
         id:ID
         level:String
@@ -22,9 +23,9 @@ const queries = `
 `;
 
 const mutations = `
-    addAccessLevel(accessLevel:AccessLevelInputType):AccessLevel,
-    updateAccessLevel(id:ID,accessLevel:AccessLevelInputType):AccessLevel,
-    deleteAccessLevel(id:ID):AccessLevel,
+    addAccessLevel(accessLevel:AccessLevelInputType):AccessLevelResponse,
+    updateAccessLevel(id:ID,accessLevel:AccessLevelInputType):AccessLevelResponse,
+    deleteAccessLevel(id:ID):AccessLevelResponse,
 `;
 
 module.exports = { types, queries, mutations };
