@@ -1,7 +1,7 @@
 /** @format */
 
 const types = `
-    union StoryResult= Story | ErrorClass
+    union StoryResult= Story | ErrorClass    
 
     scalar Date
     type Story{
@@ -44,7 +44,10 @@ const queries = `
         assetType: String
         description : String
     ):[Story]    
-    deleteStory(id:ID):Response    
+    deleteStory(
+        id:ID!
+        author : ID!
+    ):ResponseResult
 `;
 
 const mutations = `

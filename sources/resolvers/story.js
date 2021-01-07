@@ -15,7 +15,11 @@ const queries = {
 		}			
 	},
 	deleteStory: async (parent, args , { dataSources ,uid,permissions}, info) => {
-		return dataSources.StoryAPI.deleteStory(args); //need to add authorization check
+		if (permissions.find((permission) => permission == 'stories.delete$'+args.author)) {			
+			return dataSources.StoryAPI.deleteStory(args); //need to add authorization check
+		} else {
+			return ERRORS.PERMISSION_DENIED;
+		}		
 	}
 };
 
@@ -46,6 +50,11 @@ const fieldResolvers = {
 	StoryResult: {
 		__resolveType: (obj) => {
 			return obj.__typename == 'ErrorClass' ? 'ErrorClass' : 'Story';
+		},
+	},
+	ResponseResult: {
+		__resolveType: (obj) => {
+			return obj.__typename == 'ErrorClass' ? 'ErrorClass' : 'Response';
 		},
 	},
 };
