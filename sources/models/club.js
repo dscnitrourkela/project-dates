@@ -9,6 +9,7 @@ var clubSchema = new mongoose.Schema({
 			ref: 'AccessLevel',
 		},
 	],
+	description: String,
 	facAd: String,
 	logo: String,
 	events: [

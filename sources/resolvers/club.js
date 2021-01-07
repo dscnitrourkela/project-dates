@@ -1,4 +1,5 @@
 /** @format */
+const ERRORS = require('../errors');
 
 const queries = {
 	clubs: (parent, args, { dataSources }, info) => {
@@ -10,6 +11,13 @@ const queries = {
 	clubById: (parent, { id }, { dataSources }, info) => {
 		return dataSources.ClubAPI.getClubById(id);
 	},
+	deleteClub: (parent, { id }, { dataSources, permissions }, info) => {
+		if (permissions.find((permission) => permission == 'clubs.delete$'+id)) {
+			return dataSources.ClubAPI.deleteClub(id);
+		} else {
+			return ERRORS.PERMISSION_DENIED;
+		}						
+	},
 };
 
 const mutations = {
@@ -17,15 +25,16 @@ const mutations = {
 		if (permissions.find((permission) => permission == 'clubs.add')) {
 			return dataSources.ClubAPI.addClub(club);
 		} else {
-			return [ERRORS.PERMISSION_DENIED];
+			return ERRORS.PERMISSION_DENIED;
 		}		
 	},
-	updateClub: (parent, args, { dataSources }, info) => {
-		return dataSources.ClubAPI.updateClub(args);
-	},
-	deleteClub: (parent, { id }, { dataSources }, info) => {
-		return dataSources.ClubAPI.deleteClub(id);
-	},
+	updateClub: (parent, args, { dataSources, permissions }, info) => {
+		if (permissions.find((permission) => permission == 'clubs.update$'+args.id)) {
+			return dataSources.ClubAPI.updateClub(args);
+		} else {
+			return ERRORS.PERMISSION_DENIED;
+		}				
+	}
 };
 
 const fieldResolvers = {
@@ -35,6 +44,16 @@ const fieldResolvers = {
 		},
 		events: async (parent, args, { dataSources }, info) => {
 			return await dataSources.ClubAPI.resolveClubEvents(parent.events);
+		},
+	},
+	ClubResult: {
+		__resolveType: (obj) => {
+			return obj.__typename == 'ErrorClass' ? 'ErrorClass' : 'Club';
+		},
+	},
+	ResponseResult: {
+		__resolveType: (obj) => {
+			return obj.__typename == 'ErrorClass' ? 'ErrorClass' : 'Response';
 		},
 	},
 };

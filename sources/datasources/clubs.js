@@ -32,6 +32,7 @@ class ClubAPI extends DataSource {
 		let createdClub = await Clubs.create({
 			clubName: club.clubName,
 			facAd: club.facAd,
+			description: club.description,
 			logo: club.logo,
 			society: club.society,
 			domain: club.domain,
@@ -118,6 +119,7 @@ class ClubAPI extends DataSource {
 	}
 
 	async deleteClub(id) {
+		
 		const foundClub = await Clubs.findById(id);
 		const accessArray = foundClub.memberAccess;
 		const AccessLevels = new AccessLevelAPI();
@@ -126,8 +128,8 @@ class ClubAPI extends DataSource {
 			accessArray.map(async (accessItem, index) => {
 				await AccessLevels.deleteAccessLevel(accessItem);
 			})
-		);
-		return await foundClub.remove();
+		);		
+		return {success:true};
 	}
 }
 

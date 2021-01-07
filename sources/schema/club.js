@@ -2,6 +2,9 @@
 // linksMap needs to be finalized
 const types = `
 
+union ClubResult= Club | ErrorClass
+union ResponseResult= Response | ErrorClass
+
 type ContactInfoObj{
     name: String,
     designation: String
@@ -20,6 +23,7 @@ type Club{
     id:ID
     clubName:String
     memberAccess:[AccessLevel]
+    description: String
     facAd:String
     logo:String
     events:[Event]
@@ -32,6 +36,7 @@ type Club{
 input ClubInputType{
     clubName:String
     memberAccess:[AccessLevelInputType]
+    description: String
     facAd:String
     logo:String
     events:[ID]
@@ -54,12 +59,12 @@ const queries = `
     ):[Club]
     clubByName(name:String):Club
     clubById(id:String):Club
+    deleteClub(id:ID!):ResponseResult
 `;
 
 const mutations = `
-    addClub(club:ClubInputType):Club,
-    updateClub(id:ID,club:ClubInputType):Club,
-    deleteClub(id:ID):Club,
+    addClub(club:ClubInputType):ClubResult,
+    updateClub(id:ID!,club:ClubInputType):ClubResult,    
 `;
 
 module.exports = { types, queries, mutations };
