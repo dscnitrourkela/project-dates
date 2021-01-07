@@ -1,9 +1,10 @@
 const Users = require('../models/user.js');
 
 const rolesPermissionsMap={
-    "1":["users.Auth","users.all","users.Update","stories.view"],
+    "1":["users.Auth","users.all","users.Update","stories.view","users.byId","users.byName"],
     "2":["users.secretEvents"],
     "3":["stories.add","stories.delete"],
+    "4":["clubs.update","clubs.delete"],
     "5":["clubs.add"]
 }
 
@@ -27,8 +28,7 @@ const populatePermissions=async (id)=>{
             rolesPermissionsMap[splits[0]].forEach(permission=>{
                 permissions.push(permission+"$"+splits[1]);
             })        
-        }
-        
+        }        
     }
     return permissions;
 }
