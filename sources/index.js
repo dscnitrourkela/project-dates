@@ -1,6 +1,6 @@
 /** @format */
 
-const { ApolloServer, gql, ApolloError } = require('apollo-server');
+const { ApolloServer, gql, ApolloError, AuthenticationError } = require('apollo-server');
 const UserAPI = require('./datasources/users.js');
 const ClubAPI = require('./datasources/clubs.js');
 const EventAPI = require('./datasources/events.js');
@@ -64,9 +64,6 @@ const server = new ApolloServer({
 	 * If the user is just signin up, they would be given permissions only to access the Auth Mutation
 	 */
 	context: async ({ req }) => {
-		const obj = gql`
-		    ${req.body.query}
-		`;
 		if(req.headers && req.headers.authorization){
 		    const idToken=req.headers.authorization;
 		    try {
@@ -84,11 +81,8 @@ const server = new ApolloServer({
 		}else{
 			throw new ApolloError("JWT not set","UNAUTHENTICATED");
 		}
-	},			
-	formatError: (err) =>{
-		return new ApolloError(err.message,err.extensions.code);
-	}
-		
+	},
+	formatError: (err) => new ApolloError(err.message,err.extensions.code)
 });
 
 server.listen(5000).then(({ url }) => {
