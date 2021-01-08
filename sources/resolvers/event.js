@@ -22,6 +22,9 @@ const mutations = {
 	deleteEvent: (parent, { id }, { dataSources }, info) => {
 		return dataSources.EventAPI.deleteEvent(id);
 	},
+	increaseRegistrationCount: (parent, { id }, { dataSources }, info) => {
+		return dataSources.EventAPI.increaseRegistrationCount(id);
+	},
 };
 
 const fieldResolvers = {

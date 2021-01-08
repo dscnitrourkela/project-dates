@@ -53,6 +53,7 @@ const mutations = `
     addEvent(event:EventInputType):Event
     updateEvent(id:ID,event:EventInputType):Event
     deleteEvent(id:ID):Event
+    increaseRegistrationCount(id:ID):Event
 `;
 
 module.exports = { types, queries, mutations };
