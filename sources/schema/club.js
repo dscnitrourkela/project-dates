@@ -5,6 +5,17 @@ const types = `
 union ClubResult= Club | ErrorClass
 union ResponseResult= Response | ErrorClass
 
+type Link{
+    name: String
+    link: String
+}
+
+input LinkInput{
+    name:String
+    link:String
+}
+
+
 type ContactInfoObj{
     name: String,
     designation: String
@@ -19,18 +30,29 @@ input ContactInfoObjInput{
     email: String
 }
 
+type Theme{
+    name:String
+    logo:String
+    backgroundColor: String
+}
+
+input ThemeInput{
+    name:String
+    logo:String
+    backgroundColor: String
+}
+
 type Club{
     id:ID
     clubName:String
     memberAccess:[AccessLevel]
     description: String
     facAd:String
-    logo:String
+    theme:[Theme]
     events:[Event]
     society:String
     domain:String
-    links: String
-    backgroundColor: String
+    links: [Link]    
     contactInfo:[ContactInfoObj]
 }
 input ClubInputType{
@@ -38,12 +60,11 @@ input ClubInputType{
     memberAccess:[AccessLevelInputType]
     description: String
     facAd:String
-    logo:String
+    theme:[ThemeInput]
     events:[ID]
     society:String
     domain:String
-    links:  String
-    backgroundColor: String
+    links:  [LinkInput]
     contactInfo:[ContactInfoObjInput]
 }
 `;
@@ -57,8 +78,8 @@ const queries = `
         society:String
         domain:String
     ):[Club]
-    clubByName(name:String):Club
-    clubById(id:String):Club
+    clubByName(name:String!):Club
+    clubById(id:String!):Club
     deleteClub(id:ID!):ResponseResult
 `;
 

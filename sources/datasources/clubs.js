@@ -33,11 +33,10 @@ class ClubAPI extends DataSource {
 			clubName: club.clubName,
 			facAd: club.facAd,
 			description: club.description,
-			logo: club.logo,
+			theme:club.theme,
 			society: club.society,
 			domain: club.domain,
-			links: club.links,
-			backgroundColor: club.backgroundColor,
+			links: club.links,			
 			contactInfo: club.contactInfo
 		});
 
