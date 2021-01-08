@@ -9,6 +9,7 @@ const Venues = require('../models/venue.js');
 const AccessLevel = require('../models/accessLevel.js');
 const { DataSource } = require('apollo-datasource');
 const { ApolloError } = require('apollo-server');
+const { INVALID_INPUT } = require('../errors/index.js');
 
 class StoryAPI extends DataSource {
 	constructor() {
@@ -16,11 +17,12 @@ class StoryAPI extends DataSource {
 	}
     initialize(config) {}
     getStories(args) {
+        delete Object.assign(args, {["_id"]: args["id"] })["id"];
 		return Stories.find(args);
 	}
 	async getCurrentStories() {
-        let activeStories=await currentStories.find();
-        return activeStories;        
+        let currentStoriesList=await currentStories.find();
+        return currentStoriesList;        
 	}
 	async addStory(story) {
 		let retPromise = {};
@@ -39,37 +41,43 @@ class StoryAPI extends DataSource {
 			const authorId = story.author;
             const foundAuthor = await Clubs.findById(authorId);
             if(foundAuthor==undefined){
-                return new ApolloError("Author Not Found");
+                return {...INVALID_INPUT, message:"Author Not Found"};
             }
             createdStory.author = foundAuthor._id;
 
             //add to current Stories
             await currentStories.create({
-                storyAsset:story.asset,                
+                asset:story.asset,                
                 authorLogo: foundAuthor.logo,
                 authorName: foundAuthor.clubName,
                 assetType: story.assetType,
-                storyID: createdStory._id
+                story: createdStory._id
             })  
             
         }else{
-            return new ApolloError("Author Not Given");
+            return {...INVALID_INPUT, message:"Author Not Given"};
         }
 
         //2. event
 		if (story.event != undefined) {
-			const eventId = story.event;
-			const foundEvent = await Events.findById(eventId);
+            const eventId = story.event;
+            let foundEvent;
+            try{
+                foundEvent = await Events.findById(eventId);                
+            }catch(error){
+                return {...INVALID_INPUT, message:"Invalide Event ID"};
+            }			            
             if(foundEvent==undefined){
-                return new ApolloError("Event Not Found");
+                return {...INVALID_INPUT, message:"Event Not Found"};
             }
             createdStory.event = foundEvent._id;
         }
-        
-       
-
 		retPromise = await createdStory.save();
 		return retPromise;
+    }
+
+    async getStoryById(id){
+        return await Stories.findById(id);
     }
     
     async deleteStory(story){

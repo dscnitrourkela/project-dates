@@ -1,6 +1,6 @@
 /** @format */
 
-const { ApolloServer, gql, ApolloError } = require('apollo-server');
+const { ApolloServer, gql, ApolloError, AuthenticationError } = require('apollo-server');
 const UserAPI = require('./datasources/users.js');
 const ClubAPI = require('./datasources/clubs.js');
 const EventAPI = require('./datasources/events.js');
@@ -61,11 +61,9 @@ const server = new ApolloServer({
 	/**
 	 * GraphQL Context:  A top level function which decodes and verifies the JWT sent through the request header
 	 *  @param {string} decodedToken - JWT token from request
+	 * If the user is just signin up, they would be given permissions only to access the Auth Mutation
 	 */
 	context: async ({ req }) => {
-		const obj = gql`
-		    ${req.body.query}
-		`;
 		if(req.headers && req.headers.authorization){
 		    const idToken=req.headers.authorization;
 		    try {
@@ -78,17 +76,14 @@ const server = new ApolloServer({
 				}
 				
 		    } catch (error) {
-				console.log(error);
-		        throw new Error(error.errorInfo.message);
+		        throw new ApolloError(error.errorInfo.message,"UNAUTHORIZED");
 		    }
+		}else{
+			throw new ApolloError("JWT not set","UNAUTHENTICATED");
 		}
 	},			
-	formatError: (err) =>
-		// if(err.extensions.code=="INTERNAL_SERVER_ERROR"){
-		//     return new ApolloError("We are having some trouble","ERROR",{Token:"Unique Token"});
-		// }
-		// console.log(err.originalError);
-		new ApolloError(err.message),
+	formatError: (err) => new ApolloError(err.message,err.extensions.code)
+		
 });
 
 server.listen(5000).then(({ url }) => {

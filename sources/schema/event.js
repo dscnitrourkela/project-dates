@@ -15,6 +15,7 @@ const types = `
         announcements : String
         link : String
         picture : String
+        backgroundColor: String
     }
     input EventInputType{
         organizer : ID
@@ -29,6 +30,7 @@ const types = `
         announcements : String
         link : String
         picture : String
+        backgroundColor: String
     }
 
 `;
