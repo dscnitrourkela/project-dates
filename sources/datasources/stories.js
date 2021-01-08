@@ -61,15 +61,16 @@ class StoryAPI extends DataSource {
         //2. event
 		if (story.event != undefined) {
             const eventId = story.event;
+            let foundEvent;
             try{
-                const foundEvent = await Events.findById(eventId);
-                if(foundEvent==undefined){
-                    return {...INVALID_INPUT, message:"Event Not Found"};
-                }
-                createdStory.event = foundEvent._id;
+                foundEvent = await Events.findById(eventId);                
             }catch(error){
                 return {...INVALID_INPUT, message:"Invalide Event ID"};
             }			            
+            if(foundEvent==undefined){
+                return {...INVALID_INPUT, message:"Event Not Found"};
+            }
+            createdStory.event = foundEvent._id;
         }
 		retPromise = await createdStory.save();
 		return retPromise;
