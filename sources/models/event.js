@@ -26,6 +26,7 @@ var eventSchema = new mongoose.Schema({
 	announcements: String,
 	link: String,
 	picture: String,
+	backgroundColor: String
 },{
     timestamps: true
 });

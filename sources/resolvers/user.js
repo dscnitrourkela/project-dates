@@ -7,7 +7,7 @@ const queries = {
 		if (permissions.find((permission) => permission == 'users.all')) {
 			return dataSources.UserAPI.getUsers(args);
 		} else {
-			return ERRORS.PERMISSION_DENIED;
+			return [ERRORS.PERMISSION_DENIED];
 		}
 	},
 	/**

@@ -2,11 +2,11 @@
 
 var mongoose = require('mongoose');
 var currentStorySchema = new mongoose.Schema({
-	storyAsset:String,	
+	asset:String,	
 	assetType: String,
 	authorName: String, 
 	authorLogo: String,
-	storyID:{
+	story:{
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'Story',
 	},

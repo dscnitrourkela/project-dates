@@ -7,12 +7,16 @@ const queries = {
 	storiesByField: (parent, args, { dataSources }, info) => {
 		return dataSources.StoryAPI.getStories(args);
     },
-    currentStories: (parent, args, { dataSources }, info) => {
-		return dataSources.StoryAPI.getCurrentStories();
+    currentStories: (parent, args, { dataSources, permissions }, info) => {
+		if (permissions.find((permission) => permission == 'stories.view')) {				
+			return dataSources.StoryAPI.getCurrentStories();
+		} else {
+			return ERRORS.PERMISSION_DENIED;
+		}			
 	},
 	deleteStory: async (parent, args , { dataSources ,uid,permissions}, info) => {
-		if (permissions.find((permission) => permission == 'stories.delete')) {				
-			return dataSources.StoryAPI.deleteStory(args);
+		if (permissions.find((permission) => permission == 'stories.delete$'+args.author)) {			
+			return dataSources.StoryAPI.deleteStory(args); 
 		} else {
 			return ERRORS.PERMISSION_DENIED;
 		}		
@@ -38,9 +42,19 @@ const fieldResolvers = {
 			return await dataSources.EventAPI.getEventById(parent.event);
 		},
 	},
+	CurrentStory: {
+		story: async (parent, args, { dataSources }, info) => {
+			return await dataSources.StoryAPI.getStoryById(parent.story);
+        }
+	},
 	StoryResult: {
 		__resolveType: (obj) => {
 			return obj.__typename == 'ErrorClass' ? 'ErrorClass' : 'Story';
+		},
+	},
+	ResponseResult: {
+		__resolveType: (obj) => {
+			return obj.__typename == 'ErrorClass' ? 'ErrorClass' : 'Response';
 		},
 	},
 };

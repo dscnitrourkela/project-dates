@@ -1,7 +1,7 @@
 /** @format */
 
 const types = `
-    union StoryResult= Story | ErrorClass
+    union StoryResult= Story | ErrorClass    
 
     scalar Date
     type Story{
@@ -13,12 +13,13 @@ const types = `
         description : String
         createdAt : Date
     }
-    type ActiveStory{
+    type CurrentStory{
         id:ID
         assetType: String
-        storyAsset:String
-        authorName: String
+        asset:String
+        authorName: String 
         authorLogo: String
+        story: Story
     }
     type Response{
         success: Boolean
@@ -34,7 +35,7 @@ const types = `
 `;
 
 const queries = `
-    currentStories:[ActiveStory]
+    currentStories:[CurrentStory]
     storiesByField(
         id:ID
         author : ID
@@ -43,7 +44,10 @@ const queries = `
         assetType: String
         description : String
     ):[Story]    
-    deleteStory(id:ID):Response    
+    deleteStory(
+        id:ID!
+        author : ID!
+    ):ResponseResult
 `;
 
 const mutations = `

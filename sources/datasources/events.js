@@ -36,6 +36,7 @@ class EventAPI extends DataSource {
 			announcements: event.announcements,
 			link: event.link,
 			picture: event.picture,
+			backgroundColor: event.backgroundColor
 		});
 
 		//Add nested types

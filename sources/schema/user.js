@@ -41,9 +41,9 @@ const queries = `
 `;
 
 const mutations = `
-    authUser(user:UserInputType):User
-    updateUser(user:UserInputType):User
-    deleteUser(id:ID):User
+    authUser(user:UserInputType):UserResult
+    updateUser(user:UserInputType):UserResult
+    deleteUser(id:ID):Response
 `;
 
 module.exports = { types, queries, mutations };
