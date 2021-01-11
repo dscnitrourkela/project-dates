@@ -120,5 +120,21 @@ class EventAPI extends DataSource {
 		const foundEvent = await Events.findById(id);
 		return await foundEvent.remove();
 	}
+	async increaseRegistrationCount(id) {
+		const eventId = id;
+		let retPromise = {};
+		// Update Event with basic types;
+		const foundEvent = await Events.findById(eventId);
+		let updatedEvent = new Events(foundEvent);
+		updatedEvent.registrationCount+=1;
+		updatedEvent = new Events(updatedEvent);
+		retPromise = await updatedEvent.save();
+		return retPromise;
+	}
+
+	async deleteEvent(id) {
+		const foundEvent = await Events.findById(id);
+		return await foundEvent.remove();
+	}
 }
 module.exports = EventAPI;
