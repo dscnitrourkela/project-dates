@@ -81,9 +81,8 @@ const server = new ApolloServer({
 		}else{
 			throw new ApolloError("JWT not set","UNAUTHENTICATED");
 		}
-	},			
+	},
 	formatError: (err) => new ApolloError(err.message,err.extensions.code)
-		
 });
 
 server.listen(5000).then(({ url }) => {
