@@ -1,5 +1,5 @@
 /** @format */
-
+const mongoose = require('mongoose');
 const Events = require('../models/event.js');
 const Stories = require('../models/story.js');
 const currentStories = require("../models/currentStory");
@@ -22,7 +22,22 @@ class StoryAPI extends DataSource {
 	}
 	async getCurrentStories() {
         let currentStoriesList=await currentStories.find();
-        return currentStoriesList;        
+        let currentStoriesListMap= new Array();
+        let visitedClub= new Map();
+        currentStoriesList.map((each)=>{
+            if(visitedClub[each.authorId]!=null) {
+                currentStoriesListMap[visitedClub[each.authorId]].story.push(each.story);
+            }else{
+                visitedClub[each.authorId]=currentStoriesListMap.length;
+                currentStoriesListMap.push({
+                    authorId: each.authorId,
+                    authorLogo: each.authorLogo,
+                    authorName: each.authorName,
+                    story:[each.story]
+                })
+            }
+        })
+        return currentStoriesListMap;        
 	}
 	async addStory(story) {
 		let retPromise = {};
@@ -47,10 +62,9 @@ class StoryAPI extends DataSource {
 
             //add to current Stories
             await currentStories.create({
-                asset:story.asset,                
+                authorId: foundAuthor._id,
                 authorLogo: foundAuthor.logo,
-                authorName: foundAuthor.clubName,
-                assetType: story.assetType,
+                authorName: foundAuthor.clubName,                
                 story: createdStory._id
             })  
             
@@ -78,6 +92,12 @@ class StoryAPI extends DataSource {
 
     async getStoryById(id){
         return await Stories.findById(id);
+    }
+
+    async getStoryByIds(ids){
+        return Stories.find({
+            '_id': { $in: ids.map((id)=>mongoose.Types.ObjectId(id) )}
+        });
     }
     
     async deleteStory(story){
