@@ -12,16 +12,25 @@ const timetableSchema = new Schema(
             required: true,
             trim: true,
         },
-        /**
-           Object {
-           	slotName: Course._id,
-            slotName: Course._id,
-           }
-        */
-        slotInfo: {
-            type: Object,
-            required: true,
-        },
+        slotInfo: [{
+            name: {
+                type: String,
+                required: true,
+            },
+            course: {
+                type: Schema.Types.ObjectId,
+                ref: 'Course',
+                required: true,                
+            },
+            startTime: {
+                type: String, // Time 24hr format. Example: "18:30:00". Timezone is IST(UTC+0530)
+                required: true,
+            },
+            duration:{
+                type: Number, // Units in minutes
+                required: true,
+            },
+        }],
         expiry: {
             type: Boolean,
             required: true,
