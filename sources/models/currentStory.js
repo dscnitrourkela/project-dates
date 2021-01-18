@@ -2,8 +2,7 @@
 
 var mongoose = require('mongoose');
 var currentStorySchema = new mongoose.Schema({
-	asset:String,	
-	assetType: String,
+	authorId: String,
 	authorName: String, 
 	authorLogo: String,
 	story:{
