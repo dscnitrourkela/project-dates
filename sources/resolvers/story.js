@@ -44,7 +44,7 @@ const fieldResolvers = {
 	},
 	CurrentStory: {
 		story: async (parent, args, { dataSources }, info) => {
-			return await dataSources.StoryAPI.getStoryById(parent.story);
+			return await dataSources.StoryAPI.getStoryByIds(parent.story);
         }
 	},
 	StoryResult: {
