@@ -7,9 +7,7 @@
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 # About
 The backend repository for project NITR Central.
-### DSC NIT Rourkela
-Project developed and maintained by [DSC NIT Rourkela](https://dscnitrourkela.org/)
-![DSC NIT Rourkela Cover Image](./RepoCover.png)
+### DSC NIT Rourkela/RepoCover.png)
 ## Contributing 🎃
 
 This repository is one of the many repositories maintained by DSC NIT Rourkela NIT Rourkela. <br>
