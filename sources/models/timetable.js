@@ -16,6 +16,7 @@ const timetableSchema = new Schema(
             name: {
                 type: String,
                 required: true,
+                trim: true,
             },
             course: {
                 type: Schema.Types.ObjectId,
@@ -23,12 +24,23 @@ const timetableSchema = new Schema(
                 required: true,                
             },
             startTime: {
-                type: String, // Time 24hr format. Example: "18:30:00". Timezone is IST(UTC+0530)
-                required: true,
+                hours:{
+                    type: Number,
+                    required: true,
+                    min: 0,
+                    max: 23
+                },
+                minutes:{
+                    type: Number,
+                    required: true,
+                    min: 0,
+                    max: 59
+                },
             },
             duration:{
                 type: Number, // Units in minutes
                 required: true,
+                min: 0,
             },
         }],
         expiry: {
