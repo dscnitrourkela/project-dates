@@ -81,7 +81,9 @@ class StoryAPI extends DataSource {
     }
     
     async deleteStory(story){
-        await currentStories.deleteOne({ "_id" : story.id } )
+        await currentStories.deleteOne({ "_id" : story.id } );
+        let foundStory=await currentStories.findOne({ "_id" : story.id });
+        await foundStory.deleteOne({ "_id" : foundStory.storyId } )
         return {success:true}
     }
 
