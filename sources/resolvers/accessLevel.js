@@ -2,29 +2,23 @@
 
 const queries = {};
 const ERRORS = require('../errors');
-const {responseResolver}=require('../helpers/apollo');
+const {responseResolver,resolverHelper}=require('../helpers/apollo');
 
 const mutations = {
-	addAccessLevel: (parent, { accessLevel }, { dataSources, permissions }, info) => {
-		if (permissions.find((permission) => permission == 'accessLevels.CRUD')) {
-			return dataSources.AccessLevelAPI.addAccessLevel(accessLevel);
-		} else {
-			return ERRORS.PERMISSION_DENIED;
-		}		
+	addAccessLevel: (parent, { accessLevel }, { dataSources, permissions, error }, info) => {
+		return resolverHelper(error,'accessLevels.CRUD',permissions) 
+			?  dataSources.AccessLevelAPI.addAccessLevel(accessLevel)
+			: ERRORS.PERMISSION_DENIED					
 	},
-	updateAccessLevel: (parent, args, { dataSources, permissions }, info) => {
-		if (permissions.find((permission) => permission == 'accessLevels.CRUD')) {
-			return dataSources.AccessLevelAPI.updateAccessLevel(args);
-		} else {
-			return ERRORS.PERMISSION_DENIED;
-		}				
+	updateAccessLevel: (parent, args, { dataSources, permissions, error }, info) => {
+		return resolverHelper(error,'accessLevels.CRUD',permissions) 
+			?  dataSources.AccessLevelAPI.updateAccessLevel(args)
+			: ERRORS.PERMISSION_DENIED		
 	},
-	deleteAccessLevel: (parent, { id }, { dataSources, permissions }, info) => {
-		if (permissions.find((permission) => permission == 'accessLevels.CRUD')) {
-			return dataSources.AccessLevelAPI.deleteAccessLevel(id);
-		} else {
-			return ERRORS.PERMISSION_DENIED;
-		}		
+	deleteAccessLevel: (parent, { id }, { dataSources, permissions, error }, info) => {
+		return resolverHelper(error,'accessLevels.CRUD',permissions) 
+			?  dataSources.AccessLevelAPI.deleteAccessLevel(id)
+			: ERRORS.PERMISSION_DENIED						
 	},
 };
 
