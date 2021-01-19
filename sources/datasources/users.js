@@ -15,7 +15,10 @@ class UserAPI extends DataSource {
 
 	initialize(config) {}
 	async getUsers(args) {
-		return await Users.find(args);
+		console.log(args);
+		const users= await Users.find(args);
+		console.log(users);
+		return users;
 	}
 	async getUserById(id) {
 		return await Users.findById(id);
