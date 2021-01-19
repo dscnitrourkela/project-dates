@@ -15,10 +15,7 @@ class UserAPI extends DataSource {
 
 	initialize(config) {}
 	async getUsers(args) {
-		console.log(args);
-		const users= await Users.find(args);
-		console.log(users);
-		return users;
+		return await Users.find(args);
 	}
 	async getUserById(id) {
 		return await Users.findById(id);
@@ -53,7 +50,8 @@ class UserAPI extends DataSource {
 			const createdAccessLevel = await AccessLevel.create(accessLevelObj);
 			await incomingUser.clubAccess.push(createdAccessLevel);
 			await incomingUser.save();
-			await updateJWT(uid,{mongoID:incomingUser._id});
+			if(process.env.NODE_ENV!="test")
+				await updateJWT(uid,{mongoID:incomingUser._id});
 		}
 		return incomingUser;		
 	}
