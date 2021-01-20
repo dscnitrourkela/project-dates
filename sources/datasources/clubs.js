@@ -128,6 +128,7 @@ class ClubAPI extends DataSource {
 				await AccessLevels.deleteAccessLevel(accessItem);
 			})
 		);		
+		await foundClub.deleteOne();
 		return {success:true};
 	}
 }

@@ -134,7 +134,7 @@ class EventAPI extends DataSource {
 
 	async deleteEvent(id) {
 		const foundEvent = await Events.findById(id);
-		return await foundEvent.remove();
+		return await foundEvent.deleteOne();
 	}
 }
 module.exports = EventAPI;
