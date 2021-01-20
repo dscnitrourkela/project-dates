@@ -11,7 +11,7 @@ const queries = {
     currentStories: (parent, args, { dataSources, permissions, error }, info) => {
 		return resolverHelper(error,'stories.view',permissions) 
 			?  dataSources.StoryAPI.getCurrentStories()
-			: ERRORS.PERMISSION_DENIED							
+			: [ERRORS.PERMISSION_DENIED]
 	},
 	deleteStory: async (parent, args , { dataSources ,uid,permissions,error}, info) => {
 		return resolverHelper(error, 'stories.delete$'+args.author,permissions) 
@@ -45,6 +45,11 @@ const fieldResolvers = {
 	StoryResult: {
 		__resolveType: (obj) => {
 			return obj.__typename == 'ErrorClass' ? 'ErrorClass' : 'Story';
+		},
+	},
+	CurrentStoryResult: {
+		__resolveType: (obj) => {
+			return obj.__typename == 'ErrorClass' ? 'ErrorClass' : 'CurrentStory';
 		},
 	},
 	ResponseResult: {

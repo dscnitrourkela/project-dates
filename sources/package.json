@@ -7,7 +7,7 @@
 		"doc": "jsdoc -c  jsdoc.json -r",
 		"prettier": "npx prettier --write .",
 		"eslint": "npx eslint .",
-		"test": "NODE_ENV=test jest --coverage --runInBand"
+		"test": "NODE_ENV=test jest --runInBand"
 	},
 	"author": "",
 	"license": "ISC",

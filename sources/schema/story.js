@@ -1,7 +1,8 @@
 /** @format */
 
 const types = `
-    union StoryResult= Story | ErrorClass    
+    union StoryResult= Story | ErrorClass  
+    union CurrentStoryResult = CurrentStory | ErrorClass  
 
     scalar Date
     type Story{
@@ -33,7 +34,7 @@ const types = `
 `;
 
 const queries = `
-    currentStories:[CurrentStory]
+    currentStories:[CurrentStoryResult]
     storiesByField(
         id:ID
         author : ID
