@@ -33,7 +33,7 @@ class VenueAPI extends DataSource {
 
 	async deleteVenue(id) {
 		const foundVenue = await Venues.findById(id);
-		return await foundVenue.remove();
+		return await foundVenue.deleteOne();
 	}
 }
 
