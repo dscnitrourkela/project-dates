@@ -11,7 +11,6 @@ class CourseAPI extends DataSource {
     initialize(_) {}
 
     getCourseById(id) {
-        console.log("Abel")
         return CourseModel.findById(id);
     }
 
