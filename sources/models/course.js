@@ -1,4 +1,3 @@
-// TODO: Update CBy and UBy to make it non-nullabe by design
 const { Schema, model } = require('mongoose');
 
 const courseSchema = new Schema(
@@ -44,13 +43,13 @@ const courseSchema = new Schema(
         createdBy: {
             type: Schema.Types.ObjectId,
             ref: 'User',
-            required: false,
-            default: null,
+            required: true,
+            default: null, //TODo: Remove after making helper function for this field
           },
           updatedBy: {
             type: Schema.Types.ObjectId,
             ref: 'User',
-            required: false,
+            required: true,
             default: null,
           },
 
