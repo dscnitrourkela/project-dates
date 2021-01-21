@@ -6,6 +6,8 @@ const courseSchema = new Schema(
             type: String, 
             required: true,
             trim: true,
+            unique: true,
+            uppercase: true,
         },
         name:{
             type: String, 
@@ -43,13 +45,13 @@ const courseSchema = new Schema(
         createdBy: {
             type: Schema.Types.ObjectId,
             ref: 'User',
-            required: true,
+            required: false,
             default: null, //TODo: Remove after making helper function for this field
           },
           updatedBy: {
             type: Schema.Types.ObjectId,
             ref: 'User',
-            required: true,
+            required: false,
             default: null,
           },
 
@@ -58,5 +60,6 @@ const courseSchema = new Schema(
         timestamps: true,
     },
 );
+courseSchema.path('subjectCode').index({ unique: true });
 
 module.exports = model('Course', courseSchema);

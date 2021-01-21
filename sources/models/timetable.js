@@ -57,13 +57,13 @@ const timetableSchema = new Schema(
         createdBy: {
             type: Schema.Types.ObjectId,
             ref: 'User',
-            required: true,
+            required: false,
             default: null, //TODo: Remove after making helper function for this field
           },
           updatedBy: {
             type: Schema.Types.ObjectId,
             ref: 'User',
-            required: true,
+            required: false,
             default: null,
           },
 
