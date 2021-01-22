@@ -1,7 +1,5 @@
 const {beforeTests,afterTests, apolloServer, PERMISSION_DENIED_TEST} = require("../testHelper");
 
-
-
 // Pre and Post Test Scripts
 beforeAll(beforeTests);
 afterAll(afterTests);
@@ -64,7 +62,5 @@ describe('Results: Users Queries and Mutations', () => {
 
     const response = await query({ query: GET_USERS });
     expect(response.data.userByUsername).toEqual(PERMISSION_DENIED_TEST);
-  });
-
-  
+  });  
 });

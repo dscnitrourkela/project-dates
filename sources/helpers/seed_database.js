@@ -118,7 +118,36 @@ const seedPermissions = async () => {
 		}
 	});
 };
+
+const testSeeder = async () =>{
+	// const user= {
+	// 	name: 'Noob Master',
+	// 	username: 'NoobMaster69',
+	// 	firebaseUID:"testuser"
+	// }
+	// let createdUser = await user.create(data);
+	const createdClub = await club.create({
+		clubName: "Avengers",
+	});
+	// const accessLevelObj = {
+	// 	level: '4',
+	// 	name: createdUser.name,
+	// 	relation:'Pres',
+	// 	club: createdClub,
+	// 	user: createdUser,
+	// };
+	// const createdAccessLevel = await accessLevel.create(accessLevelObj);
+
+	// await createdClub.memberAccess.push(createdAccessLevel);
+	// await createdClub.save();
+	// await createdUser.clubAccess.push(createdAccessLevel);
+	// await createdUser.save();
+
+	return createdClub._id;
+	
+}
 module.exports = {
 	seedData,
 	seedPermissions,
+	testSeeder
 };
