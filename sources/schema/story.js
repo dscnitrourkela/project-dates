@@ -15,11 +15,10 @@ const types = `
     }
     type CurrentStory{
         id:ID
-        assetType: String
-        asset:String
+        authorId: String
         authorName: String 
         authorLogo: String
-        story: Story
+        story: [Story]
     }
     type Response{
         success: Boolean
@@ -31,7 +30,6 @@ const types = `
         assetType: String
         description : String
     }
-
 `;
 
 const queries = `
