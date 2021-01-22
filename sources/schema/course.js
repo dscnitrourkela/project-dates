@@ -34,3 +34,4 @@ module.exports = { types, queries, mutations };
 
 // updateCourse(id:ID!,course:CourseInputType!):Course
 // deleteCourse(id:ID!):Course
+// List courses by search | Use Atlas Search

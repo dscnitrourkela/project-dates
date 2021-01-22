@@ -1,3 +1,4 @@
+// TODO: Update CBy and UBy to make it non-nullabe by design
 const { Schema, model } = require('mongoose');
 
 const timetableSchema = new Schema(
@@ -14,7 +15,7 @@ const timetableSchema = new Schema(
         },
         slotInfo: [{
             name: {
-                type: String,
+                type: String,  // Put slot name TA1 TA2 etc here. Not directly used now. May be useful later
                 required: true,
                 trim: true,
             },
@@ -42,6 +43,12 @@ const timetableSchema = new Schema(
                 required: true,
                 min: 0,
             },
+            day: {
+                type: Number, // 1-Monday, 5-Friday
+                required: true,
+                max: 5,
+                min: 1
+            }
         }],
         expiry: {
             type: Boolean,
@@ -58,14 +65,14 @@ const timetableSchema = new Schema(
             type: Schema.Types.ObjectId,
             ref: 'User',
             required: false,
-            default: null, //TODo: Remove after making helper function for this field
-          },
-          updatedBy: {
+            default: null,
+        },
+        updatedBy: {
             type: Schema.Types.ObjectId,
             ref: 'User',
             required: false,
             default: null,
-          },
+        },
 
     },
     {
