@@ -1,12 +1,11 @@
 const {beforeTests,afterTests, apolloServer, PERMISSION_DENIED_TEST} = require("../testHelper");
-const {testSeeder} = require("../../helpers/seed_database");
 
 // Pre and Post Test Scripts
 beforeAll(beforeTests);
 afterAll(afterTests);
 
 describe('Results: Stories Queries and Mutations', () => {  
-
+    const { query, mutate } = apolloServer("a8mjiKYtt0PefnS524",["clubs.add"]);
     it('Create Club', async () => {               
       const ADD_STORY = `
         mutation{

@@ -22,8 +22,8 @@ var userSchema = new mongoose.Schema({
 			}
 	},
 	address: String,
-	mobileNo: Number,
-	emergencyContact: Number,
+	mobile: String,
+	emergencyContact: String,
 	displayPicture: String,
 },{
     timestamps: true
