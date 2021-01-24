@@ -57,7 +57,7 @@ class AccessLevelAPI extends DataSource {
 		foundClub.memberAccess = foundClub.memberAccess.filter((access)=>access._id!=id)
 		await foundUser.save();
 		await foundClub.save();
-		return await foundAccessLevel.remove();
+		return await foundAccessLevel.deleteOne();
     }
 }
 
