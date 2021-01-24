@@ -14,6 +14,7 @@ const types = `
         mobile:String
         emergencyContact:String
         displayPicture:String
+        address:String
     }
     input UserInputType{
         name:String
@@ -23,6 +24,7 @@ const types = `
         mobile:String
         emergencyContact:String
         displayPicture:String
+        address:String
     }
     
 `;

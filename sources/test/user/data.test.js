@@ -10,7 +10,7 @@ describe('Results: Users Queries and Mutations', () => {
   let testUser={
     name:"Harish",
     username:"HarishTeens"  
-  },testUser2;
+  };
   it('Get all Users', async () => {    
       const GET_USERS = `
         {
@@ -86,22 +86,27 @@ describe('Results: Users Queries and Mutations', () => {
 
   it("Update User",async ()=>{
     const testUser2={
-        ...testUser,
         mobile:"12345678",
-        emergencyContact:"1223456789"
+        emergencyContact:"1223456789",
+        address: "hello this is my address",
+        displayPicture: "yoloasdfadsf",
+        gmailAuthMail:"sdfgyuik,sadf"
     }
     const UPDATE_USER = `
       mutation {
         updateUser(user:{
           mobile: "`+testUser2.mobile+`",
-          emergencyContact: "`+testUser2.emergencyContact+`"
+          emergencyContact: "`+testUser2.emergencyContact+`",
+          address: "`+testUser2.address+`",
+          displayPicture: "`+testUser2.displayPicture+`",
+          gmailAuthMail: "`+testUser2.gmailAuthMail+`"
         }){
           ... on User{
-            name
-            id,
-            username,
             mobile,
-            emergencyContact
+            emergencyContact,
+            address,
+            displayPicture,
+            gmailAuthMail
           }
         }
       }
@@ -111,6 +116,28 @@ describe('Results: Users Queries and Mutations', () => {
     expect(response.errors).toEqual(undefined)
     const userResponse= response.data.updateUser;
     expect(userResponse).toEqual(testUser2);
+  })
+
+  it("Update User's Insti ID",async ()=>{
+    const testUser3={
+        instituteId: "117CS0176"
+    }
+    const UPDATE_USER = `
+      mutation {
+        updateUser(user:{
+          instituteId: "`+testUser3.instituteId+`"          
+        }){
+          ... on User{
+            instituteId
+          }
+        }
+      }
+    `;
+
+    const response = await mutate({ mutation: UPDATE_USER });
+    expect(response.errors).toEqual(undefined)
+    const userResponse= response.data.updateUser;
+    expect(userResponse).toEqual(testUser3);
   })
   
 });
