@@ -63,37 +63,6 @@ describe('Results: Stories Queries and Mutations', () => {
     expect(JSON.stringify(storyResponse)).toEqual(JSON.stringify(testStory1));
   });  
   
-  it('Check added story is being fetched', async () => {    
-    const FETCH_STORIES = `
-      {
-        currentStories{
-          ... on CurrentStory{
-            authorId,
-            authorName,
-            authorLogo{
-              name,
-              logo
-            }
-            story{
-              id
-            }
-          }
-        }
-  
-      }
-    `;
-
-    const response = await query({ query: FETCH_STORIES });
-    const testCurrentStory={
-      authorId:testStory1.author.id,
-      authorName:testStory1.author.clubName,
-      authorLogo:testStory1.author.theme,      
-      story:[{id: testStory1.id}]
-    }
-    expect(JSON.stringify(response.data.currentStories)).toEqual(JSON.stringify([testCurrentStory]));
-  });
-
-  
   it('Story linked to an event',async () => {
     testStory2={
       author:{
@@ -101,7 +70,6 @@ describe('Results: Stories Queries and Mutations', () => {
       },
       event:await eventSeeder()
     };    
-    console.log(testStory2);
     const ADD_STORY = `
         mutation{
           addStory(story:{    
@@ -130,6 +98,36 @@ describe('Results: Stories Queries and Mutations', () => {
     testStory2.id=storyResponse.id;
     expect(JSON.stringify(storyResponse)).toEqual(JSON.stringify(testStory2));
   })
+
+  it('Check added stories are being fetched', async () => {    
+    const FETCH_STORIES = `
+      {
+        currentStories{
+          ... on CurrentStory{
+            authorId,
+            authorName,
+            authorLogo{
+              name,
+              logo
+            }
+            story{
+              id
+            }
+          }
+        }
+  
+      }
+    `;
+
+    const response = await query({ query: FETCH_STORIES });
+    const testCurrentStory={
+      authorId:testStory1.author.id,
+      authorName:testStory1.author.clubName,
+      authorLogo:testStory1.author.theme,      
+      story:[{id: testStory1.id},{id: testStory2.id}]
+    }
+    expect(JSON.stringify(response.data.currentStories)).toEqual(JSON.stringify([testCurrentStory]));
+  });
 
   it('Delete Story',async () => {
     const DELETE_STORY = `
