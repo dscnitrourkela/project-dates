@@ -1,7 +1,7 @@
 const Users = require('../models/user.js');
 
 const rolesPermissionsMap={
-    "1":["users.Auth","users.all","users.Update","stories.view","users.byId","users.byName"],
+    "1":["users.Auth","users.all","users.Update","stories.view","users.byId","users.byName","users.Delete"],
     "2":["users.secretEvents"],
     "3":["stories.add","stories.delete"],
     "4":["clubs.update","clubs.delete"],

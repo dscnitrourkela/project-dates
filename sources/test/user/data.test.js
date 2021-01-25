@@ -6,7 +6,7 @@ afterAll(afterTests);
 
 describe('Results: Users Queries and Mutations', () => {  
 
-  const { query, mutate } = apolloServer("a8mjiKYtt0PefnS524",["users.all","users.Auth","users.byName","users.byId","users.Update"]);
+  const { query, mutate } = apolloServer("a8mjiKYtt0PefnS524",["users.all","users.Auth","users.byName","users.byId","users.Update","users.Delete"]);
   let testUser={
     name:"Harish",
     username:"HarishTeens"  
@@ -27,7 +27,7 @@ describe('Results: Users Queries and Mutations', () => {
       expect(response.data.users).toEqual([]);
     });
 
-  it("Authenticate User",async ()=>{
+  it("Authenticate User(Sign up)",async ()=>{
     const AUTH_USER = `
       mutation {
         authUser(user:{
@@ -49,6 +49,36 @@ describe('Results: Users Queries and Mutations', () => {
     const userResponse= response.data.authUser;
     testUser.id=userResponse.id;
     expect(userResponse).toEqual(testUser);
+  })
+
+  it("Authenticate User(Sign in) + Level 1 check",async ()=>{
+    const testUser4={
+      ...testUser,
+      clubAccess:[{
+        level:"1",
+        name:testUser.name
+      }]
+    }
+    const AUTH_USER = `
+      mutation {
+        authUser{
+          ... on User{
+            name
+            id,
+            username,
+            clubAccess{
+              level,
+              name
+            }
+          }
+        }
+      }
+    `;
+
+    const response = await mutate({ mutation: AUTH_USER });
+    expect(response.errors).toEqual(undefined)
+    const userResponse= response.data.authUser;
+    expect(userResponse).toEqual(testUser4);
   })
 
   it('user by username', async () => {    
@@ -139,5 +169,27 @@ describe('Results: Users Queries and Mutations', () => {
     const userResponse= response.data.updateUser;
     expect(userResponse).toEqual(testUser3);
   })
+
+  it("Delete User",async ()=>{
+    const DELETE_USER = `
+      mutation {
+        deleteUser{
+          ... on Response{
+            success
+          }
+          ...on ErrorClass{
+            code,
+            message
+          }
+        }
+      }
+    `;
+
+    const response = await mutate({ mutation: DELETE_USER });
+    expect(response.errors).toEqual(undefined)
+    const userResponse= response.data.deleteUser;
+    expect(userResponse.success).toEqual(true);
+  })
+  
   
 });

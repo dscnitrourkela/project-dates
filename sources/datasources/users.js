@@ -83,8 +83,8 @@ class UserAPI extends DataSource {
 		return retPromise;		
 	}
 	async deleteUser(uid) {
-		const foundUser = await Users.find({firebaseUID:uid});;
-		return await foundUser.deleteOne();
+		await Users.deleteOne({firebaseUID:uid});
+		return {success:true};
 	}
 }
 module.exports = UserAPI;

@@ -65,8 +65,10 @@ const mutations = {
 			?  dataSources.UserAPI.updateUser(args,uid)
 			: ERRORS.PERMISSION_DENIED					
 	},
-	deleteUser: (parent, args, { dataSources,uid, permissions}, info) => {
-		return dataSources.UserAPI.deleteUser(uid);
+	deleteUser: (parent, args, { dataSources,uid, permissions, error}, info) => {
+		return resolverHelper(error,'users.Delete',permissions) 
+		?  dataSources.UserAPI.deleteUser(uid)
+		: ERRORS.PERMISSION_DENIED					
 	},
 };
 const fieldResolvers = {

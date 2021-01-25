@@ -45,7 +45,7 @@ const queries = `
 const mutations = `
     authUser(user:UserInputType):UserResult
     updateUser(user:UserInputType):UserResult
-    deleteUser(id:ID):Response
+    deleteUser:ResponseResult
 `;
 
 module.exports = { types, queries, mutations };
