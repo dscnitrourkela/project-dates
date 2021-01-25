@@ -1,6 +1,6 @@
 const { ApolloError} = require('apollo-server');
 
-const responseResolver=(name)=>{
+const resultResolver=(name)=>{
     return {
 		__resolveType: (obj) => {
 			return obj.__typename == 'ErrorClass' ? 'ErrorClass' : name;
@@ -19,6 +19,6 @@ const resolverHelper=(graphqlError,requiredPermission,permissions)=>{
 }
 
 module.exports={
-	responseResolver,
+	resultResolver,
 	resolverHelper
 }

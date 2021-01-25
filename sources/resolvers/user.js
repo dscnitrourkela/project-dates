@@ -2,7 +2,7 @@
 
 const { Error } = require('mongoose');
 const ERRORS = require('../errors');
-const {resolverHelper} = require("../helpers/apollo");
+const {resultResolver,resolverHelper} = require("../helpers/apollo");
 
 const queries = {
 	/**
@@ -80,11 +80,7 @@ const fieldResolvers = {
 			return parent._id;
 		},
 	},
-	UserResult: {
-		__resolveType: (obj) => {
-			return obj.__typename == 'ErrorClass' ? 'ErrorClass' : 'User';
-		},
-	},
+	UserResult: resultResolver('User')
 };
 
 module.exports = { queries, mutations, fieldResolvers };

@@ -2,12 +2,12 @@
 
 const ERRORS = require('../errors');
 const permissions= require("../models/permission");
-const {resolverHelper} = require("../helpers/apollo");
+const {resultResolver,resolverHelper} = require("../helpers/apollo");
 
 const queries = {
-	storiesByField: (parent, args, { dataSources }, info) => {
-		return dataSources.StoryAPI.getStories(args);
-    },
+	// storiesByField: (parent, args, { dataSources }, info) => {
+	// 	return dataSources.StoryAPI.getStories(args);
+    // },
     currentStories: (parent, args, { dataSources, permissions, error }, info) => {
 		return resolverHelper(error,'stories.view',permissions) 
 			?  dataSources.StoryAPI.getCurrentStories()
@@ -42,21 +42,9 @@ const fieldResolvers = {
 			return await dataSources.StoryAPI.getStoryByIds(parent.story);
         }
 	},
-	StoryResult: {
-		__resolveType: (obj) => {
-			return obj.__typename == 'ErrorClass' ? 'ErrorClass' : 'Story';
-		},
-	},
-	CurrentStoryResult: {
-		__resolveType: (obj) => {
-			return obj.__typename == 'ErrorClass' ? 'ErrorClass' : 'CurrentStory';
-		},
-	},
-	ResponseResult: {
-		__resolveType: (obj) => {
-			return obj.__typename == 'ErrorClass' ? 'ErrorClass' : 'Response';
-		},
-	},
+	StoryResult: resultResolver('Story'),
+	CurrentStoryResult: resultResolver('CurrentStory'),
+	ResponseResult: resultResolver('Response')
 };
 
 module.exports = { queries, mutations, fieldResolvers };

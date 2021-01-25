@@ -63,7 +63,7 @@ describe('Results: Stories Queries and Mutations', () => {
     expect(JSON.stringify(storyResponse)).toEqual(JSON.stringify(testStory1));
   });  
   
-  it('Story linked to an event',async () => {
+  it('Add Story linked to an event',async () => {
     testStory2={
       author:{
         id:testClub.id

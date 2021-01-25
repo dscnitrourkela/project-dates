@@ -16,10 +16,10 @@ class StoryAPI extends DataSource {
 		super();
 	}
     initialize(config) {}
-    getStories(args) {
-        delete Object.assign(args, {["_id"]: args["id"] })["id"];
-		return Stories.find(args);
-	}
+    // getStories(args) {
+    //     delete Object.assign(args, {["_id"]: args["id"] })["id"];
+	// 	return Stories.find(args);
+	// }
 	async getCurrentStories() {
         let currentStoriesList=await currentStories.find();
         let currentStoriesListMap= new Array();
@@ -94,9 +94,9 @@ class StoryAPI extends DataSource {
 		return retPromise;
     }
 
-    async getStoryById(id){
-        return await Stories.findById(id);
-    }
+    // async getStoryById(id){
+    //     return await Stories.findById(id);
+    // }
 
     async getStoryByIds(ids){
         return Stories.find({
@@ -105,10 +105,6 @@ class StoryAPI extends DataSource {
     }
     
     async deleteStory(story){
-        // await currentStories.deleteOne({ "_id" : story.id } );
-        // let foundStory=await Stories.findOne({ "_id" : story.id });
-        // await foundStory.deleteOne({ "_id" : foundStory.storyId } )
-        // return {success:true}
         await currentStories.deleteOne({ "story" : story.id });
         await Stories.deleteOne({ "_id" : story.id })
         return {success:true};
