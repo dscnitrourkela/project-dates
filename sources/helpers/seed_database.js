@@ -121,12 +121,6 @@ const seedPermissions = async () => {
 };
 
 const clubSeeder = async () =>{
-	// const user= {
-	// 	name: 'Noob Master',
-	// 	username: 'NoobMaster69',
-	// 	firebaseUID:"testuser"
-	// }
-	// let createdUser = await user.create(data);
 	const createdClub = await club.create({
 		clubName: "Avengers",
 		theme:[{
@@ -137,20 +131,6 @@ const clubSeeder = async () =>{
 			logo:"darklogo"
 		}]
 	});
-	// const accessLevelObj = {
-	// 	level: '4',
-	// 	name: createdUser.name,
-	// 	relation:'Pres',
-	// 	club: createdClub,
-	// 	user: createdUser,
-	// };
-	// const createdAccessLevel = await accessLevel.create(accessLevelObj);
-
-	// await createdClub.memberAccess.push(createdAccessLevel);
-	// await createdClub.save();
-	// await createdUser.clubAccess.push(createdAccessLevel);
-	// await createdUser.save();
-
 	return {
 		id:createdClub._id,
 		clubName: createdClub.clubName,

@@ -32,9 +32,12 @@ const apolloServer = (uid,permissions)=>{
     return createTestClient(server);
 }
 
+const unquoteUtil= (obj)=> obj.replace(/"([^"]+)":/g, '$1:')
+
 module.exports={
     beforeTests,
     afterTests,
     apolloServer,
-    PERMISSION_DENIED_TEST
+    PERMISSION_DENIED_TEST,
+    unquoteUtil
 }
