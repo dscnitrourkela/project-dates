@@ -33,7 +33,6 @@ type Mutation {
     ${mutations.join('\n')}
 }
 
-union UserOrError = User|Error
 union ResponseResult= Response | ErrorClass
 
 type Error {

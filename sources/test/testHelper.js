@@ -16,9 +16,7 @@ const beforeTests= async () => {
     const opts = { useNewUrlParser: true ,useUnifiedTopology: true ,useCreateIndex : true}; 
     mongoServer = new MongoMemoryServer();
     const mongoUri = await mongoServer.getUri();
-    await mongoose.connect(mongoUri, opts, (err) => {
-      if (err) console.error(err);
-    });
+    await mongoose.connect(mongoUri, opts);
   }
 
 const afterTests= async () => {
