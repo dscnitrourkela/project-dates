@@ -14,11 +14,15 @@ const types = `
         description : String
         createdAt : Date
     }
+    type Logo{
+        name: String
+        logo: String
+    }
     type CurrentStory{
         id:ID
         authorId: String
         authorName: String 
-        authorLogo: String
+        authorLogo: [Logo]
         story: [Story]
     }
     type Response{

@@ -40,15 +40,9 @@ class StoryAPI extends DataSource {
         return currentStoriesListMap;        
 	}
 	async addStory(story) {
-		let retPromise = {};
-		// Create Event with basic types;
-		let createdStory = await Stories.create({
-            asset: story.asset,
-            assetType: story.assetType,
-            description: story.description,
-            isExpired:false
-		});
-
+        let retPromise = {};
+        
+        let createdStory;
 		//Add nested types
 
 		//1. author
@@ -58,12 +52,22 @@ class StoryAPI extends DataSource {
             if(foundAuthor==undefined){
                 return {...INVALID_INPUT, message:"Author Not Found"};
             }
+            // Create Event with basic types;
+            createdStory = await Stories.create({
+                asset: story.asset,
+                assetType: story.assetType,
+                description: story.description
+            });
             createdStory.author = foundAuthor._id;
-
             //add to current Stories
             await currentStories.create({
                 authorId: foundAuthor._id,
-                authorLogo: foundAuthor.logo,
+                authorLogo: foundAuthor.theme.map((e)=>{
+                    return {
+                        name:e.name,
+                        logo:e.logo
+                    }
+                }),
                 authorName: foundAuthor.clubName,                
                 story: createdStory._id
             })  

@@ -23,7 +23,6 @@ class UserAPI extends DataSource {
 	async getUserByUsername(username) {
 		return await Users.findOne({ username: username });
 	}
-
 	async authUser(user,uid) {
 		let incomingUser;		
 		const exisitingUser=await Users.findOne({firebaseUID:uid});
@@ -55,7 +54,6 @@ class UserAPI extends DataSource {
 		}
 		return incomingUser;		
 	}
-
 	async updateUser(args,uid) {
 		const user = args.user;
 		let retPromise = {};
@@ -84,7 +82,6 @@ class UserAPI extends DataSource {
 		retPromise = await updatedUser.save();
 		return retPromise;		
 	}
-
 	async deleteUser(uid) {
 		const foundUser = await Users.find({firebaseUID:uid});;
 		return await foundUser.deleteOne();

@@ -29,7 +29,7 @@ describe('Errors: Users Queries and Mutations', () => {
         mutation {
           authUser(user:{
             username:"HarishTeens",
-              gmailAuthMail:"arishh2@gmail.com",
+            gmailAuthMail:"arishh2@gmail.com",
             name:"Harish"
           }){
             ... on ErrorClass{

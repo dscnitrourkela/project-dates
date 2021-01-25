@@ -13,6 +13,7 @@ const venue = require('../models/venue');
 const story = require('../models/story');
 const permission = require('../models/permission');
 const mongoose = require('mongoose');
+const { createTestClient } = require('apollo-server-testing');
 
 //method to drop the collection if it exists
 const dropIfExists = async (collectionVariable) => {
@@ -119,7 +120,7 @@ const seedPermissions = async () => {
 	});
 };
 
-const testSeeder = async () =>{
+const clubSeeder = async () =>{
 	// const user= {
 	// 	name: 'Noob Master',
 	// 	username: 'NoobMaster69',
@@ -128,6 +129,13 @@ const testSeeder = async () =>{
 	// let createdUser = await user.create(data);
 	const createdClub = await club.create({
 		clubName: "Avengers",
+		theme:[{
+			name:"light",
+			logo:"lightlogo"
+		},{
+			name:"dark",
+			logo:"darklogo"
+		}]
 	});
 	// const accessLevelObj = {
 	// 	level: '4',
@@ -143,11 +151,15 @@ const testSeeder = async () =>{
 	// await createdUser.clubAccess.push(createdAccessLevel);
 	// await createdUser.save();
 
-	return createdClub._id;
+	return {
+		id:createdClub._id,
+		clubName: createdClub.clubName,
+		theme: createdClub.theme
+	};
 	
 }
 module.exports = {
 	seedData,
 	seedPermissions,
-	testSeeder
+	clubSeeder
 };

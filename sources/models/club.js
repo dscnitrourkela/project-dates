@@ -12,6 +12,7 @@ var clubSchema = new mongoose.Schema({
 	description: String,
 	facAd: String,
 	theme:[{
+		_id:false,
 		name:String,
 		logo: String,
 		backgroundColor: String, 
