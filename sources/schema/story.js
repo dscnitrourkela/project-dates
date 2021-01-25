@@ -25,9 +25,6 @@ const types = `
         authorLogo: [Logo]
         story: [Story]
     }
-    type Response{
-        success: Boolean
-    }
     input StoryInputType{
         author : ID
         event : ID

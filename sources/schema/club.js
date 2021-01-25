@@ -3,7 +3,6 @@
 const types = `
 
 union ClubResult= Club | ErrorClass
-union ResponseResult= Response | ErrorClass
 
 type Link{
     name: String

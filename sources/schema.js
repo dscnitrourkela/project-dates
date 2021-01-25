@@ -34,10 +34,15 @@ type Mutation {
 }
 
 union UserOrError = User|Error
+union ResponseResult= Response | ErrorClass
 
 type Error {
     code:String
     message:String
     token:String
+}
+
+type Response{
+    success: Boolean
 }
 `;

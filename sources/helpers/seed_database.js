@@ -158,8 +158,19 @@ const clubSeeder = async () =>{
 	};
 	
 }
+
+const eventSeeder=async ()=>{
+	const createdEvent=await event.create({
+		eventName: "Bazingaa",
+	})
+	return {
+		id: createdEvent._id,
+		eventName:createdEvent.eventName
+	}
+}
 module.exports = {
 	seedData,
 	seedPermissions,
-	clubSeeder
+	clubSeeder,
+	eventSeeder
 };

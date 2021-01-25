@@ -105,10 +105,13 @@ class StoryAPI extends DataSource {
     }
     
     async deleteStory(story){
-        await currentStories.deleteOne({ "_id" : story.id } );
-        let foundStory=await currentStories.findOne({ "_id" : story.id });
-        await foundStory.deleteOne({ "_id" : foundStory.storyId } )
-        return {success:true}
+        // await currentStories.deleteOne({ "_id" : story.id } );
+        // let foundStory=await Stories.findOne({ "_id" : story.id });
+        // await foundStory.deleteOne({ "_id" : foundStory.storyId } )
+        // return {success:true}
+        await currentStories.deleteOne({ "story" : story.id });
+        await Stories.deleteOne({ "_id" : story.id })
+        return {success:true};
     }
 
 }
