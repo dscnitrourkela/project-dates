@@ -1,5 +1,5 @@
 const {beforeTests,unquoteUtil, afterTests, apolloServer, PERMISSION_DENIED_TEST} = require("../testHelper");
-
+const {eventSeeder} = require("../../helpers/seed_database");
 // Pre and Post Test Scripts
 beforeAll(beforeTests);
 afterAll(afterTests);
@@ -86,6 +86,33 @@ describe('Results: Clubs Queries and Mutations', () => {
       expect(JSON.stringify(clubResponse)).toEqual(testClub2); 
     });
 
+    
+    it('Update Club with events',async () => {
+      const event1=await eventSeeder();
+      const testClub2=JSON.stringify({
+        events:[event1.id]
+      })
+      const inputTestClub2=unquoteUtil(testClub2); 
+      const UPDATE_CLUB = `
+        mutation{
+          updateClub(id:"`+testClub.id+`",club:`+inputTestClub2+`){
+            ... on Club{
+              events{
+                id,
+                eventName
+              }
+            }
+          }
+        }
+      `;
+      const response = await mutate({ mutation: UPDATE_CLUB });
+      const clubResponse=response.data.updateClub;   
+      const transformedClub=JSON.stringify({
+        events:[event1]
+      })   
+      expect(JSON.stringify(clubResponse)).toEqual(transformedClub); 
+    })
+
     it('Delete club', async () => {               
       const DELETE_CLUB = `
         mutation{
@@ -100,4 +127,40 @@ describe('Results: Clubs Queries and Mutations', () => {
       const response = await mutate({ mutation: DELETE_CLUB });      
       expect(response.data.deleteClub.success).toEqual(true); 
     });
+
+
+    // it('Update Club with members',async () => {
+    //   const members=[];
+    //   const testClub3=JSON.stringify({
+    //     memberAccess:members
+    //   })
+    //   const inputTestClub3=unquoteUtil(testClub3); 
+    //   const UPDATE_CLUB = `
+    //     mutation{
+    //       updateClub(id:"`+testClub.id+`",club:`+inputTestClub3+`){
+    //         ... on Club{
+    //           memberAccess{
+    //             id
+    //             level
+    //             name
+    //             relation
+    //             club{
+    //               id
+    //             }
+    //             user{
+    //               id
+    //             }
+    //           }
+    //         }
+    //       }
+    //     }
+    //   `;
+    //   const response = await mutate({ mutation: UPDATE_CLUB });
+    //   console.log(JSON.stringify(response,null,4));
+    //   const clubResponse=response.data.updateClub;   
+    //   const transformedClub=JSON.stringify({
+    //     events:[{id:event1.id}]
+    //   })   
+    //   expect(JSON.stringify(clubResponse)).toEqual(transformedClub); 
+    // })
 })

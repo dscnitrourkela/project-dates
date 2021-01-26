@@ -6,6 +6,7 @@ const Events = require('../models/event.js');
 const AccessLevel = require('../models/accessLevel.js');
 const { DataSource } = require('apollo-datasource');
 const AccessLevelAPI = require('./accessLevels.js');
+const { INVALID_INPUT } = require('../errors/index.js');
 
 class ClubAPI extends DataSource {
 	constructor() {
@@ -74,6 +75,9 @@ class ClubAPI extends DataSource {
 		const club = args.club;
 		let retPromise = {};
 		const foundClub = await Clubs.findById(clubId);
+		if(foundClub==null){
+			return {...INVALID_INPUT, message:"Club Not Found"};
+		}
 		let updatedClub = new Clubs(foundClub);
 		updatedClub = Object.assign(updatedClub, club);
 		updatedClub = new Clubs(updatedClub);

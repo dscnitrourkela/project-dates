@@ -7,9 +7,6 @@ let {PERMISSION_DENIED} = require("../errors/index");
 PERMISSION_DENIED_TEST={...PERMISSION_DENIED}
 delete PERMISSION_DENIED_TEST.__typename;
 
-// May require additional time for downloading MongoDB binaries
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 600000;
-
 let mongoServer;
 
 const beforeTests= async () => {
