@@ -28,10 +28,10 @@ describe('Results: Clubs Queries and Mutations', () => {
       const testClub1=JSON.stringify({
         clubName:testClub.clubName
       })
-      const inputTesetClub1=unquoteUtil(testClub1);
+      const inputTestClub1=unquoteUtil(testClub1);
       const CREATE_CLUB = `
         mutation{
-          addClub(club:`+inputTesetClub1+`){
+          addClub(club:`+inputTestClub1+`){
             ... on Club{
               clubName,
               id
@@ -50,10 +50,10 @@ describe('Results: Clubs Queries and Mutations', () => {
       const testClubObj={...testClub};
       delete(testClubObj.id);
       const testClub2=JSON.stringify(testClubObj)
-      const inputTesetClub2=unquoteUtil(testClub2);
+      const inputTestClub2=unquoteUtil(testClub2);
       const UPDATE_CLUB = `
         mutation{
-          updateClub(id:"`+testClub.id+`",club:`+inputTesetClub2+`){
+          updateClub(id:"`+testClub.id+`",club:`+inputTestClub2+`){
             ... on Club{
               clubName
               description,
@@ -127,7 +127,6 @@ describe('Results: Clubs Queries and Mutations', () => {
       const response = await mutate({ mutation: DELETE_CLUB });      
       expect(response.data.deleteClub.success).toEqual(true); 
     });
-
 
     // it('Update Club with members',async () => {
     //   const members=[];

@@ -22,7 +22,7 @@ describe('Results: Stories Queries and Mutations', () => {
 
       const response = await query({ query: FETCH_STORIES });
       expect(response.data.currentStories).toEqual([]);
-    })
+  })
 
   it('Add Story', async () => { 
     testClub=await clubSeeder();

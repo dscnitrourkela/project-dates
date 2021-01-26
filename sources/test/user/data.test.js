@@ -6,7 +6,7 @@ afterAll(afterTests);
 
 describe('Results: Users Queries and Mutations', () => {  
 
-  const { query, mutate } = apolloServer("a8mjiKYtt0PefnS524",["users.all","users.Auth","users.byName","users.byId","users.Update","users.Delete"]);
+  const { query, mutate } = apolloServer("a8mjiKYtt0PefnS524",["superuser.all"]);
   let testUser={
     name:"Harish",
     username:"HarishTeens"  
