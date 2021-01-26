@@ -1,12 +1,12 @@
 const {beforeTests,unquoteUtil, afterTests, apolloServer, PERMISSION_DENIED_TEST} = require("../testHelper");
-const {eventSeeder} = require("../../helpers/seed_database");
+const {clubSeeder,eventSeeder} = require("../../helpers/seed_database");
 // Pre and Post Test Scripts
 beforeAll(beforeTests);
 afterAll(afterTests);
 
 describe('Results: Clubs Queries and Mutations', () => {  
-    const { query, mutate } = apolloServer("a8mjiKYtt0PefnS524",["superuser.all"]);
-    let testClub={
+    const { query, mutate } = apolloServer("a8mjiKYtt0PefnS524",["superuser.all"]);    
+    const testObj={
       clubName:"DSC",
       description: "developer student clubs",
       facAd: "some dude",
@@ -23,37 +23,53 @@ describe('Results: Clubs Queries and Mutations', () => {
         {name:"Harish",designation:"DSC Lead",mobileNo:"1234567890",email:"a@a.com"},
         {name:"Chinmoi",designation:"Meme coach",mobileNo:"1234567890",email:"a@a.com"}
       ]
-    }
-    it('Create Club', async () => {               
-      const testClub1=JSON.stringify({
-        clubName:testClub.clubName
-      })
-      const inputTestClub1=unquoteUtil(testClub1);
+    };
+    it('Create Club', async () => {                           
+      const testClub=JSON.stringify(testObj)
+      const inputTestClub=unquoteUtil(testClub);
       const CREATE_CLUB = `
         mutation{
-          addClub(club:`+inputTestClub1+`){
+          addClub(club:`+inputTestClub+`){
             ... on Club{
               clubName,
+              description,
+              facAd,
+              theme{
+                name,
+                logo,
+                backgroundColor
+              }
+              society,
+              domain,
+              links{
+                name,
+                link
+              },
+              contactInfo{
+                name,
+                designation,
+                mobileNo,
+                email
+              },
               id
             }
           }
         }
       `;
-
       const response = await mutate({ mutation: CREATE_CLUB });
       const clubResponse=response.data.addClub;
-      testClub.id=clubResponse.id;
-      expect(clubResponse.clubName).toEqual(testClub.clubName); 
+      expect(clubResponse.id).toEqual(expect.any(String))
+      delete(clubResponse.id);
+      expect(JSON.stringify(clubResponse)).toEqual(testClub); 
     });
 
-    it('Update Club with other info', async () => {               
-      const testClubObj={...testClub};
-      delete(testClubObj.id);
-      const testClub2=JSON.stringify(testClubObj)
-      const inputTestClub2=unquoteUtil(testClub2);
+    it('Update Club with other info', async () => {    
+      const clubId=(await clubSeeder()).id;           
+      const testClub=JSON.stringify(testObj)
+      const inputTestClub=unquoteUtil(testClub);
       const UPDATE_CLUB = `
         mutation{
-          updateClub(id:"`+testClub.id+`",club:`+inputTestClub2+`){
+          updateClub(id:"`+clubId+`",club:`+inputTestClub+`){
             ... on Club{
               clubName
               description,
@@ -75,7 +91,6 @@ describe('Results: Clubs Queries and Mutations', () => {
                 mobileNo,
                 email
               }
-
             }
           }
         }
@@ -83,19 +98,20 @@ describe('Results: Clubs Queries and Mutations', () => {
 
       const response = await mutate({ mutation: UPDATE_CLUB });
       const clubResponse=response.data.updateClub;
-      expect(JSON.stringify(clubResponse)).toEqual(testClub2); 
+      expect(JSON.stringify(clubResponse)).toEqual(testClub); 
     });
 
     
     it('Update Club with events',async () => {
-      const event1=await eventSeeder();
-      const testClub2=JSON.stringify({
-        events:[event1.id]
+      const clubId=(await clubSeeder()).id;  
+      const event=await eventSeeder();
+      const testClub=JSON.stringify({
+        events:[event.id]
       })
-      const inputTestClub2=unquoteUtil(testClub2); 
+      const inputTestClub=unquoteUtil(testClub); 
       const UPDATE_CLUB = `
         mutation{
-          updateClub(id:"`+testClub.id+`",club:`+inputTestClub2+`){
+          updateClub(id:"`+clubId+`",club:`+inputTestClub+`){
             ... on Club{
               events{
                 id,
@@ -108,15 +124,16 @@ describe('Results: Clubs Queries and Mutations', () => {
       const response = await mutate({ mutation: UPDATE_CLUB });
       const clubResponse=response.data.updateClub;   
       const transformedClub=JSON.stringify({
-        events:[event1]
+        events:[event]
       })   
       expect(JSON.stringify(clubResponse)).toEqual(transformedClub); 
     })
 
-    it('Delete club', async () => {               
+    it('Delete club', async () => {     
+      const clubId=(await clubSeeder()).id;            
       const DELETE_CLUB = `
         mutation{
-          deleteClub(id:"`+testClub.id+`"){
+          deleteClub(id:"`+clubId+`"){
             ... on Response{
               success
             }
