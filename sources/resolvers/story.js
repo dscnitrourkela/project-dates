@@ -22,9 +22,13 @@ const queries = {
 
 const mutations = {
 	addStory: async (parent, { story }, { dataSources ,uid,permissions,error}, info) => {
-		return resolverHelper(error, 'stories.add$'+story.author,permissions) 
+		if(story==undefined || story.author==undefined){
+            return {...ERRORS.INVALID_INPUT, message:"Input Story must have author"}
+        }else{
+			return resolverHelper(error, 'stories.add$'+story.author,permissions)
 			?  dataSources.StoryAPI.addStory(story)
 			: ERRORS.PERMISSION_DENIED						
+		}
 	}
 };
 

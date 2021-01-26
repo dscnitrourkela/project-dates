@@ -23,6 +23,10 @@ const afterTests= async () => {
     await mongoServer.stop();
 }
 
+const prettyPrint= (o)=>{
+    console.log(JSON.stringify(o,null,4));
+}
+
 const apolloServer = (uid,permissions)=>{
     server.context = ()=> ({
         uid:uid,
@@ -30,6 +34,9 @@ const apolloServer = (uid,permissions)=>{
     }) 
     return createTestClient(server);
 }
+
+const ObjectIdGenerator = (m = Math, d = Date, h = 16, s = s => m.floor(s).toString(h)) =>
+    s(d.now() / 1000) + ' '.repeat(h).replace(/./g, () => s(m.random() * h))
 
 const unquoteUtil= (obj)=> obj.replace(/"([^"]+)":/g, '$1:')
 
@@ -39,5 +46,6 @@ module.exports={
     apolloServer,
     PERMISSION_DENIED_TEST,
     INVALID_INPUT_TEST,
-    unquoteUtil
+    unquoteUtil,
+    ObjectIdGenerator
 }

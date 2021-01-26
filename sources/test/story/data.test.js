@@ -1,4 +1,4 @@
-const {beforeTests,afterTests, apolloServer, PERMISSION_DENIED_TEST} = require("../testHelper");
+const {beforeTests,afterTests, apolloServer,ObjectIdGenerator} = require("../testHelper");
 const {clubSeeder,eventSeeder} = require("../../helpers/seed_database");
 
 // Pre and Post Test Scripts
@@ -6,7 +6,7 @@ beforeAll(beforeTests);
 afterAll(afterTests);
 
 describe('Results: Stories Queries and Mutations', () => {  
-  const { query, mutate } = apolloServer("a8mjiKYtt0PefnS524",["stories.view","superuser.all"]);
+  const { query, mutate } = apolloServer("a8mjiKYtt0PefnS524",["superuser.all"]);
   let testStory1,testStory2,testClub;
   it('Current Stories initally empty', async () => {    
       const FETCH_STORIES = `
@@ -152,5 +152,77 @@ describe('Results: Stories Queries and Mutations', () => {
     expect(response.data.deleteStory.success).toEqual(true);
   })
 
-  
 });
+
+describe('Results: Stories Invalid Input', () => {
+  const { query, mutate } = apolloServer("a8mjiKYtt0PefnS524",["superuser.all"]);
+  it('Add Story Story Author Not Given', async () => { 
+    const ADD_STORY = `
+        mutation{
+          addStory{
+            ... on ErrorClass{
+                message,
+                code
+            }
+          }
+        }
+    `;
+    const response = await mutate({ mutation: ADD_STORY });  
+    expect(response.data.addStory).toEqual({...INVALID_INPUT_TEST, message:"Input Story must have author"});
+  }); 
+
+  it('Add Story Story Author Not Found', async () => {     
+    const ADD_STORY = `
+        mutation{
+          addStory(story:{
+              author:"`+ObjectIdGenerator()+`"
+            }){
+            ... on ErrorClass{
+                message,
+                code
+            }
+          }
+        }
+    `;
+    const response = await mutate({ mutation: ADD_STORY });  
+    expect(response.data.addStory).toEqual({...INVALID_INPUT_TEST, message:"Author Not Found"});
+  }); 
+
+  it('Add Story linked to an event Invalid',async () => {
+    const testClub=await clubSeeder();
+    const ADD_STORY = `
+        mutation{
+          addStory(story:{    
+            author:"`+testClub.id+`",
+            event:"vdersewwawa"
+          }){
+            ... on ErrorClass{
+              code,
+              message
+            }
+          }
+        }
+    `;
+    const response = await mutate({ mutation: ADD_STORY });    
+    expect(response.data.addStory).toEqual({...INVALID_INPUT_TEST, message:"Invalide Event ID"});
+  })
+
+  it('Add Story linked to an event Not Found',async () => {
+    const testClub=await clubSeeder();
+    const ADD_STORY = `
+        mutation{
+          addStory(story:{    
+            author:"`+testClub.id+`",
+            event:"`+ObjectIdGenerator()+`"
+          }){
+            ... on ErrorClass{
+              code,
+              message
+            }
+          }
+        }
+    `;
+    const response = await mutate({ mutation: ADD_STORY });    
+    expect(response.data.addStory).toEqual({...INVALID_INPUT_TEST, message:"Event Not Found"});
+  })
+})
