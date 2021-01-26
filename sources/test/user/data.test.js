@@ -1,5 +1,5 @@
-const {beforeTests,afterTests, apolloServer, PERMISSION_DENIED_TEST} = require("../testHelper");
-
+const {beforeTests,afterTests, apolloServer, unquoteUtil, PERMISSION_DENIED_TEST} = require("../testHelper");
+const {UserSeeder} =require("../../helpers/seed_database");
 // Pre and Post Test Scripts
 beforeAll(beforeTests);
 afterAll(afterTests);
@@ -7,87 +7,17 @@ afterAll(afterTests);
 describe('Results: Users Queries and Mutations', () => {  
 
   const { query, mutate } = apolloServer("a8mjiKYtt0PefnS524",["superuser.all"]);
-  let testUser={
+  let testObj={
     name:"Harish",
-    username:"HarishTeens"  
+    username:"HarishTeens",
+    gmailAuthMail: "a@a.com"
   };
-  it('Get all Users', async () => {    
-      const GET_USERS = `
-        {
-          users{
-            ... on User{
-              name
-            }
-          }
-    
-        }
-      `;
-
-      const response = await query({ query: GET_USERS });
-      expect(response.data.users).toEqual([]);
-    });
-
-  it("Authenticate User(Sign up)",async ()=>{
-    const AUTH_USER = `
-      mutation {
-        authUser(user:{
-          username:"`+testUser.username+`",
-          gmailAuthMail:"arishh2@gmail.com",
-          name:"`+testUser.name+`"
-        }){
-          ... on User{
-            name
-            id,
-            username
-          }
-        }
-      }
-    `;
-
-    const response = await mutate({ mutation: AUTH_USER });
-    expect(response.errors).toEqual(undefined)
-    const userResponse= response.data.authUser;
-    testUser.id=userResponse.id;
-    expect(userResponse).toEqual(testUser);
-  })
-
-  it("Authenticate User(Sign in) + Level 1 check",async ()=>{
-    const testUser4={
-      ...testUser,
-      clubAccess:[{
-        level:"1",
-        name:testUser.name
-      }]
-    }
-    const AUTH_USER = `
-      mutation {
-        authUser{
-          ... on User{
-            name
-            id,
-            username,
-            clubAccess{
-              level,
-              name
-            }
-          }
-        }
-      }
-    `;
-
-    const response = await mutate({ mutation: AUTH_USER });
-    expect(response.errors).toEqual(undefined)
-    const userResponse= response.data.authUser;
-    expect(userResponse).toEqual(testUser4);
-  })
-
   it('user by username', async () => {    
+    const testUser=await UserSeeder("coolnick");
     const GET_USER = `
       {
         userByUsername(username:"`+testUser.username+`"){            
           ... on User{
-            name
-            id,
             username
           }
         } 
@@ -95,15 +25,15 @@ describe('Results: Users Queries and Mutations', () => {
     `;
 
     const response = await query({ query: GET_USER });
-    expect(response.data.userByUsername).toEqual(testUser);
+    expect(response.data.userByUsername.username).toEqual("coolnick");
   }); 
   
-  it('user by id', async () => {    
+  it('user by id', async () => {  
+    const testUser=await UserSeeder("coolnick2");  
     const GET_USER = `
       {
-        userById(id:"`+testUser.id+`"){            
+        userById(id:"`+testUser._id+`"){            
           ... on User{
-            name
             id,
             username
           }
@@ -111,26 +41,70 @@ describe('Results: Users Queries and Mutations', () => {
       }
     `;      
     const response = await query({ query: GET_USER });
-    expect(response.data.userById).toEqual(testUser);
-  });   
+    expect(JSON.stringify(response.data.userById.id)).toEqual(JSON.stringify(testUser._id));
+  }); 
+  
+  it("Authenticate User(Sign up+Sign In)",async ()=>{
+    //SIGN Up
+    const testUser=JSON.stringify(testObj);
+    const inputTestUser=unquoteUtil(testUser);
+    const SIGNUP_USER = `
+      mutation {
+        authUser(user:`+inputTestUser+`){
+          ... on User{
+            name
+            username,
+            gmailAuthMail,
+            id,
+          }
+        }
+      }
+    `;
 
-  it("Update User",async ()=>{
-    const testUser2={
-        mobile:"12345678",
-        emergencyContact:"1223456789",
-        address: "hello this is my address",
-        displayPicture: "yoloasdfadsf",
-        gmailAuthMail:"sdfgyuik,sadf"
+    const response = await mutate({ mutation: SIGNUP_USER });
+    const userResponse= response.data.authUser;
+    const userId=userResponse.id;
+    expect(userResponse.id).toEqual(expect.any(String))
+    delete(userResponse.id);
+    expect(JSON.stringify(userResponse)).toEqual(testUser);
+    //SIGN In
+    {
+      const AUTH_USER = `
+      mutation {
+        authUser{
+          ... on User{
+            clubAccess{
+              level,
+              name,
+              user{
+                id
+              }
+            }
+          }
+        }
+      }`;
+      const response = await mutate({ mutation: AUTH_USER });
+      const userResponse= response.data.authUser;
+      expect(userResponse.clubAccess).toEqual([{
+        name:testObj.name,
+        level:'1',
+        user:{id: userId}
+      }]);
     }
+  })  
+
+  it("Update User",async ()=>{ 
+    const testUser=JSON.stringify({
+      mobile:"12345678",
+      emergencyContact:"1223456789",
+      address: "hello this is my address",
+      displayPicture: "yoloasdfadsf",
+      gmailAuthMail:"sdfgyuik,sadf"
+  })
+    const inputTestUser=unquoteUtil(testUser);
     const UPDATE_USER = `
       mutation {
-        updateUser(user:{
-          mobile: "`+testUser2.mobile+`",
-          emergencyContact: "`+testUser2.emergencyContact+`",
-          address: "`+testUser2.address+`",
-          displayPicture: "`+testUser2.displayPicture+`",
-          gmailAuthMail: "`+testUser2.gmailAuthMail+`"
-        }){
+        updateUser(user:`+inputTestUser+`){
           ... on User{
             mobile,
             emergencyContact,
@@ -145,20 +119,24 @@ describe('Results: Users Queries and Mutations', () => {
     const response = await mutate({ mutation: UPDATE_USER });
     expect(response.errors).toEqual(undefined)
     const userResponse= response.data.updateUser;
-    expect(userResponse).toEqual(testUser2);
+    expect(JSON.stringify(userResponse)).toEqual(testUser);
   })
 
   it("Update User's Insti ID",async ()=>{
-    const testUser3={
-        instituteId: "117CS0176"
+    const testUser={
+        instituteId: "117CS0176",
+        clubAccess:[{level:'1'},{level:'2'}]
     }
     const UPDATE_USER = `
       mutation {
         updateUser(user:{
-          instituteId: "`+testUser3.instituteId+`"          
+          instituteId: "`+testUser.instituteId+`"          
         }){
           ... on User{
-            instituteId
+            instituteId,
+            clubAccess{
+              level
+            }
           }
         }
       }
@@ -167,7 +145,7 @@ describe('Results: Users Queries and Mutations', () => {
     const response = await mutate({ mutation: UPDATE_USER });
     expect(response.errors).toEqual(undefined)
     const userResponse= response.data.updateUser;
-    expect(userResponse).toEqual(testUser3);
+    expect(userResponse).toEqual(testUser);
   })
 
   it("Delete User",async ()=>{
@@ -189,7 +167,6 @@ describe('Results: Users Queries and Mutations', () => {
     expect(response.errors).toEqual(undefined)
     const userResponse= response.data.deleteUser;
     expect(userResponse.success).toEqual(true);
-  })
-  
+  }) 
   
 });

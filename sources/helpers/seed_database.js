@@ -13,6 +13,7 @@ const venue = require('../models/venue');
 const story = require('../models/story');
 const permission = require('../models/permission');
 const StoryAPI = require("../datasources/stories");
+const UserAPI = require("../datasources/users");
 const mongoose = require('mongoose');
 const { createTestClient } = require('apollo-server-testing');
 
@@ -156,10 +157,15 @@ const storySeeder= async (author)=>{
 	}
 	return {id: (await new StoryAPI().addStory(story))._id};
 }
+
+const UserSeeder= async (username)=>{
+	return user.create({username:username,firebaseUID:username});
+}
 module.exports = {
 	seedData,
 	seedPermissions,
 	clubSeeder,
 	eventSeeder,
-	storySeeder
+	storySeeder,
+	UserSeeder
 };

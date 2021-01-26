@@ -125,8 +125,7 @@ describe('Results: Stories Queries and Mutations', () => {
       }
     `;
 
-    const response = await query({ query: DELETE_STORY });     
-    console.log(JSON.stringify(response,null,4)) 
+    const response = await query({ query: DELETE_STORY });  
     expect(response.data.deleteStory.success).toEqual(true);
   })
 
