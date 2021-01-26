@@ -164,3 +164,79 @@ describe('Results: Clubs Queries and Mutations', () => {
     //   expect(JSON.stringify(clubResponse)).toEqual(transformedClub); 
     // })
 })
+
+describe('Errors: Clubs Invalid Input', () => {  
+  const { query, mutate } = apolloServer("a8mjiKYtt0PefnS524",["superuser.all"]);       
+
+  it('Update Club', async () => {               
+    const UPDATE_CLUB = `
+      mutation{
+        updateClub(id:"12345678",club:{
+            clubName:"asdf"
+        }){
+          ... on ErrorClass{
+              message,
+              code
+          }
+        }
+      }
+    `;
+
+    const response = await mutate({ mutation: UPDATE_CLUB });
+    expect(response.data.updateClub.code).toEqual(INVALID_INPUT_TEST.code); 
+  });
+
+  it('Delete club', async () => {               
+    const DELETE_CLUB = `
+      mutation{
+        deleteClub(id:"2345677"){
+          ... on ErrorClass{
+              message,
+              code
+          }
+        }
+      }
+    `;
+
+    const response = await mutate({ mutation: DELETE_CLUB });      
+    expect(response.data.deleteClub.code).toEqual(INVALID_INPUT_TEST.code); 
+  });
+})
+
+describe('Errors: Clubs Not Found', () => {  
+  const { query, mutate } = apolloServer("a8mjiKYtt0PefnS524",["superuser.all"]);       
+
+  it('Update Club', async () => {               
+    const UPDATE_CLUB = `
+      mutation{
+        updateClub(id:"600fb30e0bf60939044b3eb8",club:{
+            clubName:"asdf"
+        }){
+          ... on ErrorClass{
+              message,
+              code
+          }
+        }
+      }
+    `;
+
+    const response = await mutate({ mutation: UPDATE_CLUB });
+    expect(response.data.updateClub.code).toEqual(INVALID_INPUT_TEST.code); 
+  });
+
+  it('Delete club', async () => {               
+    const DELETE_CLUB = `
+      mutation{
+        deleteClub(id:"600fb30e0bf60939044b3eb8"){
+          ... on ErrorClass{
+              message,
+              code
+          }
+        }
+      }
+    `;
+
+    const response = await mutate({ mutation: DELETE_CLUB });      
+    expect(response.data.deleteClub.code).toEqual(INVALID_INPUT_TEST.code); 
+  });
+})

@@ -74,9 +74,14 @@ class ClubAPI extends DataSource {
 		const clubId = args.id;
 		const club = args.club;
 		let retPromise = {};
-		const foundClub = await Clubs.findById(clubId);
-		if(foundClub==null){
-			return {...INVALID_INPUT, message:"Club Not Found"};
+		let foundClub;
+		try{
+			foundClub = await Clubs.findById(clubId);
+			if(foundClub==undefined){
+				return {...INVALID_INPUT, message:"Club Not Found"};
+			}
+		}catch(e){
+			return {...INVALID_INPUT, message:e.message};
 		}
 		let updatedClub = new Clubs(foundClub);
 		updatedClub = Object.assign(updatedClub, club);
@@ -122,7 +127,16 @@ class ClubAPI extends DataSource {
 	}
 
 	async deleteClub(id) {		
-		const foundClub = await Clubs.findById(id);
+		let foundClub;
+		try{
+			foundClub = await Clubs.findById(id);
+			if(foundClub==undefined){
+				return {...INVALID_INPUT, message:"Club Not Found"};
+			}
+		}catch(e){
+			return {...INVALID_INPUT, message:e.message};
+		}
+		
 		const accessArray = foundClub.memberAccess;
 		const AccessLevels = new AccessLevelAPI();
 		// accessArray exists and not empty

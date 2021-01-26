@@ -2,10 +2,12 @@ const { createTestClient } = require('apollo-server-testing');
 const server = require('../server');
 const mongoose = require("mongoose");
 const { MongoMemoryServer } = require('mongodb-memory-server');
-let {PERMISSION_DENIED} = require("../errors/index");
+let {PERMISSION_DENIED,INVALID_INPUT} = require("../errors/index");
 
 PERMISSION_DENIED_TEST={...PERMISSION_DENIED}
 delete PERMISSION_DENIED_TEST.__typename;
+INVALID_INPUT_TEST={...INVALID_INPUT}
+delete INVALID_INPUT_TEST.__typename;
 
 let mongoServer;
 
@@ -36,5 +38,6 @@ module.exports={
     afterTests,
     apolloServer,
     PERMISSION_DENIED_TEST,
+    INVALID_INPUT_TEST,
     unquoteUtil
 }
