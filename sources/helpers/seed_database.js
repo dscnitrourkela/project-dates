@@ -12,6 +12,7 @@ const club = require('../models/club');
 const venue = require('../models/venue');
 const story = require('../models/story');
 const permission = require('../models/permission');
+const StoryAPI = require("../datasources/stories");
 const mongoose = require('mongoose');
 const { createTestClient } = require('apollo-server-testing');
 
@@ -148,9 +149,17 @@ const eventSeeder=async ()=>{
 		eventName:createdEvent.eventName
 	}
 }
+
+const storySeeder= async (author)=>{
+	const story={
+		author: author		
+	}
+	return {id: (await new StoryAPI().addStory(story))._id};
+}
 module.exports = {
 	seedData,
 	seedPermissions,
 	clubSeeder,
-	eventSeeder
+	eventSeeder,
+	storySeeder
 };

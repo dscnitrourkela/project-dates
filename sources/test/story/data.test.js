@@ -1,5 +1,5 @@
-const {beforeTests,afterTests, apolloServer,ObjectIdGenerator} = require("../testHelper");
-const {clubSeeder,eventSeeder} = require("../../helpers/seed_database");
+const {beforeTests,afterTests, unquoteUtil, apolloServer,ObjectIdGenerator} = require("../testHelper");
+const {clubSeeder,eventSeeder,storySeeder} = require("../../helpers/seed_database");
 
 // Pre and Post Test Scripts
 beforeAll(beforeTests);
@@ -7,50 +7,26 @@ afterAll(afterTests);
 
 describe('Results: Stories Queries and Mutations', () => {  
   const { query, mutate } = apolloServer("a8mjiKYtt0PefnS524",["superuser.all"]);
-  let testStory1,testStory2,testClub;
-  it('Current Stories initally empty', async () => {    
-      const FETCH_STORIES = `
-        {
-          currentStories{
-            ... on CurrentStory{
-              id
-            }
-          }
-    
-        }
-      `;
-
-      const response = await query({ query: FETCH_STORIES });
-      expect(response.data.currentStories).toEqual([]);
-  })
-
+  const testObj={
+    asset:"this is story asset",
+    assetType:"dummy text",
+    description:"yolooo"
+  };
   it('Add Story', async () => { 
-    testClub=await clubSeeder();
-    testStory1={
-      asset:"this is story asset",
-      assetType:"dummy text",
-      description:"yolooo",
-      author:testClub
-    };    
+    const testStory=JSON.stringify({
+      ...testObj,
+      author: (await clubSeeder()).id
+    });
+    const inputTestStory=unquoteUtil(testStory);    
     const ADD_STORY = `
         mutation{
-          addStory(story:{    
-            author:"`+testStory1.author.id+`",
-            asset:"`+testStory1.asset+`",
-            description:"`+testStory1.description+`",
-            assetType:"`+testStory1.assetType+`"
-          }){
+          addStory(story:`+inputTestStory+`){
             ... on Story{
               asset,
               assetType,
               description,
               author{
-                id,
-                clubName,
-                theme{
-                  name,
-                  logo
-                }
+                id
               },
               id
             }
@@ -59,47 +35,48 @@ describe('Results: Stories Queries and Mutations', () => {
     `;
     const response = await mutate({ mutation: ADD_STORY });   
     const storyResponse=response.data.addStory;
-    testStory1.id=storyResponse.id;
-    expect(JSON.stringify(storyResponse)).toEqual(JSON.stringify(testStory1));
+    expect(storyResponse.id).toEqual(expect.any(String))
+    delete(storyResponse.id);
+    storyResponse.author=storyResponse.author.id
+    expect(JSON.stringify(storyResponse)).toEqual(testStory);
   });  
   
   it('Add Story linked to an event',async () => {
-    testStory2={
-      author:{
-        id:testClub.id
-      },
-      event:await eventSeeder()
-    };    
+    const testStory=JSON.stringify({
+      ...testObj,
+      author: (await clubSeeder()).id,
+      event:(await eventSeeder()).id
+    });
+    const inputTestStory=unquoteUtil(testStory);        
     const ADD_STORY = `
-        mutation{
-          addStory(story:{    
-            author:"`+testStory2.author.id+`",
-            event:"`+testStory2.event.id+`"
-          }){
+          mutation{
+            addStory(story:`+inputTestStory+`){
             ... on Story{
+              asset,
+              assetType,
+              description,
               author{
                 id
               }
               event{
-                id,
-                eventName
+                id
               }
-              id
-            }
-            ... on ErrorClass{
-              code,
-              message
             }
           }
         }
     `;
-    const response = await mutate({ mutation: ADD_STORY });            
+    const response = await mutate({ mutation: ADD_STORY });          
     const storyResponse=response.data.addStory;
-    testStory2.id=storyResponse.id;
-    expect(JSON.stringify(storyResponse)).toEqual(JSON.stringify(testStory2));
+    storyResponse.author=storyResponse.author.id;
+    storyResponse.event=storyResponse.event.id
+    expect(JSON.stringify(storyResponse)).toEqual(testStory);
   })
 
   it('Check added stories are being fetched', async () => {    
+    const club=await clubSeeder(); 
+    const id1=await storySeeder(club.id); // story 1 
+    const id2=await storySeeder(club.id);// story 2
+    const storyIds=[id1,id2];
     const FETCH_STORIES = `
       {
         currentStories{
@@ -119,36 +96,37 @@ describe('Results: Stories Queries and Mutations', () => {
       }
     `;
 
-    const response = await query({ query: FETCH_STORIES });
-    const testCurrentStory={
-      authorId:testStory1.author.id,
-      authorName:testStory1.author.clubName,
-      authorLogo:testStory1.author.theme,      
-      story:[{id: testStory1.id},{id: testStory2.id}]
-    }
-    expect(JSON.stringify(response.data.currentStories)).toEqual(JSON.stringify([testCurrentStory]));
+    const response = await query({ query: FETCH_STORIES });     
+    const storyResponse=response.data.currentStories;
+    const testStoryResponse=storyResponse.filter((e)=>e.authorId==club.id);
+    const testCurrentStory=[{
+      authorId:club.id,
+      authorName:club.clubName,
+      authorLogo:club.theme,      
+      story:storyIds
+    }]
+    expect(JSON.stringify(testStoryResponse)).toEqual(JSON.stringify(testCurrentStory));
   });
 
   it('Delete Story',async () => {
+    const club=await clubSeeder(); 
+    const story=await storySeeder(club.id); // story 1 
     const DELETE_STORY = `
       {
         deleteStory(
-          id:"`+testStory1.id+`",
-          author:"`+testStory1.author.id+`"
+          id:"`+story.id+`",
+          author:"`+club.id+`"
         ){
           ... on Response{
             success
-          }
-          ... on ErrorClass{
-            code,
-            message
           }
         }
   
       }
     `;
 
-    const response = await query({ query: DELETE_STORY }); 
+    const response = await query({ query: DELETE_STORY });     
+    console.log(JSON.stringify(response,null,4)) 
     expect(response.data.deleteStory.success).toEqual(true);
   })
 
