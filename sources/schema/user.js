@@ -14,6 +14,7 @@ const types = `
         mobile:String
         emergencyContact:String
         displayPicture:String
+        address:String
     }
     input UserInputType{
         name:String
@@ -23,6 +24,7 @@ const types = `
         mobile:String
         emergencyContact:String
         displayPicture:String
+        address:String
     }
     
 `;
@@ -43,7 +45,7 @@ const queries = `
 const mutations = `
     authUser(user:UserInputType):UserResult
     updateUser(user:UserInputType):UserResult
-    deleteUser(id:ID):Response
+    deleteUser:ResponseResult
 `;
 
 module.exports = { types, queries, mutations };

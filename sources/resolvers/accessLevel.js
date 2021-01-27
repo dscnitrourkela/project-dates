@@ -2,7 +2,7 @@
 
 const queries = {};
 const ERRORS = require('../errors');
-const {responseResolver,resolverHelper}=require('../helpers/apollo');
+const {resultResolver,resolverHelper}=require('../helpers/apollo');
 
 const mutations = {
 	addAccessLevel: (parent, { accessLevel }, { dataSources, permissions, error }, info) => {
@@ -38,7 +38,7 @@ const fieldResolvers = {
 			return await dataSources.ClubAPI.getClubById(parent.club);
 		},
 	},
-	AccessLevelResponse:responseResolver("AccessLevel")
+	AccessLevelResponse:resultResolver("AccessLevel")
 };
 
 module.exports = { queries, mutations, fieldResolvers };

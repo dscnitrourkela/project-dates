@@ -16,10 +16,10 @@ class StoryAPI extends DataSource {
 		super();
 	}
     initialize(config) {}
-    getStories(args) {
-        delete Object.assign(args, {["_id"]: args["id"] })["id"];
-		return Stories.find(args);
-	}
+    // getStories(args) {
+    //     delete Object.assign(args, {["_id"]: args["id"] })["id"];
+	// 	return Stories.find(args);
+	// }
 	async getCurrentStories() {
         let currentStoriesList=await currentStories.find();
         let currentStoriesListMap= new Array();
@@ -40,37 +40,36 @@ class StoryAPI extends DataSource {
         return currentStoriesListMap;        
 	}
 	async addStory(story) {
-		let retPromise = {};
-		// Create Event with basic types;
-		let createdStory = await Stories.create({
-            asset: story.asset,
-            assetType: story.assetType,
-            description: story.description,
-            isExpired:false
-		});
-
+        let retPromise = {};
+        
+        let createdStory;
 		//Add nested types
 
-		//1. author
-		if (story.author != undefined) {
-			const authorId = story.author;
-            const foundAuthor = await Clubs.findById(authorId);
-            if(foundAuthor==undefined){
-                return {...INVALID_INPUT, message:"Author Not Found"};
-            }
-            createdStory.author = foundAuthor._id;
-
-            //add to current Stories
-            await currentStories.create({
-                authorId: foundAuthor._id,
-                authorLogo: foundAuthor.logo,
-                authorName: foundAuthor.clubName,                
-                story: createdStory._id
-            })  
-            
-        }else{
-            return {...INVALID_INPUT, message:"Author Not Given"};
+        // 1. Author
+		const authorId = story.author; //author input check is already done at resolver
+        const foundAuthor = await Clubs.findById(authorId);
+        if(foundAuthor==undefined){
+            return {...INVALID_INPUT, message:"Author Not Found"};
         }
+        // Create Event with basic types;
+        createdStory = await Stories.create({
+            asset: story.asset,
+            assetType: story.assetType,
+            description: story.description
+        });
+        createdStory.author = foundAuthor._id;
+        //add to current Stories
+        await currentStories.create({
+            authorId: foundAuthor._id,
+            authorLogo: foundAuthor.theme.map((e)=>{
+                return {
+                    name:e.name,
+                    logo:e.logo
+                }
+            }),
+            authorName: foundAuthor.clubName,                
+            story: createdStory._id
+        })  
 
         //2. event
 		if (story.event != undefined) {
@@ -90,9 +89,9 @@ class StoryAPI extends DataSource {
 		return retPromise;
     }
 
-    async getStoryById(id){
-        return await Stories.findById(id);
-    }
+    // async getStoryById(id){
+    //     return await Stories.findById(id);
+    // }
 
     async getStoryByIds(ids){
         return Stories.find({
@@ -101,10 +100,9 @@ class StoryAPI extends DataSource {
     }
     
     async deleteStory(story){
-        await currentStories.deleteOne({ "_id" : story.id } );
-        let foundStory=await currentStories.findOne({ "_id" : story.id });
-        await foundStory.deleteOne({ "_id" : foundStory.storyId } )
-        return {success:true}
+        await currentStories.deleteOne({ "story" : story.id });
+        await Stories.deleteOne({ "_id" : story.id })
+        return {success:true};
     }
 
 }

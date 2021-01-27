@@ -12,7 +12,10 @@ const club = require('../models/club');
 const venue = require('../models/venue');
 const story = require('../models/story');
 const permission = require('../models/permission');
+const StoryAPI = require("../datasources/stories");
+const UserAPI = require("../datasources/users");
 const mongoose = require('mongoose');
+const { createTestClient } = require('apollo-server-testing');
 
 //method to drop the collection if it exists
 const dropIfExists = async (collectionVariable) => {
@@ -118,7 +121,51 @@ const seedPermissions = async () => {
 		}
 	});
 };
+
+const clubSeeder = async () =>{
+	const createdClub = await club.create({
+		clubName: "Avengers",
+		theme:[{
+			name:"light",
+			logo:"lightlogo"
+		},{
+			name:"dark",
+			logo:"darklogo"
+		}]
+	});
+	return {
+		id:createdClub._id,
+		clubName: createdClub.clubName,
+		theme: createdClub.theme
+	};
+	
+}
+
+const eventSeeder=async ()=>{
+	const createdEvent=await event.create({
+		eventName: "Bazingaa",
+	})
+	return {
+		id: createdEvent._id,
+		eventName:createdEvent.eventName
+	}
+}
+
+const storySeeder= async (author)=>{
+	const story={
+		author: author		
+	}
+	return {id: (await new StoryAPI().addStory(story))._id};
+}
+
+const UserSeeder= async (username)=>{
+	return user.create({username:username,firebaseUID:username});
+}
 module.exports = {
 	seedData,
 	seedPermissions,
+	clubSeeder,
+	eventSeeder,
+	storySeeder,
+	UserSeeder
 };

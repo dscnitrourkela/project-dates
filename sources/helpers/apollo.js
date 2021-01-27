@@ -1,6 +1,6 @@
 const { ApolloError} = require('apollo-server');
 
-const responseResolver=(name)=>{
+const resultResolver=(name)=>{
     return {
 		__resolveType: (obj) => {
 			return obj.__typename == 'ErrorClass' ? 'ErrorClass' : name;
@@ -11,7 +11,7 @@ const responseResolver=(name)=>{
 const resolverHelper=(graphqlError,requiredPermission,permissions)=>{
 	if(graphqlError){
 		throw new ApolloError(graphqlError.message,graphqlError.code);
-	}else if (permissions.find((permission) => permission == requiredPermission)) {
+	}else if (permissions.find((permission) => permission === requiredPermission || permission ==="superuser.all")) {
 		return true;
 	} else {
 		return false;
@@ -19,6 +19,6 @@ const resolverHelper=(graphqlError,requiredPermission,permissions)=>{
 }
 
 module.exports={
-	responseResolver,
+	resultResolver,
 	resolverHelper
 }

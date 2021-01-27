@@ -1,22 +1,17 @@
 /** @format */
 const ERRORS = require('../errors');
-const {resolverHelper} = require("../helpers/apollo");
+const {resolverHelper,resultResolver} = require("../helpers/apollo");
 
 const queries = {
-	clubs: (parent, args, { dataSources }, info) => {
-		return dataSources.ClubAPI.getClubs(args);
-	},
-	clubByName: (parent, { name }, { dataSources }, info) => {
-		return dataSources.ClubAPI.getClubByName(name);
-	},
-	clubById: (parent, { id }, { dataSources }, info) => {
-		return dataSources.ClubAPI.getClubById(id);
-	},
-	deleteClub: (parent, { id }, { dataSources, permissions, error }, info) => {
-		return resolverHelper(error,'clubs.delete$'+id,permissions) 
-			?  dataSources.ClubAPI.deleteClub(id)
-			: ERRORS.PERMISSION_DENIED								
-	},
+	// clubs: (parent, args, { dataSources }, info) => {
+	// 	return dataSources.ClubAPI.getClubs(args);
+	// },
+	// clubByName: (parent, { name }, { dataSources }, info) => {
+	// 	return dataSources.ClubAPI.getClubByName(name);
+	// },
+	// clubById: (parent, { id }, { dataSources }, info) => {
+	// 	return dataSources.ClubAPI.getClubById(id);
+	// },	
 };
 
 const mutations = {
@@ -29,6 +24,11 @@ const mutations = {
 		return resolverHelper(error,'clubs.update$'+args.id,permissions) 
 			?  dataSources.ClubAPI.updateClub(args)
 			: ERRORS.PERMISSION_DENIED		
+	},
+	deleteClub: (parent, { id }, { dataSources, permissions, error }, info) => {
+		return resolverHelper(error,'clubs.delete$'+id,permissions) 
+			?  dataSources.ClubAPI.deleteClub(id)
+			: ERRORS.PERMISSION_DENIED								
 	}
 };
 
@@ -41,16 +41,7 @@ const fieldResolvers = {
 			return await dataSources.ClubAPI.resolveClubEvents(parent.events);
 		},
 	},
-	ClubResult: {
-		__resolveType: (obj) => {
-			return obj.__typename == 'ErrorClass' ? 'ErrorClass' : 'Club';
-		},
-	},
-	ResponseResult: {
-		__resolveType: (obj) => {
-			return obj.__typename == 'ErrorClass' ? 'ErrorClass' : 'Response';
-		},
-	},
+	ClubResult: resultResolver('Club')
 };
 
 module.exports = { queries, mutations, fieldResolvers };

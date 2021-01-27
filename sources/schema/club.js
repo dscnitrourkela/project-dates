@@ -3,7 +3,6 @@
 const types = `
 
 union ClubResult= Club | ErrorClass
-union ResponseResult= Response | ErrorClass
 
 type Link{
     name: String
@@ -79,13 +78,13 @@ const queries = `
         domain:String
     ):[Club]
     clubByName(name:String!):Club
-    clubById(id:String!):Club
-    deleteClub(id:ID!):ResponseResult
+    clubById(id:String!):Club    
 `;
 
 const mutations = `
     addClub(club:ClubInputType):ClubResult,
     updateClub(id:ID!,club:ClubInputType):ClubResult,    
+    deleteClub(id:ID!):ResponseResult
 `;
 
 module.exports = { types, queries, mutations };

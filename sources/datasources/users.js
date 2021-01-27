@@ -7,6 +7,7 @@ const { DataSource } = require('apollo-datasource');
 const admin = require('firebase-admin');
 const { ApolloError } = require('apollo-server');
 const {updateJWT} = require("../helpers/firebase");
+const { INVALID_INPUT } = require('../errors/index.js');
 
 class UserAPI extends DataSource {
 	constructor() {
@@ -23,7 +24,6 @@ class UserAPI extends DataSource {
 	async getUserByUsername(username) {
 		return await Users.findOne({ username: username });
 	}
-
 	async authUser(user,uid) {
 		let incomingUser;		
 		const exisitingUser=await Users.findOne({firebaseUID:uid});
@@ -50,11 +50,11 @@ class UserAPI extends DataSource {
 			const createdAccessLevel = await AccessLevel.create(accessLevelObj);
 			await incomingUser.clubAccess.push(createdAccessLevel);
 			await incomingUser.save();
-			await updateJWT(uid,{mongoID:incomingUser._id});
+			if(process.env.NODE_ENV!="test")
+				await updateJWT(uid,{mongoID:incomingUser._id});
 		}
 		return incomingUser;		
 	}
-
 	async updateUser(args,uid) {
 		const user = args.user;
 		let retPromise = {};
@@ -83,10 +83,12 @@ class UserAPI extends DataSource {
 		retPromise = await updatedUser.save();
 		return retPromise;		
 	}
-
 	async deleteUser(uid) {
-		const foundUser = await Users.find({firebaseUID:uid});;
-		return await foundUser.deleteOne();
+		const response=await Users.deleteOne({firebaseUID:uid});
+		if(response.n===0)
+			return {...INVALID_INPUT,message:"User Not Found"};
+		else
+			return {success:true};
 	}
 }
 module.exports = UserAPI;

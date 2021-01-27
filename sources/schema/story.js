@@ -1,7 +1,8 @@
 /** @format */
 
 const types = `
-    union StoryResult= Story | ErrorClass    
+    union StoryResult= Story | ErrorClass  
+    union CurrentStoryResult = CurrentStory | ErrorClass  
 
     scalar Date
     type Story{
@@ -13,15 +14,16 @@ const types = `
         description : String
         createdAt : Date
     }
+    type Logo{
+        name: String
+        logo: String
+    }
     type CurrentStory{
         id:ID
         authorId: String
         authorName: String 
-        authorLogo: String
+        authorLogo: [Logo]
         story: [Story]
-    }
-    type Response{
-        success: Boolean
     }
     input StoryInputType{
         author : ID
@@ -33,7 +35,7 @@ const types = `
 `;
 
 const queries = `
-    currentStories:[CurrentStory]
+    currentStories:[CurrentStoryResult]
     storiesByField(
         id:ID
         author : ID

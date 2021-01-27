@@ -12,16 +12,7 @@ const CustomScalarResolver = {
 
 const exportResolvers = {
 	Query,
-	Mutation,
-	UserOrError: {
-		__resolveType(obj) {
-			if (obj.code) {
-				return 'Error';
-			} else {
-				return 'User';
-			}
-		},
-	},
+	Mutation
 };
 Object.assign(exportResolvers, FieldResolver);
 Object.assign(exportResolvers, CustomScalarResolver);
