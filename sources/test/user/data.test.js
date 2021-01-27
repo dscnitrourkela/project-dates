@@ -12,6 +12,23 @@ describe('Results: Users Queries and Mutations', () => {
     username:"HarishTeens",
     gmailAuthMail: "a@a.com"
   };
+  it('Get all Users', async () => {    
+    const testUser=await UserSeeder("coolnick3"); 
+    const GET_USERS = `
+      {
+        users{
+          ... on User{
+            username
+          }
+        }
+  
+      }
+    `;
+
+    const response = await query({ query: GET_USERS });
+    expect(response.data.users).toEqual([{username:"coolnick3"}]);
+  });
+  
   it('user by username', async () => {    
     const testUser=await UserSeeder("coolnick");
     const GET_USER = `

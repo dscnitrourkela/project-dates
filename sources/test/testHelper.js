@@ -23,10 +23,6 @@ const afterTests= async () => {
     await mongoServer.stop();
 }
 
-const prettyPrint= (o)=>{
-    console.log(JSON.stringify(o,null,4));
-}
-
 const apolloServer = (uid,permissions)=>{
     server.context = ()=> ({
         uid:uid,
