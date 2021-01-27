@@ -142,7 +142,7 @@ class ClubAPI extends DataSource {
 		// accessArray exists and not empty
 		await Promise.all(
 			accessArray.map(async (accessItem, index) => {
-				await AccessLevels.deleteAccessLevel(accessItem);
+				await AccessLevels.deleteAccessLevelFromUser(accessItem);
 			})
 		);		
 		await foundClub.deleteOne();

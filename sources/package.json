@@ -10,7 +10,7 @@
 		"test": "NODE_ENV=test jest --runInBand --coverage",
 		"test:watch": "NODE_ENV=test jest --runInBand --watch"
 	},
-	"author": "",
+	"author": "dscnitrourkela",
 	"license": "ISC",
 	"dependencies": {
 		"apollo-datasource": "^0.7.2",

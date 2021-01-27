@@ -7,6 +7,7 @@ const { DataSource } = require('apollo-datasource');
 const admin = require('firebase-admin');
 const { ApolloError } = require('apollo-server');
 const {updateJWT} = require("../helpers/firebase");
+const { INVALID_INPUT } = require('../errors/index.js');
 
 class UserAPI extends DataSource {
 	constructor() {
@@ -83,8 +84,11 @@ class UserAPI extends DataSource {
 		return retPromise;		
 	}
 	async deleteUser(uid) {
-		await Users.deleteOne({firebaseUID:uid});
-		return {success:true};
+		const response=await Users.deleteOne({firebaseUID:uid});
+		if(response.n===0)
+			return {...INVALID_INPUT,message:"User Not Found"};
+		else
+			return {success:true};
 	}
 }
 module.exports = UserAPI;

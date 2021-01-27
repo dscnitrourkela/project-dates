@@ -58,6 +58,15 @@ class AccessLevelAPI extends DataSource {
 		await foundUser.save();
 		await foundClub.save();
 		return await foundAccessLevel.deleteOne();
+	}
+	
+	async deleteAccessLevelFromUser(id){
+		const foundAccessLevel= await AccessLevels.findById(id);
+		const userId = foundAccessLevel.user;
+		const foundUser = await Users.findById(userId);
+		foundUser.clubAccess = foundUser.clubAccess.filter((access)=>access._id!=id)
+		await foundUser.save();
+		return await foundAccessLevel.deleteOne();
     }
 }
 
