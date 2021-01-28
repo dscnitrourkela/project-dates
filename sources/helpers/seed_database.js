@@ -5,15 +5,15 @@
  * @module Seed Database
  */
 
-const user = require('../models/user');
-const event = require('../models/event');
-const accessLevel = require('../models/accessLevel');
-const club = require('../models/club');
-const venue = require('../models/venue');
-const story = require('../models/story');
-const permission = require('../models/permission');
-const StoryAPI = require("../datasources/stories");
-const UserAPI = require("../datasources/users");
+const user = require('../apollo/users/user.model');
+const event = require('../apollo/events/event.model');
+const accessLevel = require('../apollo/accessLevels/accessLevel.model');
+const club = require('../apollo/clubs/club.model');
+const venue = require('../apollo/venues/venue.model');
+const story = require('../apollo/stories/story.model');
+const permission = require('../apollo/permissions/permission.model');
+const StoryAPI = require("../apollo/stories/story.datasources");
+const UserAPI = require("../apollo/users/user.datasources");
 const mongoose = require('mongoose');
 const { createTestClient } = require('apollo-server-testing');
 

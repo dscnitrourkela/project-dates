@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const seed = require('./helpers/seed_database');
 const cloudinary = require('cloudinary').v2;
-const server = require("./server");
+const server = require("./apollo/server");
 dotenv.config();
 
 //Mongoose Configs
