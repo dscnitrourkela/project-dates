@@ -1,7 +1,7 @@
 
 sources/node_modules
 sources/db
-sources/coverage
+coverage
 .vs/
 .bash_history
 .bash_logout

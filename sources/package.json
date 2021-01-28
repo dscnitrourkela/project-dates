@@ -38,6 +38,7 @@
 		"prettier": "2.2.0"
 	},
 	"jest": {
-		"testEnvironment": "node"
+		"testEnvironment": "node",
+		"coverageDirectory":"../coverage"
 	}
 }
