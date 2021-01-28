@@ -6,6 +6,7 @@ const Events = require('../events/event.model.js');
 const AccessLevel = require('../accessLevels/accessLevel.model.js');
 const { DataSource } = require('apollo-datasource');
 const AccessLevelAPI = require('../accessLevels/accessLevel.datasources.js');
+const { INVALID_INPUT } = require('../../errors/index.js');
 
 class ClubAPI extends DataSource {
 	constructor() {
@@ -73,7 +74,15 @@ class ClubAPI extends DataSource {
 		const clubId = args.id;
 		const club = args.club;
 		let retPromise = {};
-		const foundClub = await Clubs.findById(clubId);
+		let foundClub;
+		try{
+			foundClub = await Clubs.findById(clubId);
+			if(foundClub==undefined){
+				return {...INVALID_INPUT, message:"Club Not Found"};
+			}
+		}catch(e){
+			return {...INVALID_INPUT, message:e.message};
+		}
 		let updatedClub = new Clubs(foundClub);
 		updatedClub = Object.assign(updatedClub, club);
 		updatedClub = new Clubs(updatedClub);
@@ -118,13 +127,22 @@ class ClubAPI extends DataSource {
 	}
 
 	async deleteClub(id) {		
-		const foundClub = await Clubs.findById(id);
+		let foundClub;
+		try{
+			foundClub = await Clubs.findById(id);
+			if(foundClub==undefined){
+				return {...INVALID_INPUT, message:"Club Not Found"};
+			}
+		}catch(e){
+			return {...INVALID_INPUT, message:e.message};
+		}
+		
 		const accessArray = foundClub.memberAccess;
 		const AccessLevels = new AccessLevelAPI();
 		// accessArray exists and not empty
 		await Promise.all(
 			accessArray.map(async (accessItem, index) => {
-				await AccessLevels.deleteAccessLevel(accessItem);
+				await AccessLevels.deleteAccessLevelFromUser(accessItem);
 			})
 		);		
 		await foundClub.deleteOne();
