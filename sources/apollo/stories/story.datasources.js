@@ -46,35 +46,30 @@ class StoryAPI extends DataSource {
 		//Add nested types
 
 		//1. author
-		if (story.author != undefined) {
-			const authorId = story.author;
-            const foundAuthor = await Clubs.findById(authorId);
-            if(foundAuthor==undefined){
-                return {...INVALID_INPUT, message:"Author Not Found"};
-            }
-            // Create Event with basic types;
-            createdStory = await Stories.create({
-                asset: story.asset,
-                assetType: story.assetType,
-                description: story.description
-            });
-            createdStory.author = foundAuthor._id;
-            //add to current Stories
-            await currentStories.create({
-                authorId: foundAuthor._id,
-                authorLogo: foundAuthor.theme.map((e)=>{
-                    return {
-                        name:e.name,
-                        logo:e.logo
-                    }
-                }),
-                authorName: foundAuthor.clubName,                
-                story: createdStory._id
-            })  
-            
-        }else{
-            return {...INVALID_INPUT, message:"Author Not Given"};
+		const authorId = story.author;
+        const foundAuthor = await Clubs.findById(authorId);
+        if(foundAuthor==undefined){
+            return {...INVALID_INPUT, message:"Author Not Found"};
         }
+        // Create Event with basic types;
+        createdStory = await Stories.create({
+            asset: story.asset,
+            assetType: story.assetType,
+            description: story.description
+        });
+        createdStory.author = foundAuthor._id;
+        //add to current Stories
+        await currentStories.create({
+            authorId: foundAuthor._id,
+            authorLogo: foundAuthor.theme.map((e)=>{
+                return {
+                    name:e.name,
+                    logo:e.logo
+                }
+            }),
+            authorName: foundAuthor.clubName,                
+            story: createdStory._id
+        })  
 
         //2. event
 		if (story.event != undefined) {
