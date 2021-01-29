@@ -1,4 +1,6 @@
 // TODO: Update CBy and UBy to make it non-nullabe by design
+// TODO: Add Professor
+
 const { Schema, model } = require('mongoose');
 
 const timetableSchema = new Schema(

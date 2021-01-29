@@ -1,6 +1,7 @@
 /** @format */
 
 // TODO: Unified Date Time format across the project
+// TODo: Change time to unified UTC format in Model and Schema
 
 const types = `
     type StartTime{
@@ -54,7 +55,4 @@ module.exports = { types, queries, mutations };
 // Move a course to new slot
 // Delete Course from timetable
 // Add Course course to timetable
-// Union for Slot Info in case course does not exist
 // Make as timetable as expired
-// Fetch timetable by identifier
-// Fetch classes for a day
