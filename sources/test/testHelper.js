@@ -1,5 +1,5 @@
 const { createTestClient } = require('apollo-server-testing');
-const server = require('../server');
+const server = require('../apollo/server');
 const mongoose = require("mongoose");
 const { MongoMemoryServer } = require('mongodb-memory-server');
 let {PERMISSION_DENIED,INVALID_INPUT} = require("../errors/index");

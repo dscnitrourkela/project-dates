@@ -1,7 +1,12 @@
 
 sources/node_modules
 sources/db
-sources/coverage
+project-elaichi.json
+package-lock.json
+.env
+sources/.node_repl_history
+sources/.npm/
+coverage
 .vs/
 .bash_history
 .bash_logout
@@ -12,11 +17,7 @@ sources/coverage
 .gnupg/
 .mongorc.js
 .mysql_history
-sources/.node_repl_history
-sources/.npm/
 .profile
 .ssh/
 .viminfo
-sources/.env
 .gitconfig
-project-elaichi.json

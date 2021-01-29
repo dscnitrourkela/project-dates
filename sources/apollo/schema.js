@@ -2,13 +2,13 @@
 
 const { gql } = require('apollo-server');
 
-const User = require('./schema/user');
-const Event = require('./schema/event');
-const Club = require('./schema/club');
-const Venue = require('./schema/venue');
-const Story = require('./schema/story');
-const Access = require('./schema/accessLevel');
-const ErrorClass = require('./schema/error');
+const User = require('./users/user.schema.js');
+const Event = require('./events/event.schema.js');
+const Club = require('./clubs/club.schema.js');
+const Venue = require('./venues/venue.schema.js');
+const Story = require('./stories/story.schema.js');
+const Access = require('./accessLevels/accessLevel.schema.js');
+const ErrorClass = require('./errorClass/error.schema.js');
 const {GraphQLDateTime} = require('graphql-iso-date');
 
 const types = [];

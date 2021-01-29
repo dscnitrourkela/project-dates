@@ -17,4 +17,4 @@ var accessLevelSchema = new mongoose.Schema({
     timestamps: true
 });
 
-module.exports = mongoose.model('AccessLevel', accessLevelSchema);
+module.exports = mongoose.models.AccessLevel||mongoose.model('AccessLevel', accessLevelSchema);

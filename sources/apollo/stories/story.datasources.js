@@ -1,15 +1,15 @@
 /** @format */
 const mongoose = require('mongoose');
-const Events = require('../models/event.js');
-const Stories = require('../models/story.js');
-const currentStories = require("../models/currentStory");
-const Users = require('../models/user.js');
-const Clubs = require('../models/club.js');
-const Venues = require('../models/venue.js');
-const AccessLevel = require('../models/accessLevel.js');
+const Events = require('../events/event.model.js');
+const Stories = require('./story.model.js');
+const currentStories = require("../currentStories/currentStory.model");
+const Users = require('../users/user.model.js');
+const Clubs = require('../clubs/club.model.js');
+const Venues = require('../venues/venue.model.js');
+const AccessLevel = require('../accessLevels/accessLevel.model.js');
 const { DataSource } = require('apollo-datasource');
 const { ApolloError } = require('apollo-server');
-const { INVALID_INPUT } = require('../errors/index.js');
+const { INVALID_INPUT } = require('../../errors/index.js');
 
 class StoryAPI extends DataSource {
 	constructor() {
@@ -45,8 +45,8 @@ class StoryAPI extends DataSource {
         let createdStory;
 		//Add nested types
 
-        // 1. Author
-		const authorId = story.author; //author input check is already done at resolver
+		//1. author
+		const authorId = story.author;
         const foundAuthor = await Clubs.findById(authorId);
         if(foundAuthor==undefined){
             return {...INVALID_INPUT, message:"Author Not Found"};

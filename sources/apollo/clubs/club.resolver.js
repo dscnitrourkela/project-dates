@@ -1,6 +1,6 @@
 /** @format */
-const ERRORS = require('../errors');
-const {resolverHelper,resultResolver} = require("../helpers/apollo");
+const ERRORS = require('../../errors');
+const {resolverHelper,resultResolver} = require("../../helpers/apollo");
 
 const queries = {
 	// clubs: (parent, args, { dataSources }, info) => {

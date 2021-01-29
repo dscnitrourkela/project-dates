@@ -11,4 +11,4 @@ var venueSchema = new mongoose.Schema({
     timestamps: true
 });
 
-module.exports = mongoose.model('Venue', venueSchema);
+module.exports = mongoose.models.Venue||mongoose.model('Venue', venueSchema);

@@ -1,7 +1,7 @@
 /** @format */
 
-const Venues = require('../models/venue.js');
-const AccessLevel = require('../models/accessLevel.js');
+const Venues = require('../venues/venue.model.js');
+const AccessLevel = require('../accessLevels/accessLevel.model.js');
 const { DataSource } = require('apollo-datasource');
 
 class VenueAPI extends DataSource {

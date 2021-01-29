@@ -19,4 +19,4 @@ var currentStorySchema = new mongoose.Schema({
 // currentStorySchema.index({ createdAt: { type: Date, expires: 86400 }}); // schema level
 
 
-module.exports = mongoose.model('currentStory', currentStorySchema);
+module.exports = mongoose.models.currentStory||mongoose.model('currentStory', currentStorySchema);

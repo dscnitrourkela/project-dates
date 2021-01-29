@@ -1,8 +1,8 @@
 /** @format */
 
-const ERRORS = require('../errors');
-const permissions= require("../models/permission");
-const {resultResolver,resolverHelper} = require("../helpers/apollo");
+const ERRORS = require('../../errors');
+const permissions= require("../permissions/permission.model.js");
+const {resultResolver,resolverHelper} = require("../../helpers/apollo");
 
 const queries = {
 	// storiesByField: (parent, args, { dataSources }, info) => {

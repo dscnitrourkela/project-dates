@@ -8,4 +8,4 @@ var permissionSchema = new mongoose.Schema({
     timestamps: true
 });
 
-module.exports = mongoose.model('Permission', permissionSchema);
+module.exports = mongoose.models.Club||mongoose.model('Permission', permissionSchema);

@@ -40,4 +40,4 @@ var clubSchema = new mongoose.Schema({
     timestamps: true
 });
 
-module.exports = mongoose.model('Club', clubSchema);
+module.exports = mongoose.models.Club||mongoose.model('Club', clubSchema);

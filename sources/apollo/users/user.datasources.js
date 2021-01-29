@@ -1,13 +1,13 @@
 /** @format */
 
-const Users = require('../models/user.js');
-const Clubs = require('../models/club.js');
-const AccessLevel = require('../models/accessLevel.js');
+const Users = require('../users/user.model.js');
+const Clubs = require('../clubs/club.model.js');
+const AccessLevel = require('../accessLevels/accessLevel.model.js');
 const { DataSource } = require('apollo-datasource');
 const admin = require('firebase-admin');
 const { ApolloError } = require('apollo-server');
-const {updateJWT} = require("../helpers/firebase");
-const { INVALID_INPUT } = require('../errors/index.js');
+const {updateJWT} = require("../../helpers/firebase");
+const { INVALID_INPUT } = require('../../errors/index.js');
 
 class UserAPI extends DataSource {
 	constructor() {
@@ -83,7 +83,7 @@ class UserAPI extends DataSource {
 		retPromise = await updatedUser.save();
 		return retPromise;		
 	}
-	async deleteUser(uid) {
+	async deleteUser(uid) {		
 		const response=await Users.deleteOne({firebaseUID:uid});
 		if(response.n===0)
 			return {...INVALID_INPUT,message:"User Not Found"};

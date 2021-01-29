@@ -1,14 +1,14 @@
 const { ApolloServer, gql, ApolloError, AuthenticationError } = require('apollo-server');
-const UserAPI = require('./datasources/users.js');
-const ClubAPI = require('./datasources/clubs.js');
-const EventAPI = require('./datasources/events.js');
-const VenueAPI = require('./datasources/venues.js');
-const AccessLevelAPI = require('./datasources/accessLevels.js');
-const StoryAPI = require('./datasources/stories.js');
+const UserAPI = require('./users/user.datasources.js');
+const ClubAPI = require('./clubs/club.datasources.js');
+const EventAPI = require('./events/event.datasources.js');
+const VenueAPI = require('./venues/venue.datasources.js');
+const AccessLevelAPI = require('./accessLevels/accessLevel.datasources.js');
+const StoryAPI = require('./stories/story.datasources.js');
 const typeDefs = require('./schema.js');
 const resolvers = require('./resolvers.js');
-const {firebaseApp}=require("./helpers/firebase");
-const {populatePermissions } = require("./helpers/permissions");
+const {firebaseApp}=require("../helpers/firebase");
+const {populatePermissions } = require("../helpers/permissions");
 
 
 //Datasources

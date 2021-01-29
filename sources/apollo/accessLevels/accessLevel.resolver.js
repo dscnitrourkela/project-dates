@@ -1,8 +1,8 @@
 /** @format */
 
 const queries = {};
-const ERRORS = require('../errors');
-const {resultResolver,resolverHelper}=require('../helpers/apollo');
+const ERRORS = require('../../errors');
+const {resultResolver,resolverHelper}=require('../../helpers/apollo');
 
 const mutations = {
 	addAccessLevel: (parent, { accessLevel }, { dataSources, permissions, error }, info) => {

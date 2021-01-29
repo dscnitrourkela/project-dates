@@ -1,8 +1,8 @@
 /** @format */
 
 const { Error } = require('mongoose');
-const ERRORS = require('../errors');
-const {resultResolver,resolverHelper} = require("../helpers/apollo");
+const ERRORS = require('../../errors');
+const {resultResolver,resolverHelper} = require("../../helpers/apollo");
 
 const queries = {
 	/**

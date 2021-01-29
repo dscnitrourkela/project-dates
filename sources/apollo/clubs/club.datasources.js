@@ -1,12 +1,12 @@
 /** @format */
 
-const Clubs = require('../models/club.js');
-const Users = require('../models/user.js');
-const Events = require('../models/event.js');
-const AccessLevel = require('../models/accessLevel.js');
+const Clubs = require('./club.model.js');
+const Users = require('../users/user.model.js');
+const Events = require('../events/event.model.js');
+const AccessLevel = require('../accessLevels/accessLevel.model.js');
 const { DataSource } = require('apollo-datasource');
-const AccessLevelAPI = require('./accessLevels.js');
-const { INVALID_INPUT } = require('../errors/index.js');
+const AccessLevelAPI = require('../accessLevels/accessLevel.datasources.js');
+const { INVALID_INPUT } = require('../../errors/index.js');
 
 class ClubAPI extends DataSource {
 	constructor() {

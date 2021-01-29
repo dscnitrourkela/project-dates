@@ -1,8 +1,8 @@
 /** @format */
 
-const AccessLevels = require('../models/accessLevel.js');
-const Clubs = require('../models/club.js');
-const Users = require('../models/user.js');
+const AccessLevels = require('./accessLevel.model.js');
+const Clubs = require('../clubs/club.model.js');
+const Users = require('../users/user.model.js');
 const { DataSource } = require('apollo-datasource');
 
 class AccessLevelAPI extends DataSource {
@@ -57,15 +57,6 @@ class AccessLevelAPI extends DataSource {
 		foundClub.memberAccess = foundClub.memberAccess.filter((access)=>access._id!=id)
 		await foundUser.save();
 		await foundClub.save();
-		return await foundAccessLevel.deleteOne();
-	}
-	
-	async deleteAccessLevelFromUser(id){
-		const foundAccessLevel= await AccessLevels.findById(id);
-		const userId = foundAccessLevel.user;
-		const foundUser = await Users.findById(userId);
-		foundUser.clubAccess = foundUser.clubAccess.filter((access)=>access._id!=id)
-		await foundUser.save();
 		return await foundAccessLevel.deleteOne();
     }
 }
