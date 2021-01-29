@@ -1,9 +1,9 @@
 
 sources/node_modules
 sources/db
-sources/project-elaichi.json
-sources/package-lock.json
-sources/.env
+project-elaichi.json
+package-lock.json
+.env
 sources/.node_repl_history
 sources/.npm/
 coverage
