@@ -1,6 +1,6 @@
-version: "3.8"
+version: "3"
 services:
   api:
-    build: .
+    image: gcr.io/project-elaichi/server-central-vm-image:latest
     ports:
-      - "5000:5000"
+      - "4000:5000"
