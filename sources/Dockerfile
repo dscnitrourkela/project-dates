@@ -2,13 +2,13 @@ FROM node:alpine
 
 WORKDIR /app
 
-COPY sources/package*.json /app/sources/
+COPY package.json /app
 
-COPY ./project-elaichi.json /app
+# COPY ./project-elaichi.json /app
 
-RUN cd sources && npm ci
+RUN npm install
 
-COPY ./sources /app/sources
+COPY . /app
 
 RUN npm install pm2 -g
 
