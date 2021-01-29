@@ -35,7 +35,7 @@ jobs:
     #Build the Docker image
     - name: Build
       run: |-
-        docker build --tag "gcr.io/$PROJECT_ID/$GCE_INSTANCE-image" .
+        docker build --tag "gcr.io/$PROJECT_ID/$GCE_INSTANCE-image" ./sources
    #Push the Docker image to Google Container Registry
     - name: Publish
       run: |-
