@@ -6,7 +6,7 @@ COPY package.json /app
 
 # COPY ./project-elaichi.json /app
 
-RUN npm install --production
+RUN npm install --production --force
 
 COPY . /app
 
