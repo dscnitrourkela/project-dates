@@ -33,9 +33,9 @@ jobs:
         gcloud --quiet auth configure-docker
     - name: Ignored Files Reveal
       run: |-
-        echo ${{ secrets.ENV_CONFIG }} > ./sources/.env
+        echo "${{ secrets.ENV_CONFIG }}" > ./sources/.env
     - run: |-
-        echo ${{ secrets.ADMIN_SDK }} > ./sources/project-elaichi.json
+        echo "${{ secrets.ADMIN_SDK }}" > ./sources/project-elaichi.json
             
     #Build the Docker image
     - name: Build
