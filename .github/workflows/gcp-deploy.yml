@@ -1,5 +1,4 @@
-name: Build and Deploy to Google Compute Engine
-
+name: Build and Deploy to Server
 on:
   push:
     branches:
