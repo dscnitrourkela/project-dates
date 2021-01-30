@@ -38,9 +38,7 @@ jobs:
     - run: |- 
         cd ./sources && base64 --decode -i env_encoded.txt > .env
     - run: |- 
-        cd ./sources && base64 --decode -i project-elaichi_encoded.txt > project-elaichi.json
-    - run: |-
-        cat ./sources/project-elaichi.json ./sources/.env      
+        cd ./sources && base64 --decode -i project-elaichi_encoded.txt > project-elaichi.json 
             
     #Build the Docker image
     - name: Build
