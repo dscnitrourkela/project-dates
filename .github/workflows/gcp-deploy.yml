@@ -33,13 +33,13 @@ jobs:
         gcloud --quiet auth configure-docker
     - name: Ignored Files Reveal
       run: |-
-        echo "${{ secrets.ENV_CONFIG }}" > ./sources/.env_encoded
+        echo "${{ secrets.ENV_CONFIG }}" > ./sources/env_encoded.txt
     - run: |-
-        echo "${{ secrets.ADMIN_SDK }}" > ./sources/project-elaichi_encoded.json
+        echo "${{ secrets.ADMIN_SDK }}" > ./sources/project-elaichi_encoded.txt
     - run: |- 
-        cd ./sources && base64 --decode .env_encoded > .env
+        cd ./sources && base64 --decode env_encoded.txt > .env
     - run: |- 
-        cd ./sources && base64 --decode project-elaichi_encoded.json > project-elaichi.json
+        cd ./sources && base64 --decode project-elaichi_encoded.txt > project-elaichi.json
     - run: |-
         cat ./sources/project-elaichi.json ./sources/.env      
             
