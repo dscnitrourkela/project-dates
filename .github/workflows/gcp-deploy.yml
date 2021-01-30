@@ -9,7 +9,6 @@ env:
   GCE_INSTANCE: server-central-vm	  
   GCE_INSTANCE_ZONE: us-central1-a   
   
-
 jobs:
   setup-build-publish-deploy:
     name: Setup, Build, Publish, and Deploy
