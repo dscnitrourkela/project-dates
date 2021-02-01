@@ -6,7 +6,7 @@ const AccessLevel = require('../accessLevels/accessLevel.model.js');
 const { DataSource } = require('apollo-datasource');
 const admin = require('firebase-admin');
 const { ApolloError } = require('apollo-server');
-const {updateJWT} = require("../../helpers/firebase");
+const firebase = require("../../helpers/firebase");
 const { INVALID_INPUT } = require('../../errors/index.js');
 
 class UserAPI extends DataSource {
@@ -31,7 +31,7 @@ class UserAPI extends DataSource {
 		if(exisitingUser){
 			incomingUser=exisitingUser;
 		}else{	
-			incomingUser = await Users.create({
+			let newUser = await Users.create({
 				username: user.username,
 				name: user.name,
 				gmailAuthMail: user.gmailAuthMail,
@@ -44,14 +44,15 @@ class UserAPI extends DataSource {
 			});			
 			const accessLevelObj = {
 				level: '1',
-				name:incomingUser.name,				
-				user: incomingUser,
+				name:newUser.name,				
+				user: newUser,
 			};
 			const createdAccessLevel = await AccessLevel.create(accessLevelObj);
-			await incomingUser.clubAccess.push(createdAccessLevel);
-			await incomingUser.save();
+			await newUser.clubAccess.push(createdAccessLevel);
+			await newUser.save();
 			if(process.env.NODE_ENV!="test")
-				await updateJWT(uid,{mongoID:incomingUser._id});
+				firebase.updateJWT(uid,{mongoID:newUser._id});
+			incomingUser= await Users.findOne({firebaseUID:uid})
 		}
 		return incomingUser;		
 	}
@@ -85,6 +86,8 @@ class UserAPI extends DataSource {
 	}
 	async deleteUser(uid) {		
 		const response=await Users.deleteOne({firebaseUID:uid});
+		if(process.env.NODE_ENV!="test")
+			await firebase.deleteUser(uid);
 		if(response.n===0)
 			return {...INVALID_INPUT,message:"User Not Found"};
 		else

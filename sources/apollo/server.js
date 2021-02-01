@@ -47,9 +47,10 @@ const server = new ApolloServer({
 				}
 				
 		    } catch (error) {
-		        return {
-					error:{message: error.errorInfo.message,code: "UNAUTHORIZED"}
-				};
+				const errorMessage= error.errorInfo? error.errorInfo.message : error;
+				return {
+					error:{message: errorMessage,code: "UNAUTHORIZED"}
+				}
 		    }
 		}else{
 			return	{
