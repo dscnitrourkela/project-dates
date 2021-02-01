@@ -1,9 +1,8 @@
 name: Build and Deploy to Server
 on:
-  push:
-    branches:
-    - deploy
-
+  release:
+    types:
+      - created
 env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
   GCE_INSTANCE: server-central-vm	  
