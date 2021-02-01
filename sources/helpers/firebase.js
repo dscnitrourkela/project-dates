@@ -1,5 +1,5 @@
 const admin = require('firebase-admin');
-const serviceAccount = require('../../project-elaichi.json');
+const serviceAccount = require('../project-elaichi.json');
 
 // Firebase Init
 const firebaseApp=admin.initializeApp({

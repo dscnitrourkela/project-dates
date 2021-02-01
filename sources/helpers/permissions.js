@@ -1,4 +1,4 @@
-const Users = require('../models/user.js');
+const Users = require('../apollo/users/user.model.js');
 
 const rolesPermissionsMap={
     "1":["users.Auth","users.all","users.Update","stories.view","users.byId","users.byName","users.Delete"],
