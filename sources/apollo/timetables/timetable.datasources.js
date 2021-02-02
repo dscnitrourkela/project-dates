@@ -1,6 +1,6 @@
 /* eslint no-useless-constructor: "off", class-methods-use-this: "off" */
 
-const TimetableModel = require('../models/timetable.js')
+const TimetableModel = require('./timetable.model.js')
 const { DataSource } = require('apollo-datasource');
 
 class TimetableAPI extends DataSource {

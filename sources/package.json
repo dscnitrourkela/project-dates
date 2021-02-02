@@ -9,7 +9,7 @@
 		"eslint": "npx eslint .",
 		"start": "node index.js",
 		"start:dev": "nodemon index.js",
-		"test": "NODE_ENV=test jest --runInBand --coverage",
+		"test": "SET NODE_ENV=test & jest --runInBand --coverage",
 		"test:watch": "NODE_ENV=test jest --runInBand --watch"
 	},
 	"author": "dscnitrourkela",

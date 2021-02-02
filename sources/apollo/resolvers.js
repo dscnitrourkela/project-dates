@@ -6,13 +6,15 @@ const Club = require('./clubs/club.resolver.js');
 const Venue = require('./venues/venue.resolver.js');
 const AccessLevel = require('./accessLevels/accessLevel.resolver.js');
 const Story = require('./stories/story.resolver.js');
+const Course = require('./courses/course.resolver.js');
+const Timetable = require('./timetables/timetabke.resolver.js');
 const { GraphQLDateTime } =require ("graphql-iso-date");
 
 const FieldResolver = {};
 const Query = {};
 const Mutation = {};
 
-const schemas = [User, Event, Club, AccessLevel,Story];
+const schemas = [User, Event, Club, AccessLevel,Story, Course, Timetable];
 schemas.forEach((s) => {
 	Object.assign(FieldResolver, s.fieldResolvers);
 	Object.assign(Query, s.queries);

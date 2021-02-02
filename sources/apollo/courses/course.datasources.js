@@ -1,6 +1,6 @@
 /* eslint no-useless-constructor: "off", class-methods-use-this: "off" */
 
-const CourseModel = require('../models/course.js')
+const CourseModel = require('./course.model.js')
 const { DataSource } = require('apollo-datasource');
 
 class CourseAPI extends DataSource {

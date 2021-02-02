@@ -9,6 +9,8 @@ const Venue = require('./venues/venue.schema.js');
 const Story = require('./stories/story.schema.js');
 const Access = require('./accessLevels/accessLevel.schema.js');
 const ErrorClass = require('./errorClass/error.schema.js');
+const Course = require('./courses/course.schema.js');
+const Timetable = require('./timetables/timetable.schema.js');
 const {GraphQLDateTime} = require('graphql-iso-date');
 
 const types = [];
