@@ -4,12 +4,10 @@ WORKDIR /app
 
 COPY package.json /app
 
-# COPY ./project-elaichi.json /app
+RUN npm install pm2 -g
 
 RUN npm install --production --force
 
 COPY . /app
 
-RUN npm install pm2 -g
-
-CMD ["pm2-runtime","start","index.js","-i","max"]
+CMD ["npm","run","start:prod"]
