@@ -17,7 +17,20 @@ const updateJWT=(uid,data)=>{
   });  
 }
 
+const deleteUser=(uid)=>{
+  admin
+  .auth()
+  .deleteUser(uid)
+  .then(() => {
+    console.log('Successfully deleted user');
+  })
+  .catch((error) => {
+    console.log('Error deleting user:', error);
+  });
+}
+
 module.exports={
     updateJWT,
-    firebaseApp
+    firebaseApp,
+    deleteUser
 }
