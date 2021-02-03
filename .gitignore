@@ -21,3 +21,5 @@ coverage
 .ssh/
 .viminfo
 .gitconfig
+**/*.log
+logs/
