@@ -1,5 +1,3 @@
-/** @format */
-
 const User = require('./users/user.resolver.js');
 const Event = require('./events/event.resolver.js');
 const Club = require('./clubs/club.resolver.js');

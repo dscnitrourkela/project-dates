@@ -1,5 +1,3 @@
-/** @format */
-
 const { gql } = require('apollo-server');
 
 const User = require('./users/user.schema.js');

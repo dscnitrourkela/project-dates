@@ -1,17 +1,24 @@
-/** @format */
 const mongoose = require('mongoose');
 const Events = require('../events/event.model.js');
 const Stories = require('./story.model.js');
 const currentStories = require("../currentStories/currentStory.model");
-const Users = require('../users/user.model.js');
 const Clubs = require('../clubs/club.model.js');
-const Venues = require('../venues/venue.model.js');
-const AccessLevel = require('../accessLevels/accessLevel.model.js');
 const { DataSource } = require('apollo-datasource');
-const { ApolloError } = require('apollo-server');
 const { INVALID_INPUT } = require('../../errors/index.js');
 
+/**
+ * @class
+ * @classdesc This class contains all the database functions for the stories
+ */
 class StoryAPI extends DataSource {
+    /**
+    * @typedef {Object} currentStories
+    * @property {String} authorLogo
+    * @property {String} authorId
+    * @property {String} authorName
+    * @property {Object} story
+     */
+    
 	constructor() {
 		super();
 	}
@@ -19,7 +26,14 @@ class StoryAPI extends DataSource {
     // getStories(args) {
     //     delete Object.assign(args, {["_id"]: args["id"] })["id"];
 	// 	return Stories.find(args);
-	// }
+    // }
+    
+    /**
+     * This function fetches all the active stories from the database.
+     * It fetches all the current stories from the currentStories collection and
+     * groups them club wise     *         
+     * @returns {currentStories} array of current stories grouped club wise
+     */
 	async getCurrentStories() {
         let currentStoriesList=await currentStories.find();
         let currentStoriesListMap= new Array();
@@ -38,7 +52,16 @@ class StoryAPI extends DataSource {
             }
         })
         return currentStoriesListMap;        
-	}
+    }
+    /**
+     * This function adds the story to the stories collection and 
+     * transforms the story object to fit in the currentStories collection.
+     * Finally it links an event to the story if provided.
+     * @param {story} story 
+     * @returns {story} created story
+     * @throws Will throw an error if the club is not found
+     * @throws Will throw an error if a event to be linked is not found
+     */
 	async addStory(story) {
         let retPromise = {};
         
@@ -98,11 +121,20 @@ class StoryAPI extends DataSource {
             '_id': { $in: ids.map((id)=>mongoose.Types.ObjectId(id) )}
         });
     }
-    
+    /**
+     * This function deletes the story from both the stories and currentStories collection.
+     * @param {story} story 
+     * @returns {Object} A success response if the story is deleted successfully
+     * @throws Will throw an error if the story is not found
+     */
     async deleteStory(story){
-        await currentStories.deleteOne({ "story" : story.id });
-        await Stories.deleteOne({ "_id" : story.id })
-        return {success:true};
+        const deleteResponse=await currentStories.deleteOne({ "story" : story.id });
+        if(deleteResponse.n===0)
+            return {...INVALID_INPUT,message:"Story Not Found"};
+        else{
+            await Stories.deleteOne({ "_id" : story.id })
+            return {success:true};
+        }        
     }
 
 }

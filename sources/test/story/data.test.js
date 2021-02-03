@@ -202,4 +202,45 @@ describe('Results: Stories Invalid Input', () => {
     const response = await mutate({ mutation: ADD_STORY });    
     expect(response.data.addStory).toEqual({...INVALID_INPUT_TEST, message:"Event Not Found"});
   })
+  it('Delete Story',async () => {
+    const club=await clubSeeder(); 
+    const story=await storySeeder(club.id); // story 1 
+    const DELETE_STORY = `
+      {
+        deleteStory(
+          id:"`+story.id+`",
+          author:"`+club.id+`"
+        ){
+          ... on Response{
+            success
+          }
+        }
+  
+      }
+    `;
+
+    const response = await query({ query: DELETE_STORY });  
+    expect(response.data.deleteStory.success).toEqual(true);
+  })
+  it('Delete Story when story Not Found',async () => {
+    const club=await clubSeeder();
+    const storyId=ObjectIdGenerator();
+    const DELETE_STORY = `
+      {
+        deleteStory(
+          id:"`+storyId+`",
+          author:"`+club.id+`"
+        ){
+          ... on ErrorClass{
+            code,
+            message
+          }
+        }
+  
+      }
+    `;
+    const response = await mutate({ mutation: DELETE_STORY });  
+    console.log(JSON.stringify(response,null,4))  ;
+    expect(response.data.deleteStory).toEqual({...INVALID_INPUT_TEST, message:"Story Not Found"});
+  })
 })

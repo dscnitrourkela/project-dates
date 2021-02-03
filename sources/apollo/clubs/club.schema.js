@@ -1,4 +1,4 @@
-/** @format */
+
 // linksMap needs to be finalized
 const types = `
 

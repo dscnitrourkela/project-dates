@@ -1,4 +1,4 @@
-/** @format */
+
 
 var mongoose = require('mongoose');
 var storySchema = new mongoose.Schema({

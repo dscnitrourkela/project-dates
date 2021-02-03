@@ -1,4 +1,4 @@
-/** @format */
+
 
 const ERRORS = require('../../errors');
 const permissions= require("../permissions/permission.model.js");

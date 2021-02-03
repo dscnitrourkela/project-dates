@@ -1,13 +1,13 @@
-/** @format */
-
 const Clubs = require('./club.model.js');
-const Users = require('../users/user.model.js');
 const Events = require('../events/event.model.js');
-const AccessLevel = require('../accessLevels/accessLevel.model.js');
 const { DataSource } = require('apollo-datasource');
 const AccessLevelAPI = require('../accessLevels/accessLevel.datasources.js');
 const { INVALID_INPUT } = require('../../errors/index.js');
 
+/**
+ * @class
+ * @classdesc This class contains all the database functions for the clubs
+ */
 class ClubAPI extends DataSource {
 	constructor() {
 		super();
@@ -17,16 +17,28 @@ class ClubAPI extends DataSource {
 	// 	const ans = await Clubs.find(args);
 	// 	return ans;
 	// }
+	
 	getClubById(id) {
 		return Clubs.findById(id);
 	}
-
+	/**
+	 * Returns an array of resolved club events
+	 * @param {Array} eventArray array of event ids to be resolved
+	 * @returns {Array} array of resolved event objects
+	 */
 	async resolveClubEvents(eventArray) {
 		return await Events.find({
 			_id: { $in: eventArray },
 		});
 	}
 
+	/**
+	 * Creates a club in the database with the given details.
+	 * 
+	 * @param {Object} club input club
+	 * @returns {Object} created club
+	 * @todo Remove unnecessary comments if not needed
+	 */
 	async addClub(club) {
 		let retPromise = {};
 		// Create club with basic types;
@@ -70,6 +82,13 @@ class ClubAPI extends DataSource {
 		return retPromise;
 	}
 
+	/**
+	 * updates the club in the database with the given details.
+	 * 
+	 * @param {Object} args input club
+	 * @returns {Object} created club
+	 * @throws will throw an error if the club is not found
+	 */
 	async updateClub(args) {
 		const clubId = args.id;
 		const club = args.club;
@@ -126,6 +145,13 @@ class ClubAPI extends DataSource {
 		return retPromise;
 	}
 
+	/**
+	 * deletes the club from the database with the given id.
+	 * And also removes the club entry from the clubAccess array of each user
+	 * @param {String} id input club id
+	 * @returns {Object} A success response
+	 * @throws will throw an error if the club is not found
+	 */
 	async deleteClub(id) {		
 		let foundClub;
 		try{

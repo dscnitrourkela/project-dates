@@ -1,5 +1,3 @@
-/** @format */
-
 const queries = {};
 const ERRORS = require('../../errors');
 const {resultResolver,resolverHelper}=require('../../helpers/apollo');

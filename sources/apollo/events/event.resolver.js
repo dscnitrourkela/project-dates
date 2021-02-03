@@ -1,4 +1,4 @@
-/** @format */
+
 
 const queries = {
 	events: (parent, args, { dataSources }, info) => {

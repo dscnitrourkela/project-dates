@@ -1,3 +1,7 @@
+/**
+ * The Apollo Server which powers the backend
+ * @namespace Apollo
+ */
 const { ApolloServer, gql, ApolloError, AuthenticationError } = require('apollo-server');
 const UserAPI = require('./users/user.datasources.js');
 const ClubAPI = require('./clubs/club.datasources.js');

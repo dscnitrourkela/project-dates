@@ -1,5 +1,3 @@
-/** @format */
-
 var mongoose = require('mongoose');
 var currentStorySchema = new mongoose.Schema({
 	authorId: String,

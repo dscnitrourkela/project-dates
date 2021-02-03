@@ -1,5 +1,3 @@
-/** @format */
-
 var mongoose = require('mongoose');
 var accessLevelSchema = new mongoose.Schema({
 	level: String,

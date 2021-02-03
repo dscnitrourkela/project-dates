@@ -1,14 +1,13 @@
-/** @format */
-
 const Users = require('../users/user.model.js');
-const Clubs = require('../clubs/club.model.js');
 const AccessLevel = require('../accessLevels/accessLevel.model.js');
 const { DataSource } = require('apollo-datasource');
-const admin = require('firebase-admin');
-const { ApolloError } = require('apollo-server');
 const firebase = require("../../helpers/firebase");
 const { INVALID_INPUT } = require('../../errors/index.js');
 
+/**
+ * @class
+ * @classdesc This class contains all the database functions for the users
+ */
 class UserAPI extends DataSource {
 	constructor() {
 		super();
@@ -24,13 +23,25 @@ class UserAPI extends DataSource {
 	async getUserByUsername(username) {
 		return await Users.findOne({ username: username });
 	}
+	/**
+	 * Single function which handles both sign up and sign in of a user
+	 * If the user already exists in the database, it simply fetches the existing doucment
+	 * Or else it creates a new document in the users collection, sets the access level object to level1.
+	 * Finally uses the Firebase Admin SDK to update the users JWT. Since the user JWT is updated here,
+	 * after signing up the client has to refresh the token in order to get the updated token from Firebase.
+	 * @param {Object} user user info
+	 * @param {String} uid firebase uid
+	 * @returns {Object} created user object
+	 */
 	async authUser(user,uid) {
 		let incomingUser;		
 		const exisitingUser=await Users.findOne({firebaseUID:uid});
-		// User document exists
+		// User document exists(Sign in)
 		if(exisitingUser){
 			incomingUser=exisitingUser;
-		}else{	
+		}
+		// User document doesnt exist(Sign up)
+		else{	
 			let newUser = await Users.create({
 				username: user.username,
 				name: user.name,
@@ -56,6 +67,15 @@ class UserAPI extends DataSource {
 		}
 		return incomingUser;		
 	}
+	/**
+	 * This function updates the current user's document with all the basic info.
+	 * It also handles the NITR verification, i.e. the bump from level 1 to level 2.
+	 * The client is trusted to call this function with the correct institute ID and
+	 * once the institute ID is set for the first time for a user, it cant be updated again.
+	 * @param {Object} args updated user info
+	 * @param {String} uid firebase uid
+	 * @returns {Object} updated user object
+	 */
 	async updateUser(args,uid) {
 		const user = args.user;
 		let retPromise = {};
@@ -84,6 +104,12 @@ class UserAPI extends DataSource {
 		retPromise = await updatedUser.save();
 		return retPromise;		
 	}
+	/**
+	 * Deletes the Current User from the database and also from the FIrebase
+	 * @param {String} uid 
+	 * @returns {Object} A success response if the user is deleted successfully.
+	 * @throws Will throw an error if the user with the given uid is not found.
+	 */
 	async deleteUser(uid) {		
 		const response=await Users.deleteOne({firebaseUID:uid});
 		if(process.env.NODE_ENV!="test")

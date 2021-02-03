@@ -1,5 +1,14 @@
+/**
+ * Seeding module
+ *
+ * @format
+ * @module Permissions Helper
+ */
 const Users = require('../apollo/users/user.model.js');
 
+/**
+ * The roles to permissions map which has level-wise permissions list corresponding to the particular level.
+ */
 const rolesPermissionsMap={
     "1":["users.Auth","users.all","users.Update","stories.view","users.byId","users.byName","users.Delete"],
     "2":["users.secretEvents"],
@@ -8,6 +17,16 @@ const rolesPermissionsMap={
     "5":["clubs.add","accessLevels.CRUD"]
 }
 
+/**
+ * This function populates all the permissions that user currently possess.
+ * There could be two types of permissions
+ * 1. That is associated with a club
+ * The club id is encoded in the permission with $ as a delimiter
+ *  (ex: clubs.update$1234resxdfty6)
+ * 2. That is independent of club (ex: clubs.add)
+ * 
+ * @param {String} id Mongo User id
+ */
 const populatePermissions=async (id)=>{
     const foundUser= await Users.findById(id).populate("clubAccess");
     if(foundUser===null){

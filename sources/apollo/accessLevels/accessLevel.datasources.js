@@ -1,20 +1,34 @@
-/** @format */
-
 const AccessLevels = require('./accessLevel.model.js');
 const Clubs = require('../clubs/club.model.js');
 const Users = require('../users/user.model.js');
 const { DataSource } = require('apollo-datasource');
 
+/**
+ * @class
+ * @classdesc This class contains all the datasources method for AccessLevel API
+ */
 class AccessLevelAPI extends DataSource {
 	constructor() {
 		super();
 	}
+	
 	initialize(config) {}
+	/**
+	 * Returns an array of resolved Access Levels
+	 * @param {Array} accessArray array of ids to be resolved
+	 * @returns {Array} array of resolved access level objects
+	 */
 	async resolveAccess(accessArray) {
 		return await AccessLevels.find({
 			_id: { $in: accessArray },
 		});
 	}
+	/**
+	 * This method adds the given access level object and syncs it with both the user and club document.
+	 * It pushes the id to clubAcess of User document and memberAcess of Club document
+	 * @param {Object} passedAccessLevel input access level object
+	 * @returns {Object} created access level object
+	 */
 	async addAccessLevel(passedAccessLevel) {
 		const userId = passedAccessLevel.user;
 		const clubId = passedAccessLevel.club;
@@ -34,7 +48,10 @@ class AccessLevelAPI extends DataSource {
 		await foundClub.save();
 		return createdAccessLevel;
  	}
-
+	/**
+	 * @param {Object} passedAccessLevel input access level object
+	 * @returns {Object} updated access level object
+	 */
 	async updateAccessLevel(passedAccessLevel) {
 		const accessLevelId = passedAccessLevel.id;
 		const foundAccessLevel = await AccessLevels.findById(accessLevelId);
@@ -46,7 +63,10 @@ class AccessLevelAPI extends DataSource {
 		return updatedAccessLevel.save();
 	}
 
-    
+    /**
+	 * @param {Object} id id of the access level object to be deleted
+	 * @returns {Object} deleted access level object
+	 */
     async deleteAccessLevel(id){
 		const foundAccessLevel= await AccessLevels.findById(id);
 		const userId = foundAccessLevel.user;

@@ -1,4 +1,3 @@
-/** @format */
 const ERRORS = require('../../errors');
 const {resolverHelper,resultResolver} = require("../../helpers/apollo");
 

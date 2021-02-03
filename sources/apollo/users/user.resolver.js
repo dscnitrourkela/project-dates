@@ -1,4 +1,4 @@
-/** @format */
+
 
 const { Error } = require('mongoose');
 const ERRORS = require('../../errors');
