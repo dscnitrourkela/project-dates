@@ -1,8 +1,0 @@
-# @format
-# Command to Run : docker-compose -f .\docker-compose-local.yml up --build
-version: '3'
-services:
-  api:
-    build: .
-    ports:
-      - '5000:5000'

@@ -13,7 +13,7 @@ module.exports = {
 				NODE_ENV: 'production',
 			},
 			exec_mode: 'cluster',
-			instances: -1,
+			instances: 1,
 		},
 		{
 			name: 'prod',

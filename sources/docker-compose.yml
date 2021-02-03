@@ -1,12 +1,7 @@
 # @format
-
 version: '3'
 services:
   api:
-    image: gcr.io/project-elaichi/server-central-vm-image:latest
+    build: .
     ports:
-      - '4000:5000'
-    env_file:
-      - .env
-    volumes:
-      - /opt/project-dates/logs:/app/logs
+      - '5000:5000'
