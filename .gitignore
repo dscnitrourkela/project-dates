@@ -23,3 +23,5 @@ docs
 .viminfo
 .gitconfig
 .firebase
+**/*.log
+logs/
