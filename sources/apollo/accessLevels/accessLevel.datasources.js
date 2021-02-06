@@ -8,18 +8,14 @@ const { DataSource } = require('apollo-datasource');
  * @classdesc This class contains all the datasources method for AccessLevel API
  */
 class AccessLevelAPI extends DataSource {
-	constructor() {
-		super();
-	}
 	
-	initialize(config) {}
 	/**
 	 * Returns an array of resolved Access Levels
 	 * @param {Array} accessArray array of ids to be resolved
 	 * @returns {Array} array of resolved access level objects
 	 */
-	async resolveAccess(accessArray) {
-		return await AccessLevels.find({
+	resolveAccess(accessArray) {
+		return AccessLevels.find({
 			_id: { $in: accessArray },
 		});
 	}
@@ -41,7 +37,7 @@ class AccessLevelAPI extends DataSource {
 			user: foundUser._id,
 			club: clubId,
 		};
-		let createdAccessLevel = await AccessLevels.create(accessObj);
+		const createdAccessLevel = await AccessLevels.create(accessObj);
 		foundClub.memberAccess.push(createdAccessLevel);
 		foundUser.clubAccess.push(createdAccessLevel);
 		await foundUser.save();
@@ -73,11 +69,11 @@ class AccessLevelAPI extends DataSource {
 		const clubId = foundAccessLevel.club;
 		const foundUser = await Users.findById(userId);
 		const foundClub = await Clubs.findById(clubId);
-		foundUser.clubAccess = foundUser.clubAccess.filter((access)=>access._id!=id)
-		foundClub.memberAccess = foundClub.memberAccess.filter((access)=>access._id!=id)
+		foundUser.clubAccess = foundUser.clubAccess.filter(access => access._id!==id)
+		foundClub.memberAccess = foundClub.memberAccess.filter(access => access._id!==id)
 		await foundUser.save();
 		await foundClub.save();
-		return await foundAccessLevel.deleteOne();
+		return foundAccessLevel.deleteOne();
     }
 }
 

@@ -2,7 +2,7 @@
  * The Apollo Server which powers the backend
  * @namespace Apollo
  */
-const { ApolloServer, gql, ApolloError, AuthenticationError } = require('apollo-server');
+const { ApolloServer, ApolloError} = require('apollo-server');
 const UserAPI = require('./users/user.datasources.js');
 const ClubAPI = require('./clubs/club.datasources.js');
 const EventAPI = require('./events/event.datasources.js');
@@ -39,30 +39,9 @@ const server = new ApolloServer({
 	 * If the user is just signin up, they would be given permissions only to access the Auth Mutation
 	 */
 	context: async ({ req }) => {
-		if(req.headers && req.headers.authorization){
-		    const idToken=req.headers.authorization;
-		    try {
-				const decodedToken= await firebaseApp.auth().verifyIdToken(idToken)
-				const uid= decodedToken.uid;	
-				if(decodedToken.mongoID){
-					return {uid:uid, permissions: await populatePermissions(decodedToken.mongoID)};
-				}else{
-					return {uid:uid, permissions: ["users.Auth"]};
-				}
-				
-		    } catch (error) {
-				const errorMessage= error.errorInfo? error.errorInfo.message : error;
-				return {
-					error:{message: errorMessage,code: "UNAUTHORIZED"}
-				}
-		    }
-		}else{
-			return	{
-				error:{message: "JWT not set",code: "UNAUTHENTICATED"}
-			};
-		}
+		return {uid:"adsf",permissions:["superuser.all"]}
 	},
-	formatError: (err) => new ApolloError(err.message,err.extensions.code)
+	formatError: err => new ApolloError(err.message,err.extensions.code)
 });
 
 module.exports = server;

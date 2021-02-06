@@ -3,6 +3,7 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const server = require("./apollo/server");
+const PORT_NUMBER = 5000;
 dotenv.config();
 
 //Mongoose Configs
@@ -15,11 +16,15 @@ mongoose.connect(process.env.MONGODB_URL || 'mongodb://localhost/elaichi', {
 	useUnifiedTopology: true,
 });
 mongoose.connection.once('open', () => {
-	console.log('connected to the database');
+	console.info('connected to the database')
+	console.timeEnd("mongo")
 	// seed.seedData();
 	// seed.seedPermissions();
 });
 
-server.listen(5000).then(({ url }) => {
-	console.log(`Graphql running on ${url}`);
+server.listen(PORT_NUMBER).then(({ url }) => {
+	console.info(`Graphql running on ${url}`);	
+	console.timeEnd("apollo")
 });
+console.time("apollo")
+console.time("mongo")

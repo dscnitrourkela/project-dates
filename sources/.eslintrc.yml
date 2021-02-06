@@ -18,8 +18,9 @@ rules:
   no-console:
     - error
     - allow:
-        - error
-        - warn
+        - info
+        - time
+        - timeEnd
 
   # no-extra-parens: error # conflicts with prettier
   no-misleading-character-class: error
@@ -27,10 +28,10 @@ rules:
   require-atomic-updates: error
   accessor-pairs: error
   block-scoped-var: error
-  class-methods-use-this:
-    - error
-    - exceptMethods:
-        - render
+  # class-methods-use-this:
+  #   - error
+  #   - exceptMethods:
+  #       - render
   complexity: error
   curly: error
   default-case: error
