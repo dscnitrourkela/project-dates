@@ -22,3 +22,4 @@ docs
 .ssh/
 .viminfo
 .gitconfig
+.firebase
