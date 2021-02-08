@@ -10,31 +10,31 @@ const queries = {
 	 * @param {Object} args - arguments to query
 	 * @reutrns [{Object}] users - list of users
 	 */
-	users: (parent, args, { dataSources,permissions,error }, info) => {
-		return resolverHelper(error,'users.all',permissions) 
-			?  dataSources.UserAPI.getUsers(args)
+	users: (parent, args, { dataSources, permissions, error }) => 
+		resolverHelper(error,'users.all',permissions) 
+			? dataSources.UserAPI.getUsers(args)
 			: [ERRORS.PERMISSION_DENIED]		
-	},
+	,
 	/**
 	 * Resolver for User by Username.
 	 * @param {string} username - username query
 	 * @reutrns {Object} User - User with the queried username
 	 */
-	userByUsername: async (parent, { username }, { dataSources,uid, permissions,error }, info) => {
-		return resolverHelper(error,'users.byName',permissions) 
-			?  dataSources.UserAPI.getUserByUsername(username)
+	userByUsername: (parent, { username }, { dataSources,_, permissions,error }) => 
+		resolverHelper(error,'users.byName',permissions) 
+			? dataSources.UserAPI.getUserByUsername(username)
 			: ERRORS.PERMISSION_DENIED				
-	},
+	,
 	/**
 	 * Resolver for User by Username.
 	 * @param {string} id - User ID
 	 * @reutrns {Object} User - User with the queried id
 	 */
-	userById: async (parent, { id }, {dataSources,uid, permissions, error }, info) => {
-		return resolverHelper(error,'users.byId',permissions) 
-			?  dataSources.UserAPI.getUserById(id)
+	userById: (parent, { id }, {dataSources,_, permissions, error }) => 
+		resolverHelper(error,'users.byId',permissions) 
+			? dataSources.UserAPI.getUserById(id)
 			: ERRORS.PERMISSION_DENIED				
-	},
+	,
 };
 
 const mutations = {
@@ -46,11 +46,11 @@ const mutations = {
 	 * @param {String} uid - Firebase UID
 	 * @reutrns {Object} User - Authenticated user
 	 */
-	authUser: (parent, { user }, { dataSources,uid, permissions, error}, info) => {
-		return resolverHelper(error,'users.Auth',permissions) 
-			?  dataSources.UserAPI.authUser(user,uid)
+	authUser: (parent, { user }, { dataSources,uid, permissions, error}) =>
+		resolverHelper(error,'users.Auth',permissions) 
+			? dataSources.UserAPI.authUser(user,uid)
 			: ERRORS.PERMISSION_DENIED				
-	},
+	,
 	/**
 	 * Resolver to update user info
 	 * This mutation is used to update the new values sent from the client
@@ -60,25 +60,23 @@ const mutations = {
 	 * @param {String} uid - Firebase UID
 	 * @reutrns {Object} User -Updated user
 	 */
-	updateUser: (parent, args, { dataSources,uid, permissions, error}, info) => {
-		return resolverHelper(error,'users.Update',permissions) 
-			?  dataSources.UserAPI.updateUser(args,uid)
+	updateUser: (parent, args, { dataSources,uid, permissions, error}) =>
+		resolverHelper(error,'users.Update',permissions) 
+			? dataSources.UserAPI.updateUser(args,uid)
 			: ERRORS.PERMISSION_DENIED					
-	},
-	deleteUser: (parent, args, { dataSources,uid, permissions, error}, info) => {
-		return resolverHelper(error,'users.Delete',permissions) 
-		?  dataSources.UserAPI.deleteUser(uid)
+	,
+	deleteUser: (parent, args, { dataSources,uid, permissions, error}) =>
+		resolverHelper(error,'users.Delete',permissions) 
+		? dataSources.UserAPI.deleteUser(uid)
 		: ERRORS.PERMISSION_DENIED					
-	},
+	,
 };
 const fieldResolvers = {
 	User: {
-		clubAccess: async (parent, args, { dataSources,uid, permissions }, info) => {
-			return await dataSources.AccessLevelAPI.resolveAccess(parent.clubAccess);
-		},
-		id: async (parent) => {
-			return parent._id;
-		},
+		clubAccess: (parent, args, { dataSources}) =>
+			dataSources.AccessLevelAPI.resolveAccess(parent.clubAccess)
+		,
+		id: parent => parent._id,
 	},
 	UserResult: resultResolver('User')
 };

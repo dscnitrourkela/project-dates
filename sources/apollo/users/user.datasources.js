@@ -9,19 +9,14 @@ const { INVALID_INPUT } = require('../../errors/index.js');
  * @classdesc This class contains all the database functions for the users
  */
 class UserAPI extends DataSource {
-	constructor() {
-		super();
+	getUsers(args) {
+		return Users.find(args);
 	}
-
-	initialize(config) {}
-	async getUsers(args) {
-		return await Users.find(args);
+	getUserById(id) {
+		return Users.findById(id);
 	}
-	async getUserById(id) {
-		return await Users.findById(id);
-	}
-	async getUserByUsername(username) {
-		return await Users.findOne({ username: username });
+	getUserByUsername(username) {
+		return Users.findOne({ username: username });
 	}
 	/**
 	 * Single function which handles both sign up and sign in of a user
@@ -42,7 +37,7 @@ class UserAPI extends DataSource {
 		}
 		// User document doesnt exist(Sign up)
 		else{	
-			let newUser = await Users.create({
+			const newUser = await Users.create({
 				username: user.username,
 				name: user.name,
 				gmailAuthMail: user.gmailAuthMail,
@@ -61,8 +56,9 @@ class UserAPI extends DataSource {
 			const createdAccessLevel = await AccessLevel.create(accessLevelObj);
 			await newUser.clubAccess.push(createdAccessLevel);
 			await newUser.save();
-			if(process.env.NODE_ENV!="test")
+			if (process.env.NODE_ENV !== "test") {
 				firebase.updateJWT(uid,{mongoID:newUser._id});
+			}				
 			incomingUser= await Users.findOne({firebaseUID:uid})
 		}
 		return incomingUser;		
@@ -77,7 +73,7 @@ class UserAPI extends DataSource {
 	 * @returns {Object} updated user object
 	 */
 	async updateUser(args,uid) {
-		const user = args.user;
+		const {user} = args;
 		let retPromise = {};
 		const foundUser = await Users.findOne({firebaseUID:uid});
 		let updatedUser = new Users(foundUser);
@@ -85,11 +81,11 @@ class UserAPI extends DataSource {
 		updatedUser = new Users(updatedUser);
 		
 		let regex=/^(1|2|3|4|5|7)[0-9][0-9]((AR|AS|BM|BT|CH|CE|CR|CS|CY|EC|EI|EE|ER|FP|HS|ID|LS|MA|ME|MN|MM|PA|PH|SM)|(ar|as|bm|bt|ch|ce|cr|cs|cy|ec|ei|ee|er|fp|hs|id|ls|ma|me|mn|mm|pa|ph|sm))[0-9]{4}$/;
-		if( user.instituteId!=undefined&&foundUser.instituteId==undefined){
+		if( user.instituteId!==undefined&&foundUser.instituteId===undefined){
 			// if(regex.test(user.instituteId)==false){
 			// 	return new ApolloError("Invalid Institute ID");
 			// }
-			const email=user.instituteId+'@nitrkl.ac.in';
+			// const email=user.instituteId+'@nitrkl.ac.in';
 			// Firebase Email Auth provider needs to be checked before updating Level
 			// Error handling also needs to be done
 			const accessLevelObj = {
@@ -111,13 +107,18 @@ class UserAPI extends DataSource {
 	 * @throws Will throw an error if the user with the given uid is not found.
 	 */
 	async deleteUser(uid) {		
-		const response=await Users.deleteOne({firebaseUID:uid});
-		if(process.env.NODE_ENV!="test")
-			await firebase.deleteUser(uid);
-		if(response.n===0)
+		const foundUser = await Users.findOne({ firebaseUID: uid });
+		if (foundUser === null) {
 			return {...INVALID_INPUT,message:"User Not Found"};
-		else
-			return {success:true};
+		}
+			
+		await Users.deleteOne({ id: foundUser._id })
+		await AccessLevel.deleteMany({ user: foundUser._id });
+		
+		if(process.env.NODE_ENV !== "test") {
+			firebase.deleteUser(uid);		
+		}
+		return { success: true };
 	}
 }
 module.exports = UserAPI;

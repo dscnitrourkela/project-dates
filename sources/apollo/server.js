@@ -39,7 +39,27 @@ const server = new ApolloServer({
 	 * If the user is just signin up, they would be given permissions only to access the Auth Mutation
 	 */
 	context: async ({ req }) => {
-		return {uid:"adsf",permissions:["superuser.all"]}
+		if (req.headers && req.headers.authorization) {
+		    const idToken=req.headers.authorization;
+		    try {
+				const decodedToken = await firebaseApp.auth().verifyIdToken(idToken)			
+				const {uid} = decodedToken;	
+				if(decodedToken.mongoID){
+					return {uid, permissions: await populatePermissions(decodedToken.mongoID)};
+				}
+				return {uid, permissions: ["users.Auth"]};				
+				
+		    } catch (error) {
+				const errorMessage= error.errorInfo? error.errorInfo.message : error;
+				return {
+					error:{message: errorMessage,code: "UNAUTHORIZED"}
+				}
+		    }
+		}else{
+			return	{
+				error:{message: "JWT not set",code: "UNAUTHENTICATED"}
+			};
+		}
 	},
 	formatError: err => new ApolloError(err.message,err.extensions.code)
 });

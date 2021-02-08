@@ -4,7 +4,7 @@
  * @format
  * @module Permissions Helper
  */
-const Users = require('../apollo/users/user.model.js');
+const AccessLevels = require('../apollo/accessLevels/accessLevel.model');
 
 /**
  * The roles to permissions map which has level-wise permissions list corresponding to the particular level.
@@ -27,33 +27,26 @@ const rolesPermissionsMap={
  * 
  * @param {String} id Mongo User id
  */
-const populatePermissions=async (id)=>{
-    const foundUser= await Users.findById(id).populate("clubAccess");
-    if(foundUser===null){
+const populatePermissions = async id => {    
+    const userAccessLevels = await AccessLevels.find({ user: id })
+    if(userAccessLevels===null){
         throw new Error("User not found, Possibly outdated JWT")
-    }else{
-        let rolesSet=new Set();
-        foundUser.clubAccess.forEach(accessObj => {
-            if(accessObj.club)
-                rolesSet.add(accessObj.level+"$"+accessObj.club)
-            else
-                rolesSet.add(accessObj.level);  
-        }); 
-        let permissions=[]
-        for(let role of rolesSet){   
-            const splits=role.split("$")     ;
-            if(splits.length===1){
-                rolesPermissionsMap[splits[0]].forEach(permission=>{
-                    permissions.push(permission);
-                })        
-            }else if(splits.length===2){
-                rolesPermissionsMap[splits[0]].forEach(permission=>{
-                    permissions.push(permission+"$"+splits[1]);
-                })        
-            }        
-        }
+    }else{        
+        const permissions = [];
+        userAccessLevels.forEach(accessObj => {
+            if (accessObj.club) {
+                rolesPermissionsMap[accessObj.level].forEach(perm => {
+                    permissions.push(perm+"$"+accessObj.club)
+                })                
+            } else {
+                rolesPermissionsMap[accessObj.level].forEach(perm => {
+                    permissions.push(perm)
+                })                
+            }
+        })
         return permissions;
     }    
+    
 }
 
 module.exports= {
