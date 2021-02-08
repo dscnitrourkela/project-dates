@@ -1,5 +1,5 @@
 const {beforeTests,unquoteUtil, afterTests, apolloServer, PERMISSION_DENIED_TEST} = require("../testHelper");
-const {clubSeeder,eventSeeder} = require("../../helpers/seed_database");
+const {clubSeeder,eventSeeder,memberSeeder} = require("../../helpers/seed_database");
 // Pre and Post Test Scripts
 beforeAll(beforeTests);
 afterAll(afterTests);
@@ -130,7 +130,8 @@ describe('Results: Clubs Queries and Mutations', () => {
     })
 
     it('Delete club', async () => {     
-      const clubId=(await clubSeeder()).id;            
+      const clubId = (await clubSeeder()).id;    
+      await memberSeeder(clubId)
       const DELETE_CLUB = `
         mutation{
           deleteClub(id:"`+clubId+`"){
@@ -142,6 +143,7 @@ describe('Results: Clubs Queries and Mutations', () => {
       `;
 
       const response = await mutate({ mutation: DELETE_CLUB });      
+      console.log(JSON.stringify(response, null, 4));
       expect(response.data.deleteClub.success).toEqual(true); 
     });
 

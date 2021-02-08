@@ -92,7 +92,7 @@ class ClubAPI extends DataSource {
 		let foundClub;
 		try{
 			foundClub = await Clubs.findById(clubId);
-			if(foundClub===undefined){
+			if(foundClub===null){
 				return {...INVALID_INPUT, message:"Club Not Found"};
 			}
 		}catch(e){
@@ -152,7 +152,7 @@ class ClubAPI extends DataSource {
 		let foundClub;
 		try{
 			foundClub = await Clubs.findById(id);
-			if(foundClub===undefined){
+			if(foundClub===null){
 				return {...INVALID_INPUT, message:"Club Not Found"};
 			}
 		}catch(e){

@@ -98,7 +98,8 @@ describe('Results: Stories Queries and Mutations', () => {
 
     const response = await query({ query: FETCH_STORIES });     
     const storyResponse=response.data.currentStories;
-    const testStoryResponse=storyResponse.filter((e)=>e.authorId==club.id);
+    // eslint-disable-next-line eqeqeq
+    const testStoryResponse=storyResponse.filter(e => e.authorId==club.id);
     const testCurrentStory=[{
       authorId:club.id,
       authorName:club.clubName,
@@ -161,7 +162,7 @@ describe('Results: Stories Invalid Input', () => {
           }
         }
     `;
-    const response = await mutate({ mutation: ADD_STORY });  
+    const response = await mutate({ mutation: ADD_STORY });    
     expect(response.data.addStory).toEqual({...INVALID_INPUT_TEST, message:"Author Not Found"});
   }); 
 

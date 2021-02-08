@@ -35,7 +35,7 @@ class StoryAPI extends DataSource {
         const currentStoriesListMap= new Array();
         const visitedClub= new Map();
         currentStoriesList.map(each => {
-            if(visitedClub[each.authorId]!==null) {
+            if(visitedClub[each.authorId]!==undefined) {
                 currentStoriesListMap[visitedClub[each.authorId]].story.push(each.story);
             }else{
                 visitedClub[each.authorId]=currentStoriesListMap.length;
@@ -67,7 +67,7 @@ class StoryAPI extends DataSource {
 		//1. author
 		const authorId = story.author;
         const foundAuthor = await Clubs.findById(authorId);
-        if(foundAuthor===undefined){
+        if(foundAuthor===null){
             return {...INVALID_INPUT, message:"Author Not Found"};
         }
         // Create Event with basic types;
@@ -94,7 +94,7 @@ class StoryAPI extends DataSource {
             }catch(error){
                 return {...INVALID_INPUT, message:"Invalide Event ID"};
             }			            
-            if(foundEvent===undefined){
+            if(foundEvent===null){
                 return {...INVALID_INPUT, message:"Event Not Found"};
             }
             createdStory.event = foundEvent._id;
