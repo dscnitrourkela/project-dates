@@ -24,6 +24,7 @@ describe('Results: Clubs Queries and Mutations', () => {
         {name:"Chinmoi",designation:"Meme coach",mobileNo:"1234567890",email:"a@a.com"}
       ]
     };
+    
     it('Create Club', async () => {                           
       const testClub=JSON.stringify(testObj)
       const inputTestClub=unquoteUtil(testClub);
@@ -64,7 +65,8 @@ describe('Results: Clubs Queries and Mutations', () => {
     });
 
     it('Update Club with other info', async () => {    
-      const clubId=(await clubSeeder()).id;           
+      const clubId = (await clubSeeder()).id;       
+      await memberSeeder(clubId)
       const testClub=JSON.stringify(testObj)
       const inputTestClub=unquoteUtil(testClub);
       const UPDATE_CLUB = `
@@ -91,13 +93,18 @@ describe('Results: Clubs Queries and Mutations', () => {
                 mobileNo,
                 email
               }
+              memberAccess{
+                relation
+              }
             }
           }
         }
       `;
 
       const response = await mutate({ mutation: UPDATE_CLUB });
-      const clubResponse=response.data.updateClub;
+      const clubResponse = response.data.updateClub;
+      expect(clubResponse.memberAccess).toEqual([{ relation: "member" }]);
+      delete (clubResponse.memberAccess);
       expect(JSON.stringify(clubResponse)).toEqual(testClub); 
     });
 
@@ -142,8 +149,7 @@ describe('Results: Clubs Queries and Mutations', () => {
         }
       `;
 
-      const response = await mutate({ mutation: DELETE_CLUB });      
-      console.log(JSON.stringify(response, null, 4));
+      const response = await mutate({ mutation: DELETE_CLUB });  
       expect(response.data.deleteClub.success).toEqual(true); 
     });
 

@@ -141,16 +141,15 @@ const clubSeeder = async () =>{
 	
 }
 
-const memberSeeder = async (clubId) => {
-	const createdUser= user.create({username:"coolnick"});
-	const userId = createdUser._id;
+const memberSeeder = async clubId => {
+	const createdUser= await user.create({username:"coolnick",firebaseUID:clubId});
 	const foundClub = await club.findById(clubId)
 	const accessLevelObj = {
 		level: '1',
 		name:"coolnick",
 		relation:'member',
 		club: foundClub,
-		user: userId,
+		user: createdUser,
 	};
 	const createdAccessLevel = await accessLevel.create(accessLevelObj);
 

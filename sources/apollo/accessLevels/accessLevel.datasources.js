@@ -74,6 +74,21 @@ class AccessLevelAPI extends DataSource {
 		await foundUser.save();
 		await foundClub.save();
 		return foundAccessLevel.deleteOne();
+	}
+	/**
+	 * This is called when deleting a club or any particular instance where the accesslevels from 
+	 * the clubs need not be deleted, as the entire club is going to be deleted
+	 * @param {Object} id id of the access level object to be deleted
+	 * @returns {Object} deleted access level object
+	 */
+	async deleteAccessLevelFromUser(id){
+		const foundAccessLevel = await AccessLevels.findById(id);
+		const userId = foundAccessLevel.user;
+		const foundUser = await Users.findById(userId);
+		// eslint-disable-next-line eqeqeq
+		foundUser.clubAccess = foundUser.clubAccess.filter(access => access._id!=id)
+		await foundUser.save();
+		return foundAccessLevel.deleteOne();
     }
 }
 

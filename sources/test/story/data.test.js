@@ -241,7 +241,6 @@ describe('Results: Stories Invalid Input', () => {
       }
     `;
     const response = await mutate({ mutation: DELETE_STORY });  
-    console.log(JSON.stringify(response,null,4))  ;
     expect(response.data.deleteStory).toEqual({...INVALID_INPUT_TEST, message:"Story Not Found"});
   })
 })
