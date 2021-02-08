@@ -1,7 +1,7 @@
 
 
-var mongoose = require('mongoose');
-var storySchema = new mongoose.Schema({
+const mongoose = require('mongoose');
+const storySchema = new mongoose.Schema({
 	author: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'Club',

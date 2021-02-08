@@ -19,10 +19,6 @@ class StoryAPI extends DataSource {
     * @property {Object} story
      */
     
-	constructor() {
-		super();
-	}
-    initialize(config) {}
     // getStories(args) {
     //     delete Object.assign(args, {["_id"]: args["id"] })["id"];
 	// 	return Stories.find(args);
@@ -35,11 +31,11 @@ class StoryAPI extends DataSource {
      * @returns {currentStories} array of current stories grouped club wise
      */
 	async getCurrentStories() {
-        let currentStoriesList=await currentStories.find();
-        let currentStoriesListMap= new Array();
-        let visitedClub= new Map();
-        currentStoriesList.map((each)=>{
-            if(visitedClub[each.authorId]!=null) {
+        const currentStoriesList=await currentStories.find();
+        const currentStoriesListMap= new Array();
+        const visitedClub= new Map();
+        currentStoriesList.map(each => {
+            if(visitedClub[each.authorId]!==null) {
                 currentStoriesListMap[visitedClub[each.authorId]].story.push(each.story);
             }else{
                 visitedClub[each.authorId]=currentStoriesListMap.length;
@@ -65,17 +61,17 @@ class StoryAPI extends DataSource {
 	async addStory(story) {
         let retPromise = {};
         
-        let createdStory;
+        
 		//Add nested types
 
 		//1. author
 		const authorId = story.author;
         const foundAuthor = await Clubs.findById(authorId);
-        if(foundAuthor==undefined){
+        if(foundAuthor===undefined){
             return {...INVALID_INPUT, message:"Author Not Found"};
         }
         // Create Event with basic types;
-        createdStory = await Stories.create({
+        const createdStory = await Stories.create({
             asset: story.asset,
             assetType: story.assetType,
             description: story.description
@@ -84,18 +80,13 @@ class StoryAPI extends DataSource {
         //add to current Stories
         await currentStories.create({
             authorId: foundAuthor._id,
-            authorLogo: foundAuthor.theme.map((e)=>{
-                return {
-                    name:e.name,
-                    logo:e.logo
-                }
-            }),
+            authorLogo: foundAuthor.theme.map(e => ({ name: e.name, logo: e.logo })),
             authorName: foundAuthor.clubName,                
             story: createdStory._id
         })  
 
         //2. event
-		if (story.event != undefined) {
+		if (story.event !== undefined) {
             const eventId = story.event;
             let foundEvent;
             try{
@@ -103,7 +94,7 @@ class StoryAPI extends DataSource {
             }catch(error){
                 return {...INVALID_INPUT, message:"Invalide Event ID"};
             }			            
-            if(foundEvent==undefined){
+            if(foundEvent===undefined){
                 return {...INVALID_INPUT, message:"Event Not Found"};
             }
             createdStory.event = foundEvent._id;
@@ -116,9 +107,9 @@ class StoryAPI extends DataSource {
     //     return await Stories.findById(id);
     // }
 
-    async getStoryByIds(ids){
+    getStoryByIds(ids){
         return Stories.find({
-            '_id': { $in: ids.map((id)=>mongoose.Types.ObjectId(id) )}
+            '_id': { $in: ids.map(id => mongoose.Types.ObjectId(id) )}
         });
     }
     /**
@@ -129,12 +120,11 @@ class StoryAPI extends DataSource {
      */
     async deleteStory(story){
         const deleteResponse=await currentStories.deleteOne({ "story" : story.id });
-        if(deleteResponse.n===0)
+        if (deleteResponse.n === 0) {
             return {...INVALID_INPUT,message:"Story Not Found"};
-        else{
-            await Stories.deleteOne({ "_id" : story.id })
-            return {success:true};
-        }        
+        } 
+        await Stories.deleteOne({ "_id" : story.id })
+        return {success:true};
     }
 
 }

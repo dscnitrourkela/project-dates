@@ -9,10 +9,6 @@ const { INVALID_INPUT } = require('../../errors/index.js');
  * @classdesc This class contains all the database functions for the clubs
  */
 class ClubAPI extends DataSource {
-	constructor() {
-		super();
-	}
-	initialize(config) {}
 	// async getClubs(args) {
 	// 	const ans = await Clubs.find(args);
 	// 	return ans;
@@ -26,8 +22,8 @@ class ClubAPI extends DataSource {
 	 * @param {Array} eventArray array of event ids to be resolved
 	 * @returns {Array} array of resolved event objects
 	 */
-	async resolveClubEvents(eventArray) {
-		return await Events.find({
+	resolveClubEvents(eventArray) {
+		return Events.find({
 			_id: { $in: eventArray },
 		});
 	}
@@ -42,7 +38,7 @@ class ClubAPI extends DataSource {
 	async addClub(club) {
 		let retPromise = {};
 		// Create club with basic types;
-		let createdClub = await Clubs.create({
+		const createdClub = await Clubs.create({
 			clubName: club.clubName,
 			facAd: club.facAd,
 			description: club.description,
@@ -91,12 +87,12 @@ class ClubAPI extends DataSource {
 	 */
 	async updateClub(args) {
 		const clubId = args.id;
-		const club = args.club;
+		const {club} = args;
 		let retPromise = {};
 		let foundClub;
 		try{
 			foundClub = await Clubs.findById(clubId);
-			if(foundClub==undefined){
+			if(foundClub===undefined){
 				return {...INVALID_INPUT, message:"Club Not Found"};
 			}
 		}catch(e){
@@ -156,7 +152,7 @@ class ClubAPI extends DataSource {
 		let foundClub;
 		try{
 			foundClub = await Clubs.findById(id);
-			if(foundClub==undefined){
+			if(foundClub===undefined){
 				return {...INVALID_INPUT, message:"Club Not Found"};
 			}
 		}catch(e){
@@ -167,7 +163,7 @@ class ClubAPI extends DataSource {
 		const AccessLevels = new AccessLevelAPI();
 		// accessArray exists and not empty
 		await Promise.all(
-			accessArray.map(async (accessItem, index) => {
+			accessArray.map(async accessItem => {
 				await AccessLevels.deleteAccessLevelFromUser(accessItem);
 			})
 		);		
