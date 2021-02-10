@@ -16,7 +16,7 @@ class UserAPI extends DataSource {
 		return Users.findById(id);
 	}
 	getUserByUsername(username) {
-		return Users.findOne({ username: username });
+		return Users.findOne({ username });
 	}
 	/**
 	 * Single function which handles both sign up and sign in of a user
@@ -80,7 +80,7 @@ class UserAPI extends DataSource {
 		updatedUser = Object.assign(updatedUser, user);
 		updatedUser = new Users(updatedUser);
 		
-		let regex=/^(1|2|3|4|5|7)[0-9][0-9]((AR|AS|BM|BT|CH|CE|CR|CS|CY|EC|EI|EE|ER|FP|HS|ID|LS|MA|ME|MN|MM|PA|PH|SM)|(ar|as|bm|bt|ch|ce|cr|cs|cy|ec|ei|ee|er|fp|hs|id|ls|ma|me|mn|mm|pa|ph|sm))[0-9]{4}$/;
+		// let regex=/^(1|2|3|4|5|7)[0-9][0-9]((AR|AS|BM|BT|CH|CE|CR|CS|CY|EC|EI|EE|ER|FP|HS|ID|LS|MA|ME|MN|MM|PA|PH|SM)|(ar|as|bm|bt|ch|ce|cr|cs|cy|ec|ei|ee|er|fp|hs|id|ls|ma|me|mn|mm|pa|ph|sm))[0-9]{4}$/;
 		if( user.instituteId!==undefined&&foundUser.instituteId===undefined){
 			// if(regex.test(user.instituteId)==false){
 			// 	return new ApolloError("Invalid Institute ID");
