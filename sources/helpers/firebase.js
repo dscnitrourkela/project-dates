@@ -1,3 +1,9 @@
+/**
+ * Seeding module
+ *
+ * @format
+ * @module Firebase Helper
+ */
 const admin = require('firebase-admin');
 const serviceAccount = require('../project-elaichi.json');
 
@@ -7,6 +13,12 @@ const firebaseApp=admin.initializeApp({
   databaseURL: 'https://project-elaichi-493f1.firebaseio.com',
 });
 
+/**
+ * This function is used to encode the MongoID inside the JWT of the user. This is being called during sign up,
+ * i.e. the first time a user logs into the app.
+ * @param {String} uid Firebase uid
+ * @param {Object} data customClaim
+ */
 const updateJWT=(uid,data)=>{
   admin.auth().setCustomUserClaims(uid,data)
   .then(() => {
@@ -17,6 +29,10 @@ const updateJWT=(uid,data)=>{
   });  
 }
 
+/**
+ * This function deletes the user object from Firebase
+ * @param {String} uid Firebase uid
+ */
 const deleteUser=(uid)=>{
   admin
   .auth()

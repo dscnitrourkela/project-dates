@@ -1,7 +1,7 @@
-/** @format */
 
-var mongoose = require('mongoose');
-var permissionSchema = new mongoose.Schema({
+
+const mongoose = require('mongoose');
+const permissionSchema = new mongoose.Schema({
 	role: String,
 	permissions: [String],
 },{

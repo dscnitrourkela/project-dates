@@ -1,5 +1,3 @@
-/** @format */
-
 const types = `
     union AccessLevelResponse= AccessLevel | ErrorClass
     type AccessLevel{

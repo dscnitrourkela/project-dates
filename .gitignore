@@ -7,6 +7,7 @@ package-lock.json
 sources/.node_repl_history
 sources/.npm/
 coverage
+docs
 .vs/
 .bash_history
 .bash_logout
@@ -21,5 +22,6 @@ coverage
 .ssh/
 .viminfo
 .gitconfig
+.firebase
 **/*.log
 logs/

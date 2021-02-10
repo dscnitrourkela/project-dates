@@ -1,7 +1,5 @@
-/** @format */
-
-var mongoose = require('mongoose');
-var currentStorySchema = new mongoose.Schema({
+const mongoose = require('mongoose');
+const currentStorySchema = new mongoose.Schema({
 	authorId: String,
 	authorName: String, 
 	authorLogo: [{

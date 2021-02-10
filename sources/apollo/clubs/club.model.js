@@ -1,7 +1,5 @@
-/** @format */
-
-var mongoose = require('mongoose');
-var clubSchema = new mongoose.Schema({
+const mongoose = require('mongoose');
+const clubSchema = new mongoose.Schema({
 	clubName: String,
 	memberAccess: [
 		{
