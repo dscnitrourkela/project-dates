@@ -1,5 +1,3 @@
-/** @format */
-
 const Venues = require('../venues/venue.model.js');
 const AccessLevel = require('../accessLevels/accessLevel.model.js');
 const { DataSource } = require('apollo-datasource');

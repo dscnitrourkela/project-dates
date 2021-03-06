@@ -1,4 +1,8 @@
-const { ApolloServer, gql, ApolloError, AuthenticationError } = require('apollo-server');
+/**
+ * The Apollo Server which powers the backend
+ * @namespace Apollo
+ */
+const { ApolloServer, ApolloError} = require('apollo-server');
 const UserAPI = require('./users/user.datasources.js');
 const ClubAPI = require('./clubs/club.datasources.js');
 const EventAPI = require('./events/event.datasources.js');
@@ -39,16 +43,15 @@ const server = new ApolloServer({
 	 * If the user is just signin up, they would be given permissions only to access the Auth Mutation
 	 */
 	context: async ({ req }) => {
-		if(req.headers && req.headers.authorization){
+		if (req.headers && req.headers.authorization) {
 		    const idToken=req.headers.authorization;
 		    try {
-				const decodedToken= await firebaseApp.auth().verifyIdToken(idToken)
-				const uid= decodedToken.uid;	
+				const decodedToken = await firebaseApp.auth().verifyIdToken(idToken)			
+				const {uid} = decodedToken;	
 				if(decodedToken.mongoID){
-					return {uid:uid, permissions: await populatePermissions(decodedToken.mongoID)};
-				}else{
-					return {uid:uid, permissions: ["users.Auth"]};
+					return {uid, permissions: await populatePermissions(decodedToken.mongoID)};
 				}
+				return {uid, permissions: ["users.Auth"]};				
 				
 		    } catch (error) {
 				const errorMessage= error.errorInfo? error.errorInfo.message : error;
@@ -62,7 +65,7 @@ const server = new ApolloServer({
 			};
 		}
 	},
-	formatError: (err) => new ApolloError(err.message,err.extensions.code)
+	formatError: err => new ApolloError(err.message,err.extensions.code)
 });
 
 module.exports = server;

@@ -1,4 +1,4 @@
-/** @format */
+
 
 const PERMISSION_DENIED = {
 	__typename: 'ErrorClass',

@@ -1,4 +1,4 @@
-/** @format */
+
 
 var mongoose = require('mongoose');
 var venueSchema = new mongoose.Schema({

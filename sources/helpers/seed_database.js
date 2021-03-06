@@ -141,6 +141,23 @@ const clubSeeder = async () =>{
 	
 }
 
+const memberSeeder = async clubId => {
+	const createdUser= await user.create({username:"coolnick",firebaseUID:clubId});
+	const foundClub = await club.findById(clubId)
+	const accessLevelObj = {
+		level: '1',
+		name:"coolnick",
+		relation:'member',
+		club: foundClub,
+		user: createdUser,
+	};
+	const createdAccessLevel = await accessLevel.create(accessLevelObj);
+
+	await foundClub.memberAccess.push(createdAccessLevel);
+	await foundClub.save();
+
+}
+
 const eventSeeder=async ()=>{
 	const createdEvent=await event.create({
 		eventName: "Bazingaa",
@@ -167,5 +184,6 @@ module.exports = {
 	clubSeeder,
 	eventSeeder,
 	storySeeder,
-	UserSeeder
+	UserSeeder,
+	memberSeeder
 };

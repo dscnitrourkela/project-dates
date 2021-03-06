@@ -1,4 +1,4 @@
-/** @format */
+
 
 const Events = require('./event.model.js');
 const Users = require('../users/user.model.js');
