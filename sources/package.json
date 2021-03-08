@@ -9,10 +9,10 @@
 		"prettier:check": "npx prettier --check .",
 		"eslint": "npx eslint",
 		"eslint:fix": "npx eslint --fix",
-		"start": "npx pm2 start ecosystem.config.js --only dev --env development",
-		"stop": "npx pm2 stop ecosystem.config.js --only dev --env development",
+		"start": "npx pm2 start ecosystem.config.js --only dev --no-autorestart",
+		"stop": "npx pm2 stop ecosystem.config.js --only dev",
 		"delete": "npx pm2 delete ecosystem.config.js --only dev",
-		"restart": "npx pm2 restart ecosystem.config.js --only dev --env development",
+		"restart": "npx pm2 restart ecosystem.config.js --only dev",
 		"logs": "npx pm2 logs",
 		"status": "npx pm2 ps",
 		"start:prod": "pm2-runtime start ecosystem.config.js --only prod --env production",
@@ -40,7 +40,7 @@
 		"jest-environment-node": "^26.6.2",
 		"jsdoc": "^3.6.6",
 		"mongodb-memory-server": "^6.9.3",
-		"pm2": "^4.5.4",
+		"pm2": "^4.5.5",
 		"prettier": "2.2.0"
 	},
 	"jest": {
