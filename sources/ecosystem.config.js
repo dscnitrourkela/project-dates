@@ -14,6 +14,7 @@ module.exports = {
 			},
 			exec_mode: 'cluster',
 			instances: 1,
+			exp_backoff_restart_delay: 100,
 		},
 		{
 			name: 'prod',
@@ -31,6 +32,7 @@ module.exports = {
 			out_file: './logs/out.log',
 			log_file: './logs/combined.log',
 			time: true,
+			exp_backoff_restart_delay: 100,
 		},
 	],
 };
