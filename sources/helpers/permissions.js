@@ -14,7 +14,7 @@ const rolesPermissionsMap={
     "2":["users.secretEvents"],
     "3":["stories.add","stories.delete"],
     "4":["clubs.update","clubs.delete"],
-    "5":["clubs.add","accessLevels.CRUD"]
+    "5":["superuser.all"]
 }
 
 /**
