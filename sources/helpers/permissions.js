@@ -29,7 +29,7 @@ const rolesPermissionsMap={
  */
 const populatePermissions = async id => {
     console.time("permission")
-    const userAccessLevels = await AccessLevels.find({ user: id })
+    const userAccessLevels = await AccessLevels.find({ user: id }).select({club:1,level:1}).lean()
     
     console.timeEnd("permission")
     if(userAccessLevels===null){
