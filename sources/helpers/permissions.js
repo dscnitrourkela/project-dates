@@ -27,8 +27,11 @@ const rolesPermissionsMap={
  * 
  * @param {String} id Mongo User id
  */
-const populatePermissions = async id => {    
+const populatePermissions = async id => {
+    console.time("permission")
     const userAccessLevels = await AccessLevels.find({ user: id })
+    
+    console.timeEnd("permission")
     if(userAccessLevels===null){
         throw new Error("User not found, Possibly outdated JWT")
     }else{        
