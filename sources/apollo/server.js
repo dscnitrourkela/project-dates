@@ -9,6 +9,8 @@ const EventAPI = require('./events/event.datasources.js');
 const VenueAPI = require('./venues/venue.datasources.js');
 const AccessLevelAPI = require('./accessLevels/accessLevel.datasources.js');
 const StoryAPI = require('./stories/story.datasources.js');
+const CourseAPI = require('./courses/course.datasources.js');
+const TimetableAPI = require('./timetables/timetable.datasources.js');
 const typeDefs = require('./schema.js');
 const resolvers = require('./resolvers.js');
 const {firebaseApp}=require("../helpers/firebase");
@@ -22,7 +24,9 @@ const dataSources = () => ({
 	EventAPI: new EventAPI(),
 	VenueAPI: new VenueAPI(),
 	AccessLevelAPI: new AccessLevelAPI(),
-	StoryAPI:new StoryAPI()
+	StoryAPI:new StoryAPI(),
+	CourseAPI: new CourseAPI(),
+	TimetableAPI: new TimetableAPI(),
 });
 
 const server = new ApolloServer({

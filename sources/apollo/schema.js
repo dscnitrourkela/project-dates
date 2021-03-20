@@ -7,13 +7,16 @@ const Venue = require('./venues/venue.schema.js');
 const Story = require('./stories/story.schema.js');
 const Access = require('./accessLevels/accessLevel.schema.js');
 const ErrorClass = require('./errorClass/error.schema.js');
+const Course = require('./courses/course.schema.js');
+const Timetable = require('./timetables/timetable.schema.js');
+const {GraphQLDateTime} = require('graphql-iso-date');
 
 const types = [];
 const queries = [];
 const mutations = [];
 
-const schemas = [User, Event, Club, Venue, Access, ErrorClass,Story];
-schemas.forEach(s => {
+const schemas = [User, Event, Club, Venue, Access, ErrorClass,Story, Course, Timetable];
+schemas.forEach((s) => {
 	types.push(s.types);
 	queries.push(s.queries);
 	mutations.push(s.mutations);
