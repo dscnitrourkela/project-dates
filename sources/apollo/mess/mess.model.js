@@ -1,73 +1,93 @@
-const { introspectionFromSchema } = require('graphql');
-const mongoose = require('mongoose');
+/** @format */
 
-const messSchema = new mongoose.Schema({
-    commonItem : String,
-    selectableItems : [
-        {
-            item : [String],
-            type : Number, // 0-Veg, 1-NonVeg, 2-General Item
-        }
-    ]
+// TODO: Update CBy and UBy to make it non-nullabe by design
+
+const { Schema, model } = require('mongoose');
+
+const itemSchema = new Schema({
+	dish: {
+		type: String,
+		required: true,
+	},
+	isVeg: {
+		type: Boolean,
+		required: true,
+		default: true,
+	},
 });
 
+const mealSchema = new Schema({
+	mainCourse: {
+		type: [itemSchema],
+		required: true,
+	},
+	selectableDish: {
+		type: [itemSchema],
+		required: true,
+	},
+	commonDish: {
+		type: [itemSchema],
+		required: true,
+	},
+});
 
-// {
-//     "commonItem" : "Tea/Milk",
-//     "selectableItems" : [
-//             { 
-//                 "item" : [ "Upma/Idli" , "Ghuguni/Sambar/Chatni"],
-//                 "type" : 2,
-//             },
-//             {
-//                 "item" : ["Bread", "Butter/Jam"],
-//                 "type" : 2,
-//             },
-//     ];
-// }
+const messSchema = new Schema({
+	messName: {
+		type: String,
+		required: true,
+		enum: ['VS', 'SD', 'GDB/MV', 'DBA/MSS', 'HB', 'CVR', 'KMS'],
+	},
+	menu: {
+		type: [
+			{
+				day: {
+					type: Number,
+					max: 6,
+					min: 0,
+				},
+				breakfast: {
+					type: mealSchema,
+					required: true,
+				},
+				lunch: {
+					type: mealSchema,
+					required: true,
+				},
+				snacks: {
+					type: mealSchema,
+					required: true,
+				},
+				dinner: {
+					type: mealSchema,
+					required: true,
+				},
+			},
+		],
+		required: true,
+	},
+	expiry: {
+		type: Boolean,
+		required: true,
+		default: false,
+	},
+	schemaVersion: {
+		type: Number,
+		required: true,
+		default: 1,
+		min: 1,
+	},
+	createdBy: {
+		type: Schema.Types.ObjectId,
+		ref: 'User',
+		required: false,
+		default: null,
+	},
+	updatedBy: {
+		type: Schema.Types.ObjectId,
+		ref: 'User',
+		required: false,
+		default: null,
+	},
+});
 
-// {
-//     "commonItem" : "Kabuli Chana masala- Fried Rice - Dal Fry - Raita - Bature - Ice-cream",
-//     "selectableItems" : [       
-//             {
-//                 "item" : ["Paneer Butter Masala"],
-//                 "type" : 0,
-//             },
-//             {
-//                 "item" : ["Chicken Fry 1/4 pc"],
-//                 "type" : 1,
-//             },
-//     ];  
-// }
-// {
-//     "commonItem" : "Tea/Milk",
-//     "selectableItems" : [
-//             { 
-//                 "item" : ["Bread/Biscuit"],
-//                 "type" : 2,
-//             },
-//             {
-//                 "item" : ["Samosa", "Dal Fry"],
-//                 "type" : 2,
-//             },
-           
-//     ];  
-// }
-// {
-//     "commonItem" : "Dal Fry- Alu Dum - Raita -Roti - Pickle",
-//     "selectableItems" : [
-//             { 
-//                 "item" : ["Veg Biryani", "Rasgola"],
-//                 "type" : 0,
-//             },
-//             {
-//                 "item" : ["Chicken Biryani"],
-//                 "type" : 1,
-//             },
-//             {
-//                 "item" : ["Samosa", "Dal Fry"],
-//                 "type" : 2,
-//             },
-           
-//     ];  
-// }
+module.exports = model('Mess', messSchema);
