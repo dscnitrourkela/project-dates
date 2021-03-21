@@ -12,7 +12,6 @@ const itemSchema = new Schema({
 	isVeg: {
 		type: Boolean,
 		required: true,
-		default: true,
 	},
 });
 

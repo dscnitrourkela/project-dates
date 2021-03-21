@@ -1,29 +1,32 @@
+/** @format */
+
 const User = require('./users/user.resolver.js');
 const Event = require('./events/event.resolver.js');
 const Club = require('./clubs/club.resolver.js');
 const AccessLevel = require('./accessLevels/accessLevel.resolver.js');
+const Mess = require('./mess/mess.resolver.js');
 const Story = require('./stories/story.resolver.js');
-const { GraphQLDateTime } =require ("graphql-iso-date");
+const { GraphQLDateTime } = require('graphql-iso-date');
 
 const FieldResolver = {};
 const Query = {};
 const Mutation = {};
 
-const schemas = [User, Event, Club, AccessLevel,Story];
-schemas.forEach(s => {
+const schemas = [User, Event, Club, AccessLevel, Story, Mess];
+schemas.forEach((s) => {
 	Object.assign(FieldResolver, s.fieldResolvers);
 	Object.assign(Query, s.queries);
 	Object.assign(Mutation, s.mutations);
 });
 
 //Custom Resolver for Date object
-const CustomScalarResolver = { 
-  Date: GraphQLDateTime
+const CustomScalarResolver = {
+	Date: GraphQLDateTime,
 };
 
 const exportResolvers = {
 	Query,
-	Mutation
+	Mutation,
 };
 Object.assign(exportResolvers, FieldResolver);
 Object.assign(exportResolvers, CustomScalarResolver);
