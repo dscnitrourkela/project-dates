@@ -31,7 +31,7 @@ NOTE 2: Please abide by the [Code of Conduct](https://github.com/dscnitrourkela/
 
 dscnitrourkela/project-dates is Starware.  
 This means you're free to use the project, as long as you star its GitHub repository.  
-Your appreciation makes us grow and glow up. ⭐
+Your appreciation makes us grow and glow up. 🌠
 
 ## Documentation Notes
 
