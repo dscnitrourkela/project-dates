@@ -1,3 +1,5 @@
+/** @format */
+
 const { gql } = require('apollo-server');
 
 const User = require('./users/user.schema.js');
@@ -5,6 +7,7 @@ const Event = require('./events/event.schema.js');
 const Club = require('./clubs/club.schema.js');
 const Venue = require('./venues/venue.schema.js');
 const Story = require('./stories/story.schema.js');
+const Mess = require('./mess/mess.schema.js');
 const Access = require('./accessLevels/accessLevel.schema.js');
 const ErrorClass = require('./errorClass/error.schema.js');
 
@@ -12,8 +15,8 @@ const types = [];
 const queries = [];
 const mutations = [];
 
-const schemas = [User, Event, Club, Venue, Access, ErrorClass,Story];
-schemas.forEach(s => {
+const schemas = [User, Event, Club, Venue, Access, ErrorClass, Story, Mess];
+schemas.forEach((s) => {
 	types.push(s.types);
 	queries.push(s.queries);
 	mutations.push(s.mutations);

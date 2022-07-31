@@ -11,6 +11,6 @@
 	"jsxBracketSameLine": true,
 	"insertPragma": true,
 	"proseWrap": "preserve",
-	"arrowParens": "always",
+	"arrowParens": "avoid",
 	"endOfLine": "auto"
 }
