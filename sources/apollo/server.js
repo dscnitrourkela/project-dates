@@ -15,8 +15,11 @@ const StoryAPI = require('./stories/story.datasources.js');
 const MessAPI = require('./mess/mess.datasource.js');
 const typeDefs = require('./schema.js');
 const resolvers = require('./resolvers.js');
-const { firebaseApp } = require('../helpers/firebase');
-const { populatePermissions } = require('../helpers/permissions');
+const {firebaseApp}=require("../helpers/firebase");
+const { populatePermissions } = require("../helpers/permissions");
+
+const NodeCache = require( "node-cache" );
+const tokenCache = new NodeCache();
 
 //Datasources
 const dataSources = () => ({
@@ -44,16 +47,27 @@ const server = new ApolloServer({
 	 */
 	context: async ({ req }) => {
 		if (req.headers && req.headers.authorization) {
-			const idToken = req.headers.authorization;
+		    const idToken=req.headers.authorization;
 			try {
-				const decodedToken = await firebaseApp.auth().verifyIdToken(idToken);
-				const { uid } = decodedToken;
-				if (decodedToken.mongoID) {
-					return { uid, permissions: await populatePermissions(decodedToken.mongoID) };
+				console.time("firebase");
+
+				let userToken = tokenCache.get(idToken);
+				if (userToken === undefined) {
+					const decodedToken = await firebaseApp.auth().verifyIdToken(idToken)
+					// eslint-disable-next-line prefer-destructuring
+					userToken={ uid: decodedToken.uid, mongoID: decodedToken.mongoID }
+					tokenCache.set(idToken, userToken,36000);
+				}			
+
+				console.timeEnd("firebase");
+				
+				if(userToken.mongoID){
+					return {uid: userToken.uid, permissions: await populatePermissions(userToken.mongoID)};
 				}
-				return { uid, permissions: ['users.Auth'] };
-			} catch (error) {
-				const errorMessage = error.errorInfo ? error.errorInfo.message : error;
+				return {uid: userToken.uid, permissions: ["users.Auth"]};				
+				
+		    } catch (error) {
+				const errorMessage= error.errorInfo? error.errorInfo.message : error;
 				return {
 					error: { message: errorMessage, code: 'UNAUTHORIZED' },
 				};

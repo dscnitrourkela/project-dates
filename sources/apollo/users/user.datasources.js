@@ -18,6 +18,19 @@ class UserAPI extends DataSource {
 	getUserByUsername(username) {
 		return Users.findOne({ username });
 	}
+	async updateUserAfterSignUp(newUser,uid) {
+		const accessLevelObj = {
+			level: '1',
+			name:newUser.name,				
+			user: newUser
+		};
+		const createdAccessLevel = await AccessLevel.create(accessLevelObj);
+		await newUser.clubAccess.push(createdAccessLevel);
+		await newUser.save();
+		if (process.env.NODE_ENV !== "test") {
+			firebase.updateJWT(uid,{mongoID:newUser._id});
+		}
+	}
 	/**
 	 * Single function which handles both sign up and sign in of a user
 	 * If the user already exists in the database, it simply fetches the existing doucment
@@ -28,9 +41,10 @@ class UserAPI extends DataSource {
 	 * @param {String} uid firebase uid
 	 * @returns {Object} created user object
 	 */
-	async authUser(user,uid) {
+	async authUser(user, uid) {
+		console.time("authuser");
 		let incomingUser;		
-		const exisitingUser=await Users.findOne({firebaseUID:uid});
+		const exisitingUser=await Users.findOne({firebaseUID:uid}).lean();
 		// User document exists(Sign in)
 		if(exisitingUser){
 			incomingUser=exisitingUser;
@@ -48,19 +62,12 @@ class UserAPI extends DataSource {
 				emergencyContact: user.emergencyContact,
 				displayPicture: user.displayPicture,
 			});			
-			const accessLevelObj = {
-				level: '1',
-				name:newUser.name,				
-				user: newUser,
-			};
-			const createdAccessLevel = await AccessLevel.create(accessLevelObj);
-			await newUser.clubAccess.push(createdAccessLevel);
-			await newUser.save();
-			if (process.env.NODE_ENV !== "test") {
-				firebase.updateJWT(uid,{mongoID:newUser._id});
-			}				
-			incomingUser= await Users.findOne({firebaseUID:uid})
+			this.updateUserAfterSignUp(newUser,uid)
+			// incomingUser = await Users.findOne({ firebaseUID: uid }).lean()
+			incomingUser = newUser
+			// console.log(newUser, incomingUser);
 		}
+		console.timeEnd("authuser");
 		return incomingUser;		
 	}
 	/**
@@ -112,7 +119,7 @@ class UserAPI extends DataSource {
 			return {...INVALID_INPUT,message:"User Not Found"};
 		}
 			
-		await Users.deleteOne({ id: foundUser._id })
+		await Users.deleteOne({ _id: foundUser._id })
 		await AccessLevel.deleteMany({ user: foundUser._id });
 		
 		if(process.env.NODE_ENV !== "test") {
