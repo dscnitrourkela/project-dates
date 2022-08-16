@@ -1,0 +1,42 @@
+{
+  "name": "avenue-api",
+  "version": "1.0.0",
+  "description": "GraphQL APIs for Avenue NITR",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app",
+    "prod": "node app",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dscnitrourkela/project-dates.git"
+  },
+  "keywords": [
+    "nitr",
+    "avenue",
+    "dsc",
+    "dscnitr",
+    "api",
+    "graphql",
+    "apollo"
+  ],
+  "author": "dscnitrourkela",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dscnitrourkela/project-dates/issues"
+  },
+  "homepage": "https://github.com/dscnitrourkela/project-dates#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  },
+  "dependencies": {
+    "apollo-server-core": "^3.10.1",
+    "apollo-server-express": "^3.10.1",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "graphql": "^16.5.0",
+    "http": "^0.0.1-security",
+    "mongoose": "^6.5.1"
+  }
+}
