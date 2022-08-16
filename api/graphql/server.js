@@ -17,6 +17,7 @@ async function startApolloServer(typeDefs, resolvers) {
       // TODO: Add auth middleware
     },
     csrfPrevention: true,
+    mocks: true,
     cache: "bounded",
     plugins: [
       ApolloServerPluginDrainHttpServer({ httpServer }),
