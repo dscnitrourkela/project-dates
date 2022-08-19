@@ -1,7 +1,11 @@
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+
 [![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors-)
+
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
+
 [![Starware](https://img.shields.io/badge/Starware-⭐-black?labelColor=f9b00d)](https://github.com/zepfietje/starware)
+
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 
 <p align="center">
@@ -14,36 +18,50 @@
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
 
-
 ## About
-**This is the backend repository for campus guide at NIT Rourkela. It is a respository managing the API for managinng, controlling and authorising the users with respect to the mobile application of Avenue.**
 
+**This is the backend repository for campus guide at NIT Rourkela. It is a respository managing the API for managinng, controlling and authorising the users with respect to the mobile application of Avenue.**
 
 <p align="center">
 <img src="./RepoCover.png" width="75%" />
 </p>
 <h6 align="center">Project developed and maintained by DSC NIT Rourkela</h6>
 
-
-## Tech Stack 
+## Tech Stack
 
 This project uses the following technologies :
-
 
 ---
 
 ## Local Setup
+
 This section contains the procedure to setup the project on your local machine.
 
 `PREREQUISITE INSTALLATIONS`
-> 1. Node.js
 
- 1. **Fork** the repo on GitHub
- 2. **Clone** the project to your own machine
- 
+> 1. Node.js
+> 2. Docker
+> 3. Docker Compose
+
+1.  **Fork** the repo on GitHub
+2.  **Clone** the project to your own machine
+3.  Prepare the env for project.
+
+`cd api && mv .env.example .env`
+
+4.  Add Mongo DB URI in `.env` file
+5.  Build the docker image
+
+`docker-compose build --no-cache`
+
+6. Spin the server.
+
+`docker-compose up`
+
 ---
 
 ## Documentation Notes
+
 This section contains a quick guide about the features of the application.
 
 ---
@@ -65,7 +83,6 @@ NOTE 2: Please abide by the [Code of Conduct](https://github.com/dscnitrourkela/
 This means you're free to use the project, as long as you star its GitHub repository.  
 Your appreciation makes us grow and glow up. 🌠
 
-
 ## Contributors ✨
 
 Thanks goes to these wonderful people. Check out the roles [here](https://allcontributors.org/docs/en/emoji-key):
@@ -84,6 +101,7 @@ Thanks goes to these wonderful people. Check out the roles [here](https://allcon
 
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
