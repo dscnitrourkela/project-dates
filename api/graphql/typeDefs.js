@@ -1,6 +1,10 @@
 const { gql } = require("apollo-server-express");
 
+
 const typeDefs = gql`
+
+scalar DateTime
+
   type Query {
     hello: String
     name: String
@@ -13,7 +17,7 @@ const typeDefs = gql`
     description: String
     category: EventCategory!
     # Will make it date time in future.
-    startTime: String!
+    startTime: DateTime!
     locationDesc: String
     durationInMin: Int!
     location: String!

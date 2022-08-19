@@ -1,4 +1,7 @@
+const { GraphQLDateTime } = require("./scalars");
+
 const resolvers = {
+  DateTime: GraphQLDateTime,
   Query: {
     hello: () => {
       return "Hello world!";

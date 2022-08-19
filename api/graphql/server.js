@@ -5,6 +5,7 @@ const {
 } = require("apollo-server-core");
 const express = require("express");
 const http = require("http");
+const { GraphQLDateTime } = require("graphql-iso-date");
 const { PORT: port = 8000 } = process.env;
 
 async function startApolloServer(typeDefs, resolvers) {
@@ -17,7 +18,7 @@ async function startApolloServer(typeDefs, resolvers) {
       // TODO: Add auth middleware
     },
     csrfPrevention: true,
-    mocks: true,
+    mocks: {DateTime: () => new Date()},
     cache: "bounded",
     plugins: [
       ApolloServerPluginDrainHttpServer({ httpServer }),
