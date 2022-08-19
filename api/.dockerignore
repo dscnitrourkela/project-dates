@@ -1,0 +1,8 @@
+node_modules
+npm-debug.log
+.env.example
+.gitignore
+docker-compose.yml
+docker-compose-prod.yml
+Dockerfile
+Dockerfile_Local
