@@ -1,0 +1,12 @@
+version: '2.4'
+
+services:
+  ghcr.io/dscnitrourkela/dates:
+    image: ghcr.io/dscnitrourkela/dates
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      NODE_ENV: production
+    ports:
+      - 8000:8000

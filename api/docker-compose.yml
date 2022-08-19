@@ -1,0 +1,10 @@
+version: '2.4'
+
+services:
+  avenue:
+    image: avenue
+    build:
+      context: .
+      dockerfile: ./Dockerfile_Local
+    ports:
+      - 8000:8000
