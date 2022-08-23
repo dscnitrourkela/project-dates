@@ -21,8 +21,8 @@ jobs:
         shell: bash
     needs: build
     steps:
-      - name: Remove existing env
-        run: rm .env
+      # - name: Remove existing env
+      # run: rm .env
       - name: Create Env
         run: |
           touch .env
