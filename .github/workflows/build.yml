@@ -33,7 +33,7 @@ jobs:
         context: api/
         push: true
         tags: |
-          ghcr.io/${{ github.repository }}:main
+          ghcr.io/dscnitrourkela/project-dates:latest
 
   
       
