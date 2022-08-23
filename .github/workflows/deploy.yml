@@ -15,7 +15,7 @@ jobs:
       PERSONAL_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
 
   deploy:
-    runs-on: self-hosted
+    runs-on: [self-hosted, dsc-do]
     defaults:
       run:
         shell: bash
