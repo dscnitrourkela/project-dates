@@ -22,7 +22,7 @@ jobs:
     needs: build
     steps:
       - name: Remove existing env
-      run: rm .env
+        run: rm .env
       - name: Create Env
         run: |
           touch .env
