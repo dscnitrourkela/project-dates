@@ -1,0 +1,38 @@
+name: Deploy to VM
+
+on:
+  workflow_dispatch:
+
+env:
+  PORT: ${{ secrets.PORT }}
+  MONGO_URL: ${{ secrets.MONGO_URL }}
+
+jobs:
+  build:
+    uses: dscnitrourkela/project-dates/.github/workflows/build.yml@main
+    secrets:
+      USERNAME: ${{ secrets.USERNAME }}
+      PERSONAL_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
+
+  deploy:
+    runs-on: self-hosted
+    defaults:
+      run:
+        shell: bash
+    needs: build
+    steps:
+      - name: Remove existing env
+        run: rm .env
+      - name: Create Env
+        run: |
+          touch .env
+          echo PORT=$PORT >> .env
+          echo MONGO_URL=$MONGO_URL >> .env
+      - name: Pull Docker Image
+        run: docker pull ghcr.io/${{ github.repository }}:main
+      - name: Stop existing container
+        run: docker stop project-dates
+      - name: Remove stopped container
+        run: docker rm project-dates
+      - name: Start container
+        run: docker compose -f docker-compose-prod.yml up -d
