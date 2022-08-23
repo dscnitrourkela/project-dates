@@ -21,18 +21,18 @@ jobs:
         shell: bash
     needs: build
     steps:
-      # - name: Remove existing env
-      # run: rm .env
+      - name: Remove existing env
+      run: rm .env
       - name: Create Env
         run: |
           touch .env
           echo PORT=$PORT >> .env
           echo MONGO_URL=$MONGO_URL >> .env
       - name: Pull Docker Image
-        run: docker pull ghcr.io/${{ github.repository }}:main
+        run: docker pull ghcr.io/${{ github.repository }}:latest
       - name: Stop existing container
         run: docker stop project-dates
       - name: Remove stopped container
         run: docker rm project-dates
       - name: Start container
-        run: docker compose -f docker-compose-prod.yml up -d
+        run: docker run --name=project-dates --env-file=.env -p $PORT:$PORT -d ghcr.io/${{ github.repository }}:latest
