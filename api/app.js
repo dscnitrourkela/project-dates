@@ -1,9 +1,5 @@
-require("dotenv").config();
-const startApolloServer = require("./graphql/server");
-const { typeDefs } = require("./graphql/typeDefs");
-const { resolvers } = require("./graphql/resolvers");
+import startApolloServer from "./src/graphql/server.js";
+import connectDb from "./src/db/mongo.js";
 
-// Connect to DB
-require("./db/mongo");
-// Spin the server up
-startApolloServer(typeDefs, resolvers);
+// Connect to database and start Apollo server
+connectDb(startApolloServer);

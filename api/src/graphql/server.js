@@ -1,14 +1,15 @@
-const { ApolloServer } = require("apollo-server-express");
-const {
+import { ApolloServer } from "apollo-server-express";
+import {
   ApolloServerPluginDrainHttpServer,
   ApolloServerPluginLandingPageLocalDefault,
-} = require("apollo-server-core");
-const express = require("express");
-const http = require("http");
-const { GraphQLDateTime } = require("graphql-iso-date");
-const { PORT: port = 8000 } = process.env;
+} from "apollo-server-core";
+import express from "express";
+import http from "http";
+import { PORT as port } from "../utils/env/index.js";
+import typeDefs from "./typeDefs.js";
+import resolvers from "./resolvers.js";
 
-async function startApolloServer(typeDefs, resolvers) {
+async function startApolloServer() {
   const app = express();
   const httpServer = http.createServer(app);
   const server = new ApolloServer({
@@ -18,7 +19,7 @@ async function startApolloServer(typeDefs, resolvers) {
       // TODO: Add auth middleware
     },
     csrfPrevention: true,
-    mocks: {DateTime: () => new Date()},
+    mocks: { DateTime: () => new Date() },
     cache: "bounded",
     plugins: [
       ApolloServerPluginDrainHttpServer({ httpServer }),
@@ -33,4 +34,4 @@ async function startApolloServer(typeDefs, resolvers) {
   );
 }
 
-module.exports = startApolloServer;
+export default startApolloServer;

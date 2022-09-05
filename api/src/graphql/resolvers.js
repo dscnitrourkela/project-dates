@@ -1,4 +1,4 @@
-const { GraphQLDateTime } = require("./scalars");
+import { GraphQLDateTime } from "./scalars.js";
 
 const resolvers = {
   DateTime: GraphQLDateTime,
@@ -12,4 +12,4 @@ const resolvers = {
   },
 };
 
-module.exports = { resolvers };
+export default resolvers;

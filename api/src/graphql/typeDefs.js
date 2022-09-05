@@ -1,9 +1,7 @@
-const { gql } = require("apollo-server-express");
-
+import { gql } from "apollo-server-express";
 
 const typeDefs = gql`
-
-scalar DateTime
+  scalar DateTime
 
   type Query {
     hello: String
@@ -35,4 +33,4 @@ scalar DateTime
   }
 `;
 
-module.exports = { typeDefs };
+export default typeDefs;

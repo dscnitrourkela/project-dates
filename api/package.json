@@ -23,6 +23,7 @@
   ],
   "author": "dscnitrourkela",
   "license": "MIT",
+  "type": "module",
   "bugs": {
     "url": "https://github.com/dscnitrourkela/project-dates/issues"
   },

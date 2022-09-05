@@ -39,9 +39,8 @@ This section contains the procedure to setup the project on your local machine.
 
 `PREREQUISITE INSTALLATIONS`
 
-> 1. Node.js
-> 2. Docker
-> 3. Docker Compose
+> 1. Docker
+> 2. Docker Compose
 
 1.  **Fork** the repo on GitHub
 2.  **Clone** the project to your own machine
