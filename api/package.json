@@ -53,6 +53,7 @@
     "graphql": "^16.6.0",
     "graphql-iso-date": "^3.6.1",
     "http": "^0.0.1-security",
-    "mongoose": "^6.5.4"
+    "mongoose": "^6.5.4",
+    "winston": "^3.8.1"
   }
 }

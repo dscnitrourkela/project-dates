@@ -5,21 +5,41 @@ const {Schema, model} = mongoose;
 const EventSchema = new Schema({
   name: {
     type: String,
-    required: true,
+    required: [true, 'Please add a name'],
   },
   description: String,
-  startTime: Date,
+  startTime: {
+    type: Date,
+    required: [true, 'Please add a start time'],
+  },
+  durationInMin: {
+    type: Number,
+    required: true,
+  },
+  location: {
+    required: true,
+    type: String,
+  },
+  locationDesc: String,
+  imageUrl: {
+    type: String,
+    required: true,
+  },
+  type: {
+    required: true,
+    enum: {
+      values: ['ONET', 'WEEKLY'],
+      message: 'Invalid event type, Allowed values are ONET, WEEKLY',
+    },
+  },
+  category: {
+    required: true,
+    enum: {
+      values: ['ACADEMIC', 'MESS', 'CLUB', 'INSTITUTE'],
+      message:
+        'Invalid event category. Allowed values are ACADEMIC, MESS, CLUB, INSTITUTE',
+    },
+  },
 });
 
 export default model('Event', EventSchema);
-
-// id: ID!
-//     type: EventType!
-//     name: String!
-//     description: String
-//     category: EventCategory!
-//     startTime: DateTime!
-//     locationDesc: String
-//     durationInMin: Int!
-//     location: String!
-//     image: String!
