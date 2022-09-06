@@ -1,4 +1,4 @@
-import { gql } from "apollo-server-express";
+import {gql} from 'apollo-server-express';
 
 const typeDefs = gql`
   scalar DateTime
@@ -14,7 +14,6 @@ const typeDefs = gql`
     name: String!
     description: String
     category: EventCategory!
-    # Will make it date time in future.
     startTime: DateTime!
     locationDesc: String
     durationInMin: Int!

@@ -1,4 +1,5 @@
-import gid from "graphql-iso-date";
-const { GraphQLDate, GraphQLTime, GraphQLDateTime } = gid;
+import gid from 'graphql-iso-date';
 
-export { GraphQLDate, GraphQLDateTime, GraphQLTime };
+const {GraphQLDate, GraphQLTime, GraphQLDateTime} = gid;
+
+export {GraphQLDate, GraphQLDateTime, GraphQLTime};

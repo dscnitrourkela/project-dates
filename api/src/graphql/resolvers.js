@@ -1,13 +1,13 @@
-import { GraphQLDateTime } from "./scalars.js";
+import {GraphQLDateTime} from './scalars.js';
 
 const resolvers = {
   DateTime: GraphQLDateTime,
   Query: {
     hello: () => {
-      return "Hello world!";
+      return 'Hello world!';
     },
     name: () => {
-      return "Abhibhaw Asthana!";
+      return 'Abhibhaw Asthana!';
     },
   },
 };
