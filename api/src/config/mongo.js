@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+
 import {MONGO_URL} from '../utils/env/index.js';
 import logger from './winston.js';
 

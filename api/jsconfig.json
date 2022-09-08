@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "baseUrl": "src",
+    "paths": {
+      "@graphql": ["graphql"],
+      "@config": ["config"],
+      "@helpers": ["helpers"],
+      "@utils": ["utils"]
+    }
+  },
+  "include": ["src"]
+}

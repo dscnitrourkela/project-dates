@@ -3,10 +3,10 @@ import {
   ApolloServerPluginLandingPageLocalDefault,
 } from 'apollo-server-core';
 import {ApolloServer} from 'apollo-server-express';
+import logger from 'config/winston.js';
 import express from 'express';
 import http from 'http';
 
-import logger from '../config/winston.js';
 import {PORT as port} from '../utils/env/index.js';
 import resolvers from './resolvers.js';
 import typeDefs from './typeDefs.js';
