@@ -1,17 +1,17 @@
 import winston from 'winston';
 
-const {createLogger, format, transports} = winston;
-const {combine, timestamp, label, printf, colorize} = format;
+const { createLogger, format, transports } = winston;
+const { combine, timestamp, label, printf, colorize } = format;
 
-// eslint-disable-next-line no-shadow
-const projectFormat = printf(({level, message, label, timestamp}) => {
-  return `${timestamp} [${label}] ${level}: ${message}`;
-});
+const projectFormat = printf(
+  ({ level, message, label: localLabel, timestamp: localTimestamp }) =>
+    `${localTimestamp} [${localLabel}] ${level}: ${message}`,
+);
 
 const logFormat = combine(
-  colorize({all: true}),
-  label({label: 'avenue-api'}),
-  timestamp({format: 'DD-MM-YY HH:MM:SS'}),
+  colorize({ all: true }),
+  label({ label: 'avenue-api' }),
+  timestamp({ format: 'DD-MM-YY HH:MM:SS' }),
   projectFormat,
 );
 

@@ -6,7 +6,6 @@
   "scripts": {
     "start": "nodemon src/app",
     "prod": "node app",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "prettier:fix": "npx prettier --write .",
     "prettier:check": "npx prettier --check .",
     "lint:fix": "npx eslint --fix \"**/*.js\"",
@@ -23,7 +22,10 @@
     "dscnitr",
     "api",
     "graphql",
-    "apollo"
+    "apollo",
+    "javascript",
+    "node",
+    "mongodb"
   ],
   "author": "dscnitrourkela",
   "license": "MIT",
@@ -31,15 +33,6 @@
   "bugs": {
     "url": "https://github.com/dscnitrourkela/project-dates/issues"
   },
-  "_moduleAliases": {
-    "@root": ".",
-    "@config": "./src/config/winston.js",
-    "@graphql": "./src/graphql",
-    "@utils": ".src/utils"
-  },
-  "_moduleDirectories": [
-    "src"
-  ],
   "homepage": "https://github.com/dscnitrourkela/project-dates#readme",
   "devDependencies": {
     "eslint": "^8.23.0",
@@ -62,7 +55,6 @@
     "graphql": "^16.6.0",
     "graphql-iso-date": "^3.6.1",
     "http": "^0.0.1-security",
-    "module-alias": "^2.2.2",
     "mongoose": "^6.5.4",
     "winston": "^3.8.1"
   }

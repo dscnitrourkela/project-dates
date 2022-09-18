@@ -4,7 +4,7 @@
     "airbnb-base",
     "eslint:recommended",
     "plugin:node/recommended",
-    "plugin:prettier/recommended"
+    "prettier"
   ],
   "plugins": ["prettier"],
   "env": {
@@ -40,6 +40,7 @@
     "import/no-extraneous-dependencies": 0,
     "node/no-extraneous-import": 0,
     "class-methods-use-this": 0,
-    "max-classes-per-file": 0
+    "max-classes-per-file": 0,
+    "space-in-brackets": 0
   }
 }

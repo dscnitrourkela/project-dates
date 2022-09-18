@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const {Schema, model} = mongoose;
+const { Schema, model } = mongoose;
 
 const EventSchema = new Schema(
   {
@@ -42,7 +42,7 @@ const EventSchema = new Schema(
       },
     },
   },
-  {timestamps: true},
+  { timestamps: true },
 );
 
 export default model('Event', EventSchema);
