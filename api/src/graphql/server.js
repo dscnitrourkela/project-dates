@@ -6,8 +6,8 @@ import { ApolloServer } from 'apollo-server-express';
 import express from 'express';
 import http from 'http';
 
-import { logger } from '../config';
-import { PORT as port } from '../utils';
+import { logger } from '../config/index.js';
+import { PORT as port } from '../utils/index.js';
 import resolvers from './resolvers.js';
 import typeDefs from './typeDefs.js';
 

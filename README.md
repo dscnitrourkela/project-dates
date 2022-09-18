@@ -42,6 +42,8 @@ This section contains the procedure to setup the project on your local machine.
 > 1. Docker
 > 2. Docker Compose
 
+> Node.js required only for linting locally
+
 1.  **Fork** the repo on GitHub
 2.  **Clone** the project to your own machine
 3.  Prepare the env for project.
@@ -78,8 +80,8 @@ NOTE 2: Please abide by the [Code of Conduct](https://github.com/dscnitrourkela/
 
 ## Starware
 
-`dscnitrourkela/project-dates` is Starware.  
-This means you're free to use the project, as long as you star its GitHub repository.  
+`dscnitrourkela/project-dates` is Starware.
+This means you're free to use the project, as long as you star its GitHub repository.
 Your appreciation makes us grow and glow up. 🌠
 
 ## Contributors ✨
