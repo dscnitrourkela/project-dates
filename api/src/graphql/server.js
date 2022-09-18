@@ -3,9 +3,11 @@ import {
   ApolloServerPluginLandingPageLocalDefault,
 } from 'apollo-server-core';
 import {ApolloServer} from 'apollo-server-express';
-import logger from 'config/winston.js';
 import express from 'express';
 import http from 'http';
+
+// eslint-disable-next-line import/no-unresolved, node/no-missing-import
+import logger from '@config';
 
 import {PORT as port} from '../utils/env/index.js';
 import resolvers from './resolvers.js';

@@ -20,7 +20,8 @@
   "settings": {
     "import/resolver": {
       "node": {
-        "extensions": [".js"]
+        "extensions": [".js"],
+        "moduleDirectory": ["node_modules", "src"]
       }
     },
     "node": {
