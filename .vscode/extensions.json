@@ -1,0 +1,12 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "formulahendry.auto-rename-tag",
+    "mgmcdermott.vscode-language-babel",
+    "eg2.vscode-npm-script",
+    "visualstudioexptteam.vscodeintellicode",
+    "graphql.vscode-graphql",
+    "dozerg.tsimportsorter"
+  ]
+}

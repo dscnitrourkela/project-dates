@@ -1,0 +1,46 @@
+{
+  "root": true,
+  "extends": [
+    "airbnb-base",
+    "eslint:recommended",
+    "plugin:node/recommended",
+    "prettier"
+  ],
+  "plugins": ["prettier"],
+  "env": {
+    "browser": true,
+    "jest": true,
+    "node": true,
+    "es6": true
+  },
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js"],
+        "moduleDirectory": ["node_modules", "src"]
+      }
+    },
+    "node": {
+      "allowModules": [],
+      "resolvePaths": ["./src"],
+      "tryExtensions": [".js", ".json"]
+    }
+  },
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "sourceType": "module"
+  },
+  "rules": {
+    "node/no-unsupported-features/es-syntax": 0,
+    "import/extensions": 0,
+    "import/no-extraneous-dependencies": 0,
+    "node/no-extraneous-import": 0,
+    "class-methods-use-this": 0,
+    "max-classes-per-file": 0,
+    "space-in-brackets": 0
+  }
+}
