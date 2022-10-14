@@ -4,9 +4,7 @@
     "airbnb-base",
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
-    "plugin:node/recommended",
-    "prettier",
-    "plugin:prettier/recommended"
+    "prettier"
   ],
   "plugins": ["@typescript-eslint", "prettier"],
   "env": {
@@ -20,7 +18,13 @@
     "SharedArrayBuffer": "readonly"
   },
   "settings": {
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    },
     "import/resolver": {
+      "typescript": {
+        "alwaysTryTypes": true
+      },
       "node": {
         "extensions": [".js", ".jsx", ".ts", ".tsx", ".d.ts"]
       }
@@ -43,6 +47,7 @@
     "import/no-extraneous-dependencies": 0,
     "node/no-extraneous-import": 0,
     "class-methods-use-this": 0,
-    "max-classes-per-file": 0
+    "max-classes-per-file": 0,
+    "import/no-unresolved": "error"
   }
 }
