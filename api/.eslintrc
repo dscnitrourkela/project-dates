@@ -3,10 +3,12 @@
   "extends": [
     "airbnb-base",
     "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
     "plugin:node/recommended",
-    "prettier"
+    "prettier",
+    "plugin:prettier/recommended"
   ],
-  "plugins": ["prettier"],
+  "plugins": ["@typescript-eslint", "prettier"],
   "env": {
     "browser": true,
     "jest": true,
@@ -20,19 +22,20 @@
   "settings": {
     "import/resolver": {
       "node": {
-        "extensions": [".js"],
-        "moduleDirectory": ["node_modules", "src"]
+        "extensions": [".js", ".jsx", ".ts", ".tsx", ".d.ts"]
       }
     },
     "node": {
       "allowModules": [],
       "resolvePaths": ["./src"],
-      "tryExtensions": [".js", ".json"]
+      "tryExtensions": [".js", ".json", ".ts", ".d.ts"]
     }
   },
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": 2020,
-    "sourceType": "module"
+    "sourceType": "module",
+    "project": "./tsconfig.eslint.json"
   },
   "rules": {
     "node/no-unsupported-features/es-syntax": 0,
@@ -40,7 +43,6 @@
     "import/no-extraneous-dependencies": 0,
     "node/no-extraneous-import": 0,
     "class-methods-use-this": 0,
-    "max-classes-per-file": 0,
-    "space-in-brackets": 0
+    "max-classes-per-file": 0
   }
 }

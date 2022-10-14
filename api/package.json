@@ -1,61 +1,37 @@
 {
-  "name": "avenue-api",
+  "name": "api",
   "version": "1.0.0",
-  "description": "GraphQL APIs for Avenue NITR",
-  "main": "src/app.js",
-  "scripts": {
-    "start": "nodemon src/app",
-    "prod": "node app",
-    "prettier:fix": "npx prettier --write .",
-    "prettier:check": "npx prettier --check .",
-    "lint:fix": "npx eslint --fix \"**/*.js\"",
-    "lint:find": "npx eslint \"**/*.js\""
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/dscnitrourkela/project-dates.git"
-  },
-  "keywords": [
-    "nitr",
-    "avenue",
-    "dsc",
-    "dscnitr",
-    "api",
-    "graphql",
-    "apollo",
-    "javascript",
-    "node",
-    "mongodb"
-  ],
-  "author": "dscnitrourkela",
+  "main": "index.js",
   "license": "MIT",
-  "type": "module",
-  "bugs": {
-    "url": "https://github.com/dscnitrourkela/project-dates/issues"
+  "scripts": {
+    "dev": "nodemon --exec ts-node src/index.ts",
+    "start": "node dist/index.js",
+    "build": "tsc"
   },
-  "homepage": "https://github.com/dscnitrourkela/project-dates#readme",
   "devDependencies": {
-    "eslint": "^8.23.0",
+    "@types/express": "^4.17.14",
+    "@types/node": "^18.8.5",
+    "@typescript-eslint/eslint-plugin": "^5.40.0",
+    "@typescript-eslint/parser": "^5.40.0",
+    "concurrently": "^7.4.0",
+    "eslint": "^8.25.0",
     "eslint-config": "^0.3.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-jest": "^27.0.1",
+    "eslint-config-airbnb-typescript": "^17.0.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jest": "^27.1.1",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "nodemon": "^2.0.19",
-    "prettier": "^2.3.0"
+    "nodemon": "^2.0.20",
+    "prettier": "^2.7.1",
+    "typescript": "^4.8.4"
   },
   "dependencies": {
-    "apollo-server-core": "^3.10.2",
-    "apollo-server-express": "^3.10.2",
-    "dotenv": "^16.0.2",
-    "express": "^4.18.1",
+    "apollo-server": "^3.10.3",
     "graphql": "^16.6.0",
-    "graphql-iso-date": "^3.6.1",
-    "http": "^0.0.1-security",
-    "mongoose": "^6.5.4",
-    "winston": "^3.8.1"
+    "nexus": "^1.3.0",
+    "ts-node-dev": "^2.0.0"
   }
 }

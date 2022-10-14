@@ -1,7 +1,8 @@
 {
-  "arrowParens": "always",
-  "bracketSpacing": true,
+  "arrowParens": "avoid",
+  "bracketSpacing": false,
   "endOfLine": "lf",
+  "htmlWhitespaceSensitivity": "css",
   "insertPragma": false,
   "printWidth": 80,
   "proseWrap": "always",
