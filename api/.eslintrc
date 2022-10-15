@@ -48,6 +48,8 @@
     "node/no-extraneous-import": 0,
     "class-methods-use-this": 0,
     "max-classes-per-file": 0,
-    "import/no-unresolved": "error"
+    "import/no-unresolved": "error",
+    "import/prefer-default-export": 0,
+    "@typescript-eslint/no-empty-interface": 0
   }
 }
