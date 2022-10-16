@@ -4,7 +4,7 @@
 
 type Link {
   description: String!
-  id: Int!
+  id: String!
   url: String!
 }
 

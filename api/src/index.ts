@@ -5,21 +5,18 @@ import { expressMiddleware } from '@apollo/server/express4';
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
 import { schema, winston } from '@config';
 import { PORT } from '@constants';
+import { context, Context } from '@utils';
 
 import cors from 'cors';
 import express from 'express';
 import http from 'http';
-
-interface MyContext {
-  token?: string;
-}
 
 const initialize = async () => {
   const logger = winston('express');
   const app = express();
   const httpServer = http.createServer(app);
 
-  const server = new ApolloServer<MyContext>({
+  const server = new ApolloServer<Context>({
     schema,
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
   });
@@ -30,7 +27,7 @@ const initialize = async () => {
     cors<cors.CorsRequest>(),
     express.json(),
     expressMiddleware(server, {
-      context: async ({ req }) => ({ token: req.headers.token }),
+      context,
     }),
   );
 

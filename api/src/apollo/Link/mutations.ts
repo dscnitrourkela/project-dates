@@ -1,7 +1,5 @@
 import { mutationField, nonNull, stringArg } from 'nexus';
 
-import { links } from './type';
-
 export const createLink = mutationField('createLink', {
   type: 'Link',
   args: {
@@ -9,16 +7,14 @@ export const createLink = mutationField('createLink', {
     url: nonNull(stringArg()),
   },
 
-  resolve(_parent, args) {
+  resolve(_parent, args, context) {
     const { description, url } = args;
 
-    const idCount = links.length + 1;
-    const link = {
-      id: idCount,
-      description,
-      url,
-    };
-    links.push(link);
-    return link;
+    return context.prisma.link.create({
+      data: {
+        description,
+        url,
+      },
+    });
   },
 });

@@ -1,10 +1,8 @@
 import { list, queryField } from 'nexus';
 
-import { links } from './type';
-
 export const getFeed = queryField('getFeed', {
   type: list('Link'),
-  resolve() {
-    return links;
+  resolve(_parent, _args, context) {
+    return context.prisma.link.findMany();
   },
 });

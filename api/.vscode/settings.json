@@ -15,6 +15,9 @@
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
+  "[prisma]": {
+    "editor.defaultFormatter": "Prisma.prisma"
+  },
   "editor.renderWhitespace": "boundary",
   "files.defaultLanguage": "{activeEditorLanguage}",
   "search.exclude": {
