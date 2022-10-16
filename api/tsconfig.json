@@ -1,0 +1,46 @@
+{
+  "compilerOptions": {
+    /* Language and Environment */
+    "target": "es2016",
+    "lib": ["dom", "es6", "es2017", "esnext.asynciterable"],
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+
+    /* Modules */
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "baseUrl": "./src/",
+    "paths": {
+      "@config": ["config"],
+      "@constants": ["constants"],
+      "@types": ["types"],
+      "@utils": ["utils"],
+      "@nexus/*": ["nexus_generated/*"],
+      "@app/*": ["apollo/*"],
+      "*": ["*"]
+    },
+    "resolveJsonModule": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "removeComments": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+
+    /* Type Checking */
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+
+    /* Completeness */
+    "skipLibCheck": true /* Skip type checking all .d.ts files. */
+  },
+  "include": ["./src/**/*.ts", "./src/types/**/*.d.ts"],
+  "exclude": ["node_modules", "dist", "./src/**/*.prisma"]
+}
