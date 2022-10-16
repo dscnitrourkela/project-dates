@@ -15,3 +15,30 @@ model Link {
   url         String
   description String
 }
+
+enum Gender {
+  male
+  female
+  others
+}
+
+model User {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  email      String    @unique
+  name       String?
+  photo      String?
+  gender     Gender?
+  dob        DateTime?
+  state      String?
+  city       String?
+  college    String?
+  stream     String?
+  mobile     String?
+  selfID     String?   @unique @db.ObjectId
+  festID     String[]  @default([]) @db.ObjectId
+  referredBy String?
+  rollNumber String?
+  uid        String    @unique
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}

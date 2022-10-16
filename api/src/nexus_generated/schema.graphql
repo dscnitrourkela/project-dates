@@ -2,6 +2,11 @@
 ### Do not make changes to this file directly
 
 
+"""
+A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar DateTime
+
 type Link {
   description: String!
   id: String!
@@ -10,8 +15,72 @@ type Link {
 
 type Mutation {
   createLink(description: String!, url: String!): Link
+  createUser(user: UserCreateInputType!): User
+  updateUser(id: ID!, user: UserUpdateInputType!): User
 }
 
 type Query {
   getFeed: [Link]
+  getUser(email: String, id: ID): User
+  getUsers(city: String, college: String, referredBy: String, state: String, stream: String): [User]
+}
+
+"""User of the application"""
+type User {
+  city: String
+  college: String
+  dob: DateTime
+  email: String!
+  festID: [String]
+  gender: gender
+  id: String!
+  mobile: String
+  name: String
+  photo: String
+  referredBy: String
+  rollNumber: String
+  selfID: String
+  state: String
+  stream: String
+  uid: String!
+}
+
+input UserCreateInputType {
+  city: String
+  college: String
+  dob: DateTime
+  email: String!
+  festId: [String]
+  gender: gender
+  mobile: String
+  name: String
+  photo: String
+  referredBy: String
+  rollNumber: String
+  selfId: String
+  state: String
+  stream: String
+  uid: String!
+}
+
+input UserUpdateInputType {
+  city: String
+  college: String
+  dob: DateTime
+  festId: [String]
+  gender: gender
+  mobile: String
+  name: String
+  photo: String
+  referredBy: String
+  rollNumber: String
+  selfId: String
+  state: String
+  stream: String
+}
+
+enum gender {
+  female
+  male
+  others
 }
