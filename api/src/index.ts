@@ -1,6 +1,7 @@
+import 'dotenv/config';
+
+import { app } from 'rest/server';
+
 import { initializeApollo } from '@app/server';
 
-import * as dotenv from 'dotenv';
-
-dotenv.config();
-initializeApollo();
+initializeApollo(app);
