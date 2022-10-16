@@ -14,8 +14,6 @@ export const UserCreateInputType = inputObjectType({
     t.string('college');
     t.string('stream');
     t.string('mobile');
-    t.string('selfId');
-    t.list.string('festId');
     t.string('referredBy');
     t.string('rollNumber');
   },
@@ -33,8 +31,8 @@ export const UserUpdateInputType = inputObjectType({
     t.string('college');
     t.string('stream');
     t.string('mobile');
-    t.string('selfId');
-    t.list.string('festId');
+    t.string('selfID');
+    t.nonNull.list.nonNull.string('festID');
     t.string('referredBy');
     t.string('rollNumber');
   },

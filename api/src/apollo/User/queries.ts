@@ -1,4 +1,4 @@
-import { idArg, list, queryField, stringArg } from 'nexus';
+import { idArg, inputObjectType, list, nonNull, queryField, stringArg } from 'nexus';
 
 export const getUser = queryField('getUser', {
   type: 'User',
@@ -28,19 +28,37 @@ export const getUser = queryField('getUser', {
   },
 });
 
+export const GetUsersInputType = inputObjectType({
+  name: 'GetUsersInputType',
+  definition(t) {
+    t.string('state');
+    t.string('city');
+    t.string('college');
+    t.string('stream');
+    t.string('referredBy');
+  },
+});
+
 export const getUsers = queryField('getUsers', {
   type: list('User'),
   args: {
-    state: stringArg(),
-    city: stringArg(),
-    college: stringArg(),
-    stream: stringArg(),
-    referredBy: stringArg(),
+    params: nonNull('GetUsersInputType'),
+    festID: list(nonNull(stringArg())),
   },
   resolve(_parent, args, { prisma }) {
+    if (args.festID) {
+      return prisma.user.findMany({
+        where: {
+          festID: {
+            hasEvery: args.festID,
+          },
+        },
+      });
+    }
+
     if (args) {
       return prisma.user.findMany({
-        where: args,
+        where: args.params,
       });
     }
 

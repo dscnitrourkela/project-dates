@@ -21,6 +21,6 @@ export const User = objectType({
     t.string('rollNumber');
 
     // TODO: to be changed to field
-    t.list.string('festID');
+    t.nonNull.list.string('festID');
   },
 });
