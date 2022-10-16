@@ -31,7 +31,6 @@
     "build": "tsc",
     "start": "node -r ts-node/register/transpile-only -r tsconfig-paths/register dist/index.js",
     "dev": "nodemon --exec ts-node -r tsconfig-paths/register src/index.ts",
-    "dev2": "ts-node-dev -r tsconfig-paths/register src/index.ts",
     "generate": "ts-node --transpile-only src/config/nexus",
     "prettier:fix": "yarn prettier --write .",
     "prettier:check": "yarn prettier --check .",

@@ -13,10 +13,10 @@
     "paths": {
       "@config": ["config"],
       "@constants": ["constants"],
-      "@nexus/*": ["nexus/*"],
-      "@graphql": ["graphql"],
-      "@types": ["@types"],
-      "@utils": ["utils"]
+      "@types": ["types"],
+      "@utils": ["utils"],
+      "@nexus/*": ["nexus_generated/*"],
+      "*": ["*"]
     },
     "resolveJsonModule": true,
     "sourceMap": true,
