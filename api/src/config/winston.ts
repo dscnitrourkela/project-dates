@@ -8,8 +8,8 @@ export type IWinston = originalWinston.Logger;
 export const winston = (logModule: string): originalWinston.Logger => {
   const logFormat = combine(
     colorize({ all: true }),
-    label({ label: 'project-dates' }),
-    timestamp({ format: 'YY-MM-DD HH:MM:SS' }),
+    label({ label: 'avenue-api' }),
+    timestamp({ format: 'DD-MM-YY HH:MM:SS' }),
     printf(
       ({
         level: printLevel,
