@@ -36,3 +36,17 @@ export const OrgType = enumType({
   ],
   asNexusMethod: 'orgType',
 });
+
+export const RepeatType = enumType({
+  name: 'repeatType',
+  members: [
+    'sunday',
+    'monday',
+    'tuesday',
+    'wednesday',
+    'thursday',
+    'friday',
+    'saturday',
+  ],
+  asNexusMethod: 'repeatType',
+});
