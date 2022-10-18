@@ -141,3 +141,30 @@ model Transactions {
   orgID         String          @db.ObjectId
   comment       String?
 }
+
+model EventRegistration {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  eventID String @db.ObjectId
+  userID  String @db.ObjectId
+}
+
+model Stories {
+  id     String  @id @default(auto()) @map("_id") @db.ObjectId
+  orgID  String  @db.ObjectId
+  image  String
+  linkTo String?
+}
+
+model Location {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String
+  lat         Float
+  long        Float
+}
+
+model Developer {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  name   String
+  github String @db.ObjectId
+}
