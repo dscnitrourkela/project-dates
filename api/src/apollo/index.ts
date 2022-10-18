@@ -5,3 +5,4 @@ export * from './Event';
 export * from './Team';
 export * from './Transactions';
 export * from './EventRegistration';
+export * from './Story';
