@@ -215,7 +215,7 @@ model EventRegistration {
   userID  String @db.ObjectId
 }
 
-model Stories {
+model Story {
   id     String  @id @default(auto()) @map("_id") @db.ObjectId
   orgID  String  @db.ObjectId
   image  String
