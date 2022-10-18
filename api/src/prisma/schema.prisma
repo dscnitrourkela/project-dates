@@ -80,10 +80,38 @@ model Org {
   registrationFee Int        @default(0)
   startDate       DateTime?
   endDate         DateTime?
-  status          Status
+  status          Status     @default(value: draft)
   orgSubType      OrgSubType
   orgType         OrgType
   location        String?    @db.ObjectId
   createdAt       DateTime   @default(now())
   updatedAt       DateTime   @updatedAt
+}
+
+enum RepeatType {
+  sunday
+  monday
+  tuesday
+  wednesday
+  thursday
+  friday
+  saturday
+}
+
+model Event {
+  id          String      @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String
+  poster      String
+  location    String      @db.ObjectId
+  startDate   DateTime
+  endDate     DateTime
+  orgID       String[]    @default([]) @db.ObjectId
+  orgType     OrgType
+  notes       String[]    @default([])
+  poc         String[]    @default([]) @db.ObjectId
+  weekly      Boolean     @default(false)
+  repeatDay   RepeatType?
+  priority    Int         @default(0)
+  status      Status      @default(value: draft)
 }
