@@ -17,21 +17,36 @@ export const getEvent = queryField('getEvent', {
 export const getEvents = queryField('getEvents', {
   type: list('Event'),
   args: {
-    orgID: list(idArg()),
+    orgID: idArg(),
     orgType: 'orgType',
-    poc: list(idArg()),
-    repeadDay: 'repeatType',
+    startDate: 'DateTime',
+    endDate: 'DateTime',
+    status: 'status',
   },
   resolve(_parent, args, { prisma }) {
-    if (args.orgID) {
-      prisma.event.findMany({
-        where: {
-          orgID: {},
-        },
+    /**
+     * based on orgType
+     * based on orgID
+     * based on time (start and end)
+     * based on status
+     */
+
+    const prismaQuery = {
+      orgType: args.orgType || undefined,
+      status: args.status || undefined,
+      orgID: { has: args.orgID || undefined },
+      AND: [
+        { startDate: { gte: args.startDate || undefined } },
+        { endDate: { lte: args.endDate || undefined } },
+      ],
+    };
+
+    if (args) {
+      return prisma.event.findMany({
+        where: prismaQuery,
       });
     }
 
-    // if (args.orgType) {
-    // }
+    throw new Error('missing parameters');
   },
 });
