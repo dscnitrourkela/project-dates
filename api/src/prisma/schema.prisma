@@ -115,3 +115,12 @@ model Event {
   priority    Int         @default(0)
   status      Status      @default(value: draft)
 }
+
+model Team {
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  position String?
+  team     String?
+  userID   String  @db.ObjectId
+  orgID    String  @db.ObjectId
+  priority Int?    @default(0)
+}
