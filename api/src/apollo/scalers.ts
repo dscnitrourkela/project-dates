@@ -50,3 +50,9 @@ export const RepeatType = enumType({
   ],
   asNexusMethod: 'repeatType',
 });
+
+export const TransactionType = enumType({
+  name: 'transactionType',
+  members: ['registration', 'merch', 'event'],
+  asNexusMethod: 'transactionType',
+});
