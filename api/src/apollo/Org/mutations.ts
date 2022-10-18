@@ -5,7 +5,7 @@ export const OrgCreateInputType = inputObjectType({
   definition(t) {
     t.nonNull.string('name');
     t.nonNull.string('description');
-    t.nonNull.status('logo');
+    t.nonNull.string('logo');
     t.string('tagline');
     t.string('coverImg');
     t.string('theme');
@@ -28,7 +28,7 @@ export const OrgUpdateInputType = inputObjectType({
   definition(t) {
     t.string('name');
     t.string('description');
-    t.status('logo');
+    t.string('logo');
     t.string('tagline');
     t.string('coverImg');
     t.string('theme');
