@@ -191,3 +191,20 @@ model Team {
   orgID    String  @db.ObjectId
   priority Int?    @default(0)
 }
+
+enum TransactionType {
+  registration
+  merch
+  event
+}
+
+model Transactions {
+  id            String          @id @default(auto()) @map("_id") @db.ObjectId
+  amount        Int
+  userID        String          @db.ObjectId
+  transactionID String          @db.ObjectId
+  type          TransactionType
+  timestamp     DateTime
+  orgID         String          @db.ObjectId
+  comment       String?
+}
