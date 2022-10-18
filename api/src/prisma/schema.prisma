@@ -42,3 +42,48 @@ model User {
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
 }
+
+enum Status {
+  active
+  draft
+  expired
+}
+
+enum OrgSubType {
+  technical
+  cultural
+  sports
+  hackathon
+  literary
+  fms
+}
+
+enum OrgType {
+  club
+  hostel
+  institute
+  branch
+  fest
+  branch_sem
+  mess
+}
+
+model Org {
+  id              String     @id @default(auto()) @map("_id") @db.ObjectId
+  name            String
+  description     String
+  logo            String
+  tagline         String?
+  coverImg        String?
+  theme           String?
+  festID          String?    @unique
+  registrationFee Int        @default(0)
+  startDate       DateTime?
+  endDate         DateTime?
+  status          Status
+  orgSubType      OrgSubType
+  orgType         OrgType
+  location        String?    @db.ObjectId
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+}
