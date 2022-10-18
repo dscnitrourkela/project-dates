@@ -6,3 +6,5 @@ export * from './Team';
 export * from './Transactions';
 export * from './EventRegistration';
 export * from './Story';
+export * from './Location';
+export * from './DeveloperInfo';

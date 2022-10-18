@@ -114,15 +114,19 @@ model Event {
   repeatDay   RepeatType?
   priority    Int         @default(0)
   status      Status      @default(value: draft)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
 }
 
 model Team {
-  id       String  @id @default(auto()) @map("_id") @db.ObjectId
-  position String?
-  team     String?
-  userID   String  @db.ObjectId
-  orgID    String  @db.ObjectId
-  priority Int?    @default(0)
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  position  String?
+  team      String?
+  userID    String   @db.ObjectId
+  orgID     String   @db.ObjectId
+  priority  Int?     @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 enum TransactionType {
@@ -140,31 +144,41 @@ model Transactions {
   timestamp     DateTime
   orgID         String          @db.ObjectId
   comment       String?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
 }
 
 model EventRegistration {
-  id      String @id @default(auto()) @map("_id") @db.ObjectId
-  eventID String @db.ObjectId
-  userID  String @db.ObjectId
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  eventID   String   @db.ObjectId
+  userID    String   @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Story {
-  id     String  @id @default(auto()) @map("_id") @db.ObjectId
-  orgID  String  @db.ObjectId
-  image  String
-  linkTo String?
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  orgID     String   @db.ObjectId
+  image     String
+  linkTo    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Location {
-  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   description String
-  lat         Float
-  long        Float
+  lat         Float?
+  long        Float?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
-model Developer {
-  id     String @id @default(auto()) @map("_id") @db.ObjectId
-  name   String
-  github String @db.ObjectId
+model DeveloperInfo {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  github    String   @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
