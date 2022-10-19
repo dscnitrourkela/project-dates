@@ -23,30 +23,17 @@ export const createEventRegistration = mutationField(
   },
 );
 
-export const EventRegistrationUpdateInput = inputObjectType({
-  name: 'EventRegistrationUpdateInput',
-  definition(t) {
-    t.id('eventID');
-    t.id('userID');
-  },
-});
-
-export const updateEventRegistration = mutationField(
-  'updateEventRegistration',
+export const deleteEventRegistration = mutationField(
+  'deleteEventRegistration',
   {
     type: 'EventRegistration',
     args: {
       id: nonNull(idArg()),
-      eventRegistration: nonNull('EventRegistrationUpdateInput'),
     },
     resolve(_parent, args, { prisma }) {
-      return prisma.eventRegistration.update({
+      return prisma.eventRegistration.delete({
         where: {
           id: args.id,
-        },
-        data: {
-          eventID: args.eventRegistration?.eventID || undefined,
-          userID: args.eventRegistration?.userID || undefined,
         },
       });
     },

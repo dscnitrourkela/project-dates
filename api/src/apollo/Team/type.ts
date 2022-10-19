@@ -2,7 +2,7 @@ import { objectType } from 'nexus';
 
 export const Team = objectType({
   name: 'Team',
-  description: 'Refers to the team member part of a particular event',
+  description: 'Refers to the team member part of a particular organisation',
   definition(t) {
     t.nonNull.id('id');
     t.string('position');

@@ -12,6 +12,15 @@ export const TeamCreateInputType = inputObjectType({
   },
 });
 
+/**
+ * A special case of creation
+ * Since team members will be added in bulk,
+ * this mutation takes an array of team members as input
+ * and then after successful addition, returns a count of
+ * all the added records.
+ * The count could vary in case of any duplicate record is
+ * sent (duplicates will be omitted)
+ */
 export const createTeam = mutationField('createTeam', {
   type: 'Int',
   args: {
