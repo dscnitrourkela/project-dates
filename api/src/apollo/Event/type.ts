@@ -22,12 +22,3 @@ export const Event = objectType({
     t.nonNull.status('status');
   },
 });
-
-/**
- * getEventById
- * getEventsByOrgId
- * getEventsByOrgType (mess, etc)
- * getEventsByPoc
- * getEventsOfTheDay
- * getEventsByStatus
- */

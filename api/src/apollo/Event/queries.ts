@@ -18,10 +18,10 @@ export const getEvents = queryField('getEvents', {
   type: list('Event'),
   args: {
     orgID: idArg(),
-    orgType: 'orgType',
+    orgType: 'OrgType',
     startDate: 'DateTime',
     endDate: 'DateTime',
-    status: 'status',
+    status: 'StatusType',
   },
   resolve(_parent, args, { prisma }) {
     /**

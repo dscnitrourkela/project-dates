@@ -18,7 +18,7 @@ export const getTransactions = queryField('getTransactions', {
   type: list('Transaction'),
   args: {
     orgID: idArg(),
-    type: 'transactionType',
+    type: 'TransactionType',
   },
   resolve(_parent, args, { prisma }) {
     return prisma.transactions.findMany({

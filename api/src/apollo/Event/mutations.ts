@@ -17,7 +17,7 @@ export const EventCreateInputType = inputObjectType({
     t.nonNull.boolean('weekly');
     t.repeatType('repeatDay', { default: null });
     t.nonNull.int('priority');
-    t.status('status', { default: 'draft' });
+    t.status('status', { default: 'DRAFT' });
   },
 });
 
