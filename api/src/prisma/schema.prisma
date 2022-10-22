@@ -133,7 +133,7 @@ model Team {
   updatedAt DateTime @updatedAt
 }
 
-model Transactions {
+model Transaction {
   id            String           @id @default(auto()) @map("_id") @db.ObjectId
   amount        Int
   userID        String           @db.ObjectId

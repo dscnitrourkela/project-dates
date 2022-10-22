@@ -22,7 +22,7 @@ export const createTransaction = mutationField('createTransaction', {
     transaction: nonNull('TransactionCreateInputType'),
   },
   resolve(_parent, args, { prisma }) {
-    return prisma.transactions.create({
+    return prisma.transaction.create({
       data: args.transaction,
     });
   },
@@ -47,7 +47,7 @@ export const updateTransaction = mutationField('updateTransaction', {
     transaction: nonNull('TransactionUpdateInputType'),
   },
   resolve(_parent, args, { prisma }) {
-    return prisma.transactions.update({
+    return prisma.transaction.update({
       where: {
         id: args.id,
       },

@@ -7,7 +7,7 @@ export const getTransaction = queryField('getTransaction', {
     id: nonNull(idArg()),
   },
   resolve(_parent, args, { prisma }) {
-    return prisma.transactions.findUnique({
+    return prisma.transaction.findUnique({
       where: {
         id: args.id,
       },
@@ -17,14 +17,13 @@ export const getTransaction = queryField('getTransaction', {
 
 export const getTransactions = queryField('getTransactions', {
   type: list('Transaction'),
-  description:
-    'Returns a list of transactions depending upon the arguments passed',
+  description: `Returns a list of transactions depending upon the arguments passed`,
   args: {
     orgID: idArg(),
     type: 'TransactionType',
   },
   resolve(_parent, args, { prisma }) {
-    return prisma.transactions.findMany({
+    return prisma.transaction.findMany({
       where: {
         orgID: args.orgID || undefined,
         type: args.type || undefined,
