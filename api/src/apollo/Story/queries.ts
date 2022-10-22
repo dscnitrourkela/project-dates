@@ -22,10 +22,14 @@ export const getStories = queryField('getStories', {
     orgID: idArg(),
   },
   resolve(_parent, args, { prisma }) {
-    return prisma.story.findMany({
-      where: {
-        orgID: args.orgID || undefined,
-      },
-    });
+    if (args.orgID) {
+      return prisma.story.findMany({
+        where: {
+          orgID: args.orgID || undefined,
+        },
+      });
+    }
+
+    return prisma.story.findMany();
   },
 });
