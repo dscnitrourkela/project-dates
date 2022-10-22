@@ -20,6 +20,24 @@ export const UserCreateInputType = inputObjectType({
   },
 });
 
+export const createUser = mutationField('createUser', {
+  type: 'User',
+  description: 'Creates a new user record',
+  args: {
+    user: nonNull('UserCreateInputType'),
+  },
+  /**
+   * TODO: add validations on
+   * - email
+   * - mobile
+   */
+  resolve(_parent, args, { prisma }) {
+    return prisma.user.create({
+      data: args.user,
+    });
+  },
+});
+
 export const UserUpdateInputType = inputObjectType({
   name: 'UserUpdateInputType',
   description: 'Input arguments used in updateUser mutation',
@@ -34,22 +52,9 @@ export const UserUpdateInputType = inputObjectType({
     t.string('stream');
     t.string('mobile');
     t.string('selfID');
-    t.nonNull.list.nonNull.string('festID');
+    t.nonNull.list.nonNull.id('festID');
     t.string('referredBy');
     t.string('rollNumber');
-  },
-});
-
-export const createUser = mutationField('createUser', {
-  type: 'User',
-  description: 'Creates a new user record',
-  args: {
-    user: nonNull('UserCreateInputType'),
-  },
-  resolve(_parent, args, { prisma }) {
-    return prisma.user.create({
-      data: args.user,
-    });
   },
 });
 
@@ -61,14 +66,8 @@ export const updateUser = mutationField('updateUser', {
     user: nonNull('UserUpdateInputType'),
   },
   resolve(_parent, args, { prisma }) {
-    if (!args.id) {
-      throw new Error('id is a required field');
-    }
-
     return prisma.user.update({
-      where: {
-        id: args.id,
-      },
+      where: { id: args.id },
       data: args.user,
     });
   },

@@ -1,4 +1,5 @@
-import { objectType } from 'nexus';
+import { nonNull, objectType } from 'nexus';
+import { NexusGenObjects } from 'nexus_generated/nexus-typegen';
 
 export const User = objectType({
   name: 'User',
@@ -20,7 +21,21 @@ export const User = objectType({
     t.string('referredBy');
     t.string('rollNumber');
 
-    // TODO: to be changed to field
-    t.nonNull.list.string('festID');
+    t.nonNull.list.id('festID');
+    t.nonNull.list.field('fests', {
+      type: nonNull('Org'),
+      async resolve(parent, _args, { prisma }) {
+        const fests: Array<NexusGenObjects['Org']> = [];
+
+        const promiseCalls = parent.festID.map(id =>
+          prisma.org
+            .findMany({ where: { festID: id } })
+            .then(fest => fests.push(fest[0])),
+        );
+
+        await Promise.all(promiseCalls);
+        return fests;
+      },
+    });
   },
 });

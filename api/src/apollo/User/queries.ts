@@ -10,17 +10,13 @@ export const getUser = queryField('getUser', {
   resolve(_parent, args, { prisma }) {
     if (args.id) {
       return prisma.user.findUnique({
-        where: {
-          id: args.id,
-        },
+        where: { id: args.id },
       });
     }
 
     if (args.email) {
       return prisma.user.findUnique({
-        where: {
-          email: args.email,
-        },
+        where: { email: args.email },
       });
     }
 
