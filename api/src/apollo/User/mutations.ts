@@ -2,6 +2,7 @@ import { idArg, inputObjectType, mutationField, nonNull } from 'nexus';
 
 export const UserCreateInputType = inputObjectType({
   name: 'UserCreateInputType',
+  description: 'Input arguments used in createUser mutation',
   definition(t) {
     t.nonNull.string('email');
     t.nonNull.string('uid');
@@ -21,6 +22,7 @@ export const UserCreateInputType = inputObjectType({
 
 export const UserUpdateInputType = inputObjectType({
   name: 'UserUpdateInputType',
+  description: 'Input arguments used in updateUser mutation',
   definition(t) {
     t.string('name');
     t.string('photo');
@@ -40,6 +42,7 @@ export const UserUpdateInputType = inputObjectType({
 
 export const createUser = mutationField('createUser', {
   type: 'User',
+  description: 'Creates a new user record',
   args: {
     user: nonNull('UserCreateInputType'),
   },
@@ -52,6 +55,7 @@ export const createUser = mutationField('createUser', {
 
 export const updateUser = mutationField('updateUser', {
   type: 'User',
+  description: 'Updates an existing user record',
   args: {
     id: nonNull(idArg()),
     user: nonNull('UserUpdateInputType'),

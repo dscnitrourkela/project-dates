@@ -2,6 +2,7 @@ import { idArg, list, nonNull, queryField } from 'nexus';
 
 export const getEvent = queryField('getEvent', {
   type: 'Event',
+  description: `Returns the event whose id is passed as an argument`,
   args: {
     id: nonNull(idArg()),
   },
@@ -16,6 +17,7 @@ export const getEvent = queryField('getEvent', {
 
 export const getEvents = queryField('getEvents', {
   type: list('Event'),
+  description: `Returns a list of events depending upon the various arguments passed`,
   args: {
     orgID: idArg(),
     orgType: 'OrgType',

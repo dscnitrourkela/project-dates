@@ -2,6 +2,7 @@ import { idArg, inputObjectType, mutationField, nonNull } from 'nexus';
 
 export const EventCreateInputType = inputObjectType({
   name: 'EventCreateInputType',
+  description: `Input arguments used in createEvent mutation`,
   definition(t) {
     t.nonNull.id('id');
     t.nonNull.string('name');
@@ -23,6 +24,7 @@ export const EventCreateInputType = inputObjectType({
 
 export const createEvent = mutationField('createEvent', {
   type: 'Event',
+  description: `Creates a new event record`,
   args: {
     event: nonNull('EventCreateInputType'),
   },
@@ -38,6 +40,7 @@ export const createEvent = mutationField('createEvent', {
 
 export const EventUpdateInputType = inputObjectType({
   name: 'EventUpdateInputType',
+  description: `Input arguments used in updateEvent mutation`,
   definition(t) {
     t.string('name');
     t.string('description');
@@ -58,6 +61,7 @@ export const EventUpdateInputType = inputObjectType({
 
 export const updateEvent = mutationField('updateEvent', {
   type: 'Event',
+  description: `Updates an existing event record`,
   args: {
     id: nonNull(idArg()),
     event: nonNull('EventUpdateInputType'),

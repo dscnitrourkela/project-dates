@@ -2,6 +2,7 @@ import { idArg, inputObjectType, mutationField, nonNull } from 'nexus';
 
 export const TransactionCreateInputType = inputObjectType({
   name: 'TransactionCreateInputType',
+  description: 'Input arguments used in createTransaction mutation',
   definition(t) {
     t.nonNull.id('id');
     t.nonNull.int('amount');
@@ -16,6 +17,7 @@ export const TransactionCreateInputType = inputObjectType({
 
 export const createTransaction = mutationField('createTransaction', {
   type: 'Transaction',
+  description: 'Creates a new transaction record',
   args: {
     transaction: nonNull('TransactionCreateInputType'),
   },
@@ -28,6 +30,7 @@ export const createTransaction = mutationField('createTransaction', {
 
 export const TransactionUpdateInputType = inputObjectType({
   name: 'TransactionUpdateInputType',
+  description: 'Input arguments used in updateTransaction mutation',
   definition(t) {
     t.id('userID');
     t.transactionType('type');
@@ -38,6 +41,7 @@ export const TransactionUpdateInputType = inputObjectType({
 
 export const updateTransaction = mutationField('updateTransaction', {
   type: 'Transaction',
+  description: 'Updates an existing record of transation',
   args: {
     id: nonNull(idArg()),
     transaction: nonNull('TransactionUpdateInputType'),

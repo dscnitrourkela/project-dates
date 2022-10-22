@@ -2,6 +2,7 @@ import { idArg, inputObjectType, mutationField, nonNull } from 'nexus';
 
 export const LocationCreateInputType = inputObjectType({
   name: 'LocationCreateInputType',
+  description: `Input arguments used in createLocation mutation`,
   definition(t) {
     t.nonNull.string('name');
     t.nonNull.string('description');
@@ -12,6 +13,7 @@ export const LocationCreateInputType = inputObjectType({
 
 export const createLocation = mutationField('createLocation', {
   type: 'Location',
+  description: `Creates a new location record`,
   args: {
     location: nonNull('LocationCreateInputType'),
   },
@@ -24,6 +26,7 @@ export const createLocation = mutationField('createLocation', {
 
 export const LocationUpdateInputType = inputObjectType({
   name: 'LocationUpdateInputType',
+  description: `Input arguments used in updateLocation mutation`,
   definition(t) {
     t.string('name');
     t.string('description');
@@ -34,6 +37,7 @@ export const LocationUpdateInputType = inputObjectType({
 
 export const updateLocation = mutationField('updateLocation', {
   type: 'Location',
+  description: 'Updates the existing Location record',
   args: {
     id: nonNull(idArg()),
     location: nonNull('LocationUpdateInputType'),
@@ -54,6 +58,7 @@ export const updateLocation = mutationField('updateLocation', {
 
 export const deleteLocation = mutationField('deleteLocation', {
   type: 'Location',
+  description: `Deletes an existing location record`,
   args: {
     id: nonNull(idArg()),
   },

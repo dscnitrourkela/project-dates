@@ -2,6 +2,7 @@ import { idArg, inputObjectType, list, nonNull, queryField, stringArg } from 'ne
 
 export const getUser = queryField('getUser', {
   type: 'User',
+  description: 'Returns a user whose id or email is passed',
   args: {
     id: idArg(),
     email: stringArg(),
@@ -30,6 +31,7 @@ export const getUser = queryField('getUser', {
 
 export const GetUsersInputType = inputObjectType({
   name: 'GetUsersInputType',
+  description: 'Input arguments used in getUsers query',
   definition(t) {
     t.string('state');
     t.string('city');
@@ -41,6 +43,7 @@ export const GetUsersInputType = inputObjectType({
 
 export const getUsers = queryField('getUsers', {
   type: list('User'),
+  description: 'Returns a list of all the users depending upon the arguments',
   args: {
     params: nonNull('GetUsersInputType'),
     festID: list(nonNull(stringArg())),

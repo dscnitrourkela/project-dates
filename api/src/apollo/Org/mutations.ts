@@ -2,6 +2,7 @@ import { idArg, inputObjectType, mutationField, nonNull } from 'nexus';
 
 export const OrgCreateInputType = inputObjectType({
   name: 'OrgCreateInputType',
+  description: 'Input arguments used in the createOrg mutation',
   definition(t) {
     t.nonNull.string('name');
     t.nonNull.string('description');
@@ -22,6 +23,7 @@ export const OrgCreateInputType = inputObjectType({
 
 export const OrgUpdateInputType = inputObjectType({
   name: 'OrgUpdateInputType',
+  description: 'Input arguments used in the updateOrg mutation',
   nonNullDefaults: {
     input: false,
   },
@@ -44,6 +46,7 @@ export const OrgUpdateInputType = inputObjectType({
 
 export const createOrg = mutationField('createOrg', {
   type: 'Org',
+  description: 'Creates a new organisation record',
   args: {
     org: nonNull('OrgCreateInputType'),
   },
@@ -56,6 +59,7 @@ export const createOrg = mutationField('createOrg', {
 
 export const updateOrg = mutationField('updateOrg', {
   type: 'Org',
+  description: 'Updates an existing organisation record',
   args: {
     id: nonNull(idArg()),
     org: nonNull('OrgUpdateInputType'),
