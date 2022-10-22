@@ -97,7 +97,7 @@ model Org {
   status          STATUS       @default(value: DRAFT)
   orgSubType      ORG_SUB_TYPE
   orgType         ORG_TYPE
-  location        String?      @db.ObjectId
+  locationID      String?      @db.ObjectId
   createdAt       DateTime     @default(now())
   updatedAt       DateTime     @updatedAt
 }

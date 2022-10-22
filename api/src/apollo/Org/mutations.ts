@@ -17,7 +17,20 @@ export const OrgCreateInputType = inputObjectType({
     t.nonNull.status('status');
     t.nonNull.orgSubType('orgSubType');
     t.nonNull.orgType('orgType');
-    t.id('location');
+    t.id('locationID');
+  },
+});
+
+export const createOrg = mutationField('createOrg', {
+  type: 'Org',
+  description: 'Creates a new organisation record',
+  args: {
+    org: nonNull('OrgCreateInputType'),
+  },
+  resolve(_parent, args, { prisma }) {
+    return prisma.org.create({
+      data: args.org,
+    });
   },
 });
 
@@ -40,20 +53,7 @@ export const OrgUpdateInputType = inputObjectType({
     t.status('status');
     t.orgSubType('orgSubType');
     t.orgType('orgType');
-    t.id('location');
-  },
-});
-
-export const createOrg = mutationField('createOrg', {
-  type: 'Org',
-  description: 'Creates a new organisation record',
-  args: {
-    org: nonNull('OrgCreateInputType'),
-  },
-  resolve(_parent, args, { prisma }) {
-    return prisma.org.create({
-      data: args.org,
-    });
+    t.id('locationID');
   },
 });
 
@@ -78,7 +78,7 @@ export const updateOrg = mutationField('updateOrg', {
       theme,
       startDate,
       endDate,
-      location,
+      locationID,
     } = args.org;
 
     return prisma.org.update({
@@ -98,7 +98,7 @@ export const updateOrg = mutationField('updateOrg', {
         theme: theme || undefined,
         startDate: startDate || undefined,
         endDate: endDate || undefined,
-        location: location || undefined,
+        locationID: locationID || undefined,
       },
     });
   },
