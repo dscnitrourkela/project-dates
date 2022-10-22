@@ -15,3 +15,170 @@ model Link {
   url         String
   description String
 }
+
+enum Gender {
+  male
+  female
+  others
+}
+
+model User {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  email      String    @unique
+  name       String?
+  photo      String?
+  gender     Gender?
+  dob        DateTime?
+  state      String?
+  city       String?
+  college    String?
+  stream     String?
+  mobile     String?
+  selfID     String?   @unique @db.ObjectId
+  festID     String[]  @default([]) @db.ObjectId
+  referredBy String?
+  rollNumber String?
+  uid        String    @unique
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
+
+enum Status {
+  active
+  draft
+  expired
+}
+
+enum OrgSubType {
+  technical
+  cultural
+  sports
+  hackathon
+  literary
+  fms
+}
+
+enum OrgType {
+  club
+  hostel
+  institute
+  branch
+  fest
+  branch_sem
+  mess
+}
+
+model Org {
+  id              String     @id @default(auto()) @map("_id") @db.ObjectId
+  name            String
+  description     String
+  logo            String
+  tagline         String?
+  coverImg        String?
+  theme           String?
+  festID          String?    @unique
+  registrationFee Int        @default(0)
+  startDate       DateTime?
+  endDate         DateTime?
+  status          Status     @default(value: draft)
+  orgSubType      OrgSubType
+  orgType         OrgType
+  location        String?    @db.ObjectId
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+}
+
+enum RepeatType {
+  sunday
+  monday
+  tuesday
+  wednesday
+  thursday
+  friday
+  saturday
+}
+
+model Event {
+  id          String      @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String
+  poster      String
+  location    String      @db.ObjectId
+  startDate   DateTime
+  endDate     DateTime
+  orgID       String[]    @default([]) @db.ObjectId
+  orgType     OrgType
+  notes       String[]    @default([])
+  poc         String[]    @default([]) @db.ObjectId
+  weekly      Boolean     @default(false)
+  repeatDay   RepeatType?
+  priority    Int         @default(0)
+  status      Status      @default(value: draft)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model Team {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  position  String?
+  team      String?
+  userID    String   @db.ObjectId
+  orgID     String   @db.ObjectId
+  priority  Int?     @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum TransactionType {
+  registration
+  merch
+  event
+}
+
+model Transactions {
+  id            String          @id @default(auto()) @map("_id") @db.ObjectId
+  amount        Int
+  userID        String          @db.ObjectId
+  transactionID String          @db.ObjectId
+  type          TransactionType
+  timestamp     DateTime
+  orgID         String          @db.ObjectId
+  comment       String?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+}
+
+model EventRegistration {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  eventID   String   @db.ObjectId
+  userID    String   @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Story {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  orgID     String   @db.ObjectId
+  image     String
+  linkTo    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Location {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String
+  lat         Float?
+  long        Float?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model DeveloperInfo {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  github    String   @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
