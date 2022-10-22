@@ -107,13 +107,13 @@ model Event {
   name        String
   description String
   poster      String       @unique
-  location    String       @db.ObjectId
+  locationID  String       @db.ObjectId
   startDate   DateTime
   endDate     DateTime
   orgID       String[]     @default([]) @db.ObjectId
   orgType     ORG_TYPE
   notes       String[]     @default([])
-  poc         String[]     @default([]) @db.ObjectId
+  pocID       String[]     @default([]) @db.ObjectId
   weekly      Boolean      @default(false)
   repeatDay   REPEAT_TYPE?
   priority    Int          @default(0)

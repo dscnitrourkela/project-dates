@@ -8,13 +8,13 @@ export const EventCreateInputType = inputObjectType({
     t.nonNull.string('name');
     t.nonNull.string('description');
     t.nonNull.string('poster');
-    t.nonNull.id('location');
+    t.nonNull.id('locationID');
     t.nonNull.date('startDate');
     t.nonNull.date('endDate');
     t.nonNull.list.nonNull.id('orgID');
     t.nonNull.orgType('orgType');
     t.nonNull.list.nonNull.string('notes');
-    t.nonNull.list.nonNull.id('poc');
+    t.nonNull.list.nonNull.id('pocID');
     t.nonNull.boolean('weekly');
     t.repeatType('repeatDay', { default: null });
     t.nonNull.int('priority');
@@ -45,13 +45,13 @@ export const EventUpdateInputType = inputObjectType({
     t.string('name');
     t.string('description');
     t.string('poster');
-    t.id('location');
+    t.id('locationID');
     t.date('startDate');
     t.date('endDate');
     t.list.nonNull.id('orgID');
     t.orgType('orgType');
     t.list.nonNull.string('notes');
-    t.list.nonNull.id('poc');
+    t.list.nonNull.id('pocID');
     t.boolean('weekly');
     t.repeatType('repeatDay');
     t.int('priority');
@@ -75,13 +75,13 @@ export const updateEvent = mutationField('updateEvent', {
         name: args.event?.name || undefined,
         description: args.event?.description || undefined,
         poster: args.event?.poster || undefined,
-        location: args.event?.location || undefined,
+        locationID: args.event?.locationID || undefined,
         startDate: args.event?.startDate || undefined,
         endDate: args.event?.endDate || undefined,
         orgID: args.event?.orgID || undefined,
         orgType: args.event?.orgType || undefined,
         notes: args.event?.notes || undefined,
-        poc: args.event?.poc || undefined,
+        pocID: args.event?.pocID || undefined,
         weekly: args.event?.weekly || undefined,
         repeatDay: args.event?.repeatDay || undefined,
         priority: args.event?.priority || undefined,
