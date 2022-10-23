@@ -1,5 +1,13 @@
-import { objectType } from 'nexus';
-import { NexusGenObjects } from 'nexus_generated/nexus-typegen';
+import { FieldResolver, objectType } from 'nexus';
+
+export const locationResolver:
+  | FieldResolver<'Event', 'location'>
+  | undefined = (parent, _args, { prisma }) =>
+  prisma.location.findUnique({
+    where: {
+      id: parent.locationID,
+    },
+  });
 
 export const Event = objectType({
   name: 'Event',
@@ -22,54 +30,34 @@ export const Event = objectType({
     t.nonNull.id('locationID');
     t.field('location', {
       type: 'Location',
-      resolve(parent, _args, { prisma }) {
-        return prisma.location.findUnique({
-          where: {
-            id: parent.locationID,
-          },
-        });
-      },
+      resolve: locationResolver,
     });
 
     t.nonNull.list.nonNull.id('pocID');
     t.nonNull.list.field('poc', {
       type: 'User',
       async resolve(parent, _args, { prisma }) {
-        const pocs: Array<NexusGenObjects['User']> = [];
-
-        const promiseCalls = parent.pocID.map(id =>
-          prisma.user
-            .findUnique({
-              where: { id },
-            })
-            .then(poc => {
-              if (poc) pocs.push(poc);
-            }),
-        );
-
-        await Promise.all(promiseCalls);
-        return pocs;
+        return prisma.user.findMany({
+          where: {
+            id: {
+              in: parent.pocID,
+            },
+          },
+        });
       },
     });
 
     t.nonNull.list.nonNull.id('orgID');
     t.nonNull.list.field('org', {
       type: 'Org',
-      async resolve(parent, _args, { prisma }) {
-        const orgs: Array<NexusGenObjects['Org']> = [];
-
-        const promiseCalls = parent.orgID.map(id =>
-          prisma.org
-            .findUnique({
-              where: { id },
-            })
-            .then(org => {
-              if (org) orgs.push(org);
-            }),
-        );
-
-        await Promise.all(promiseCalls);
-        return orgs;
+      resolve(parent, _args, { prisma }) {
+        return prisma.org.findMany({
+          where: {
+            id: {
+              in: parent.orgID,
+            },
+          },
+        });
       },
     });
   },
