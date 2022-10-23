@@ -1,4 +1,5 @@
 import 'dotenv/config';
+import 'nexus_generated/nexus-typegen';
 
 import { app } from 'rest/server';
 
