@@ -11,13 +11,37 @@ export const Org = objectType({
     t.string('tagline');
     t.string('coverImg');
     t.string('theme');
-    t.id('festID');
     t.nonNull.int('registrationFee');
     t.date('startDate');
     t.date('endDate');
     t.nonNull.status('status');
     t.nonNull.orgSubType('orgSubType');
     t.nonNull.orgType('orgType');
-    t.id('location');
+
+    t.id('locationID');
+    t.field('location', {
+      type: 'Location',
+      resolve(parent, _args, { prisma }) {
+        return prisma.location.findUnique({
+          where: {
+            id: parent.locationID || undefined,
+          },
+        });
+      },
+    });
+
+    t.id('festID');
+    t.field('fest', {
+      type: 'Org',
+      resolve(parent, _args, { prisma }) {
+        return prisma.org
+          .findMany({
+            where: {
+              festID: parent.festID,
+            },
+          })
+          .then(fest => fest[0]);
+      },
+    });
   },
 });

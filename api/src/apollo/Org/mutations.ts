@@ -2,6 +2,7 @@ import { idArg, inputObjectType, mutationField, nonNull } from 'nexus';
 
 export const OrgCreateInputType = inputObjectType({
   name: 'OrgCreateInputType',
+  description: 'Input arguments used in the createOrg mutation',
   definition(t) {
     t.nonNull.string('name');
     t.nonNull.string('description');
@@ -16,12 +17,26 @@ export const OrgCreateInputType = inputObjectType({
     t.nonNull.status('status');
     t.nonNull.orgSubType('orgSubType');
     t.nonNull.orgType('orgType');
-    t.id('location');
+    t.id('locationID');
+  },
+});
+
+export const createOrg = mutationField('createOrg', {
+  type: 'Org',
+  description: 'Creates a new organisation record',
+  args: {
+    org: nonNull('OrgCreateInputType'),
+  },
+  resolve(_parent, args, { prisma }) {
+    return prisma.org.create({
+      data: args.org,
+    });
   },
 });
 
 export const OrgUpdateInputType = inputObjectType({
   name: 'OrgUpdateInputType',
+  description: 'Input arguments used in the updateOrg mutation',
   nonNullDefaults: {
     input: false,
   },
@@ -38,24 +53,13 @@ export const OrgUpdateInputType = inputObjectType({
     t.status('status');
     t.orgSubType('orgSubType');
     t.orgType('orgType');
-    t.id('location');
-  },
-});
-
-export const createOrg = mutationField('createOrg', {
-  type: 'Org',
-  args: {
-    org: nonNull('OrgCreateInputType'),
-  },
-  resolve(_parent, args, { prisma }) {
-    return prisma.org.create({
-      data: args.org,
-    });
+    t.id('locationID');
   },
 });
 
 export const updateOrg = mutationField('updateOrg', {
   type: 'Org',
+  description: 'Updates an existing organisation record',
   args: {
     id: nonNull(idArg()),
     org: nonNull('OrgUpdateInputType'),
@@ -74,7 +78,7 @@ export const updateOrg = mutationField('updateOrg', {
       theme,
       startDate,
       endDate,
-      location,
+      locationID,
     } = args.org;
 
     return prisma.org.update({
@@ -94,7 +98,7 @@ export const updateOrg = mutationField('updateOrg', {
         theme: theme || undefined,
         startDate: startDate || undefined,
         endDate: endDate || undefined,
-        location: location || undefined,
+        locationID: locationID || undefined,
       },
     });
   },

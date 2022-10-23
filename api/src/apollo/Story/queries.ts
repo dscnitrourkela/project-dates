@@ -2,6 +2,7 @@ import { idArg, list, nonNull, queryField } from 'nexus';
 
 export const getStory = queryField('getStory', {
   type: 'Story',
+  description: 'Returns a story whose id is passed',
   args: {
     id: nonNull(idArg()),
   },
@@ -16,14 +17,19 @@ export const getStory = queryField('getStory', {
 
 export const getStories = queryField('getStories', {
   type: list('Story'),
+  description: 'Returns a list of all the stories of a particualr organisation',
   args: {
     orgID: idArg(),
   },
   resolve(_parent, args, { prisma }) {
-    return prisma.story.findMany({
-      where: {
-        orgID: args.orgID || undefined,
-      },
-    });
+    if (args.orgID) {
+      return prisma.story.findMany({
+        where: {
+          orgID: args.orgID || undefined,
+        },
+      });
+    }
+
+    return prisma.story.findMany();
   },
 });

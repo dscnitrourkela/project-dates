@@ -1,4 +1,4 @@
-import { objectType } from 'nexus';
+import { nonNull, objectType } from 'nexus';
 
 export const User = objectType({
   name: 'User',
@@ -20,7 +20,18 @@ export const User = objectType({
     t.string('referredBy');
     t.string('rollNumber');
 
-    // TODO: to be changed to field
-    t.nonNull.list.string('festID');
+    t.nonNull.list.nonNull.id('festID');
+    t.nonNull.list.field('fests', {
+      type: nonNull('Org'),
+      resolve(parent, _args, { prisma }) {
+        return prisma.org.findMany({
+          where: {
+            festID: {
+              in: parent.festID,
+            },
+          },
+        });
+      },
+    });
   },
 });

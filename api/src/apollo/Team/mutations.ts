@@ -2,6 +2,7 @@ import { idArg, inputObjectType, list, mutationField, nonNull } from 'nexus';
 
 export const TeamCreateInputType = inputObjectType({
   name: 'TeamCreateInputType',
+  description: 'Input arguments used in the createTeam mutation',
   definition(t) {
     t.nonNull.id('id');
     t.string('position');
@@ -23,6 +24,7 @@ export const TeamCreateInputType = inputObjectType({
  */
 export const createTeam = mutationField('createTeam', {
   type: 'Int',
+  description: 'Creates multiple/single record/s of team members',
   args: {
     team: nonNull(list(nonNull('TeamCreateInputType'))),
   },
@@ -37,6 +39,7 @@ export const createTeam = mutationField('createTeam', {
 
 export const TeamUpdateInputType = inputObjectType({
   name: 'TeamUpdateInputType',
+  description: 'Input arguments used in the udpateTeam mutation',
   definition(t) {
     t.string('position');
     t.string('team');
@@ -48,6 +51,7 @@ export const TeamUpdateInputType = inputObjectType({
 
 export const updateTeam = mutationField('updateTeam', {
   type: 'Team',
+  description: 'Updates the existing team member record',
   args: {
     id: nonNull(idArg()),
     team: nonNull('TeamUpdateInputType'),
