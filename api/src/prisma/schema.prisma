@@ -1,6 +1,4 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
+// ================== CONFIG START ==================
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,112 +8,118 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Link {
-  id          String @id @default(auto()) @map("_id") @db.ObjectId
-  url         String
-  description String
+// ================== CONFIG END ==================
+
+// ================== ENUMS START ==================
+enum GENDER {
+  MALE
+  FEMALE
+  OTHERS
 }
 
-enum Gender {
-  male
-  female
-  others
+enum STATUS {
+  ACTIVE
+  DRAFT
+  EXPIRED
 }
 
+enum ORG_SUB_TYPE {
+  TECHNICAL
+  CULTURAL
+  SPORTS
+  HACKATHON
+  LITERARY
+  FMS
+}
+
+enum ORG_TYPE {
+  CLUB
+  HOSTEL
+  INSTITUTE
+  BRANCH
+  FEST
+  BRANCH_SEM
+  MESS
+}
+
+enum REPEAT_TYPE {
+  SUNDAY
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+}
+
+enum TRANSACTION_TYPE {
+  REGISTRATION
+  MERCH
+  EVENT
+}
+
+// ================== ENUMS END ==================
+
+// ================== MODELS START ==================
 model User {
   id         String    @id @default(auto()) @map("_id") @db.ObjectId
   email      String    @unique
   name       String?
-  photo      String?
-  gender     Gender?
+  photo      String?   @unique
+  gender     GENDER?
   dob        DateTime?
   state      String?
   city       String?
   college    String?
   stream     String?
-  mobile     String?
+  mobile     String?   @unique
   selfID     String?   @unique @db.ObjectId
   festID     String[]  @default([]) @db.ObjectId
   referredBy String?
-  rollNumber String?
+  rollNumber String?   @unique
   uid        String    @unique
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
 }
 
-enum Status {
-  active
-  draft
-  expired
-}
-
-enum OrgSubType {
-  technical
-  cultural
-  sports
-  hackathon
-  literary
-  fms
-}
-
-enum OrgType {
-  club
-  hostel
-  institute
-  branch
-  fest
-  branch_sem
-  mess
-}
-
 model Org {
-  id              String     @id @default(auto()) @map("_id") @db.ObjectId
+  id              String       @id @default(auto()) @map("_id") @db.ObjectId
   name            String
   description     String
-  logo            String
-  tagline         String?
+  logo            String       @unique
   coverImg        String?
+  tagline         String?
   theme           String?
-  festID          String?    @unique
-  registrationFee Int        @default(0)
+  festID          String?
+  registrationFee Int          @default(0)
   startDate       DateTime?
   endDate         DateTime?
-  status          Status     @default(value: draft)
-  orgSubType      OrgSubType
-  orgType         OrgType
-  location        String?    @db.ObjectId
-  createdAt       DateTime   @default(now())
-  updatedAt       DateTime   @updatedAt
-}
-
-enum RepeatType {
-  sunday
-  monday
-  tuesday
-  wednesday
-  thursday
-  friday
-  saturday
+  status          STATUS       @default(value: DRAFT)
+  orgSubType      ORG_SUB_TYPE
+  orgType         ORG_TYPE
+  locationID      String?      @db.ObjectId
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
 }
 
 model Event {
-  id          String      @id @default(auto()) @map("_id") @db.ObjectId
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   description String
-  poster      String
-  location    String      @db.ObjectId
+  poster      String       @unique
+  locationID  String       @db.ObjectId
   startDate   DateTime
   endDate     DateTime
-  orgID       String[]    @default([]) @db.ObjectId
-  orgType     OrgType
-  notes       String[]    @default([])
-  poc         String[]    @default([]) @db.ObjectId
-  weekly      Boolean     @default(false)
-  repeatDay   RepeatType?
-  priority    Int         @default(0)
-  status      Status      @default(value: draft)
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  orgID       String[]     @default([]) @db.ObjectId
+  orgType     ORG_TYPE
+  notes       String[]     @default([])
+  pocID       String[]     @default([]) @db.ObjectId
+  weekly      Boolean      @default(false)
+  repeatDay   REPEAT_TYPE?
+  priority    Int          @default(0)
+  status      STATUS       @default(value: DRAFT)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
 }
 
 model Team {
@@ -129,23 +133,17 @@ model Team {
   updatedAt DateTime @updatedAt
 }
 
-enum TransactionType {
-  registration
-  merch
-  event
-}
-
-model Transactions {
-  id            String          @id @default(auto()) @map("_id") @db.ObjectId
+model Transaction {
+  id            String           @id @default(auto()) @map("_id") @db.ObjectId
   amount        Int
-  userID        String          @db.ObjectId
-  transactionID String          @db.ObjectId
-  type          TransactionType
+  userID        String           @db.ObjectId
+  transactionID String           @db.ObjectId
+  type          TRANSACTION_TYPE
   timestamp     DateTime
-  orgID         String          @db.ObjectId
+  orgID         String           @db.ObjectId
   comment       String?
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
 }
 
 model EventRegistration {
@@ -182,3 +180,5 @@ model DeveloperInfo {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+// ================== MODELS END ==================

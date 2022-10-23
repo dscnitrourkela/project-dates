@@ -2,6 +2,7 @@ import { idArg, inputObjectType, mutationField, nonNull } from 'nexus';
 
 export const DeveloperInfoCreateInputType = inputObjectType({
   name: 'DeveloperInfoCreateInputType',
+  description: `Input arguments used in createDeveloperInfo mutation`,
   definition(t) {
     t.nonNull.string('name');
     t.nonNull.id('github');
@@ -10,6 +11,7 @@ export const DeveloperInfoCreateInputType = inputObjectType({
 
 export const createDeveloperInfo = mutationField('createDeveloperInfo', {
   type: 'DeveloperInfo',
+  description: `Creates a new developer information record`,
   args: {
     developerInfo: nonNull('DeveloperInfoCreateInputType'),
   },
@@ -22,6 +24,7 @@ export const createDeveloperInfo = mutationField('createDeveloperInfo', {
 
 export const DeveloperInfoUpdateInputType = inputObjectType({
   name: 'DeveloperInfoUpdateInputType',
+  description: `Input arguments used in updateDeveloperInfo mutation`,
   definition(t) {
     t.string('name');
     t.id('github');
@@ -30,6 +33,7 @@ export const DeveloperInfoUpdateInputType = inputObjectType({
 
 export const updateDeveloperInfo = mutationField('updateDeveloperInfo', {
   type: 'DeveloperInfo',
+  description: `Updates an existing developer information record`,
   args: {
     id: nonNull(idArg()),
     developerInfo: nonNull('DeveloperInfoUpdateInputType'),
@@ -49,6 +53,7 @@ export const updateDeveloperInfo = mutationField('updateDeveloperInfo', {
 
 export const deleteDeveloperInfo = mutationField('deleteDeveloperInfo', {
   type: 'DeveloperInfo',
+  description: `Deletes an existing developer information record`,
   args: {
     id: nonNull(idArg()),
   },

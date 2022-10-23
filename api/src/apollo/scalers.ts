@@ -1,58 +1,58 @@
 import { GraphQLDateTime } from 'graphql-iso-date';
 import { asNexusMethod, enumType } from 'nexus';
 
-export const GenderType = enumType({
-  name: 'gender',
-  members: ['male', 'female', 'others'],
-  asNexusMethod: 'gender',
-});
-
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 export const DateTime = asNexusMethod(GraphQLDateTime, 'date');
 
+export const GenderType = enumType({
+  name: 'GenderType',
+  members: ['MALE', 'FEMALE', 'OTHERS'],
+  asNexusMethod: 'gender',
+});
+
 export const StatusType = enumType({
-  name: 'status',
-  members: ['active', 'draft', 'expired'],
+  name: 'StatusType',
+  members: ['ACTIVE', 'DRAFT', 'EXPIRED'],
   asNexusMethod: 'status',
 });
 
 export const OrgSubType = enumType({
-  name: 'orgSubType',
-  members: ['technical', 'cultural', 'sports', 'hackathon', 'literary', 'fms'],
+  name: 'OrgSubType',
+  members: ['TECHNICAL', 'CULTURAL', 'SPORTS', 'HACKATHON', 'LITERARY', 'FMS'],
   asNexusMethod: 'orgSubType',
 });
 
 export const OrgType = enumType({
-  name: 'orgType',
+  name: 'OrgType',
   members: [
-    'club',
-    'hostel',
-    'institute',
-    'branch',
-    'fest',
-    'branch_sem',
-    'mess',
+    'CLUB',
+    'HOSTEL',
+    'INSTITUTE',
+    'BRANCH',
+    'FEST',
+    'BRANCH_SEM',
+    'MESS',
   ],
   asNexusMethod: 'orgType',
 });
 
 export const RepeatType = enumType({
-  name: 'repeatType',
+  name: 'RepeatType',
   members: [
-    'sunday',
-    'monday',
-    'tuesday',
-    'wednesday',
-    'thursday',
-    'friday',
-    'saturday',
+    'SUNDAY',
+    'MONDAY',
+    'TUESDAY',
+    'WEDNESDAY',
+    'THURSDAY',
+    'FRIDAY',
+    'SATURDAY',
   ],
   asNexusMethod: 'repeatType',
 });
 
 export const TransactionType = enumType({
-  name: 'transactionType',
-  members: ['registration', 'merch', 'event'],
+  name: 'TransactionType',
+  members: ['REGISTRATION', 'MERCH', 'EVENT'],
   asNexusMethod: 'transactionType',
 });

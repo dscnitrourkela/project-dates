@@ -1,13 +1,15 @@
 import { objectType } from 'nexus';
 
-export const Team = objectType({
-  name: 'Team',
-  description: 'Refers to the team member part of a particular organisation',
+export const Transaction = objectType({
+  name: 'Transaction',
+  description: 'Refers to the transaction details of any sort of payment',
   definition(t) {
     t.nonNull.id('id');
-    t.string('position');
-    t.string('team');
-    t.int('priority');
+    t.nonNull.int('amount');
+    t.nonNull.id('transactionID');
+    t.nonNull.transactionType('type');
+    t.nonNull.date('timestamp');
+    t.string('comment');
 
     t.nonNull.id('userID');
     t.nonNull.field('user', {

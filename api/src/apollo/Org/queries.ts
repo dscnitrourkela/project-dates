@@ -2,6 +2,7 @@ import { idArg, list, queryField } from 'nexus';
 
 export const getOrg = queryField('getOrg', {
   type: 'Org',
+  description: 'Returns an organisation whose id is passed',
   args: {
     id: idArg(),
   },
@@ -21,6 +22,7 @@ export const getOrg = queryField('getOrg', {
 
 export const getOrgs = queryField('getOrgs', {
   type: list('Org'),
+  description: 'Returns a list of all the organisations',
   resolve(_parent, _args, { prisma }) {
     return prisma.org.findMany();
   },
