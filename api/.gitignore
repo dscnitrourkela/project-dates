@@ -162,3 +162,4 @@ dist
 
 node_modules
 nexus_generated
+firebase.json
