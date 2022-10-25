@@ -7,6 +7,7 @@ env:
   PORT: ${{ secrets.PORT }}
   MONGO_AUTH_DB: ${{ secrets.MONGO_AUTH_DB }}
   DATABASE_URL: ${{ secrets.DATABASE_URL }}
+  JSON_SECRET: ${{ secrets.JSON_SECRET }}
 
 jobs:
   build:
@@ -37,4 +38,4 @@ jobs:
       - name: Remove stopped container
         run: docker rm project-dates || true
       - name: Start container
-        run: docker run --name=project-dates --env-file=.env -p $PORT:$PORT -d ghcr.io/${{ github.repository }}:latest
+        run: docker run --name=project-dates --env-file=.env -v $JSON_SECRET -p $PORT:$PORT -d ghcr.io/${{ github.repository }}:latest
