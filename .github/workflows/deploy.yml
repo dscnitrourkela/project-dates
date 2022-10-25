@@ -5,7 +5,8 @@ on:
 
 env:
   PORT: ${{ secrets.PORT }}
-  MONGO_URL: ${{ secrets.MONGO_URL }}
+  MONGO_AUTH_DB: ${{ secrets.MONGO_AUTH_DB }}
+  DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
 jobs:
   build:
@@ -22,17 +23,18 @@ jobs:
     needs: build
     steps:
       - name: Remove existing env
-        run: rm .env
+        run: rm .env || true
       - name: Create Env
         run: |
           touch .env
           echo PORT=$PORT >> .env
-          echo MONGO_URL=$MONGO_URL >> .env
+          echo DATABASE_URL=$DATABASE_URL >> .env
+          echo MONGO_AUTH_DB=$MONGO_AUTH_DB >> .env
       - name: Pull Docker Image
         run: docker pull ghcr.io/${{ github.repository }}:latest
       - name: Stop existing container
-        run: docker stop project-dates
+        run: docker stop project-dates || true
       - name: Remove stopped container
-        run: docker rm project-dates
+        run: docker rm project-dates || true
       - name: Start container
         run: docker run --name=project-dates --env-file=.env -p $PORT:$PORT -d ghcr.io/${{ github.repository }}:latest
