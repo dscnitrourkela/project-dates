@@ -1,1 +1,13 @@
-export const { PORT, MONGO_AUTH_DB } = process.env;
+export const {
+  PORT,
+  MONGO_AUTH_DB,
+  PROJECT_ID,
+  PRIVATE_KEY_ID,
+  PRIVATE_KEY,
+  CLIENT_EMAIL,
+  CLIENT_ID,
+  AUTH_URI,
+  TOKEN_URI,
+  AUTH_PROVIDER,
+  CERT_URL,
+} = process.env;
