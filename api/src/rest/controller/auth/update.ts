@@ -15,6 +15,7 @@ export const updatePermissions = async (req: Request, res: Response) => {
       orgEditor,
       orgViewer,
       orgID,
+      remove,
     } = req.body;
     let permissions;
     if (!uid) return res.status(400).json({ error: 'uid is required' });
@@ -26,7 +27,7 @@ export const updatePermissions = async (req: Request, res: Response) => {
       permissions = await Permission.findOneAndUpdate(
         { uid },
         { superAdmin, superEditor, superViewer },
-        { upsert: true },
+        { upsert: true, runValidators: true, omitUndefined: true, new: true },
       );
     } else if (
       ![undefined, null].includes(orgAdmin) ||
@@ -34,29 +35,23 @@ export const updatePermissions = async (req: Request, res: Response) => {
       ![undefined, null].includes(orgViewer)
     ) {
       if (!orgID) return res.status(400).json({ error: 'orgID is required' });
-      if (orgAdmin) {
+      let updateField;
+      if (orgAdmin) updateField = 'orgAdmin';
+      else if (orgEditor) updateField = 'orgEditor';
+      else if (orgViewer) updateField = 'orgViewer';
+      if (remove) {
         permissions = await Permission.findOneAndUpdate(
           { uid },
-          { $push: { orgAdmin: orgID } },
-          { upsert: true, runValidators: true, omitUndefined: true, new: true },
-        );
-      } else if (orgEditor) {
-        permissions = await Permission.findOneAndUpdate(
-          { uid },
-          { $push: { orgEditor: orgID } },
-          { upsert: true, runValidators: true, omitUndefined: true, new: true },
-        );
-      } else if (orgViewer) {
-        permissions = await Permission.findOneAndUpdate(
-          { uid },
-          { $push: { orgViewer: orgID } },
+          { $pull: { [updateField as string]: orgID } },
           { upsert: true, runValidators: true, omitUndefined: true, new: true },
         );
       } else {
-        return res.status(400).json({ error: 'Missing required arguments' });
+        permissions = await Permission.findOneAndUpdate(
+          { uid },
+          { $push: { [updateField as string]: orgID } },
+          { upsert: true, runValidators: true, omitUndefined: true, new: true },
+        );
       }
-    } else {
-      return res.status(400).json({ error: 'Missing required arguments' });
     }
     return res.json({ permissions });
   } catch (error) {
