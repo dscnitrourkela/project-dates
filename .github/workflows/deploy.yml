@@ -7,7 +7,15 @@ env:
   PORT: ${{ secrets.PORT }}
   MONGO_AUTH_DB: ${{ secrets.MONGO_AUTH_DB }}
   DATABASE_URL: ${{ secrets.DATABASE_URL }}
-  JSON_SECRET: ${{ secrets.JSON_SECRET }}
+  PROJECT_ID: ${{ secrets.PROJECT_ID }}
+  PRIVATE_KEY_ID: ${{ secrets.PRIVATE_KEY_ID }}
+  PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+  CLIENT_EMAIL: ${{ secrets.CLIENT_EMAIL }}
+  CLIENT_ID: ${{ secrets.CLIENT_ID }}
+  AUTH_URI: ${{ secrets.AUTH_URI }}
+  TOKEN_URI: ${{ secrets.TOKEN_URI }}
+  AUTH_PROVIDER: ${{ secrets.AUTH_PROVIDER }}
+  CERT_URL: ${{ secrets.CERT_URL }}
 
 jobs:
   build:
@@ -31,6 +39,15 @@ jobs:
           echo PORT=$PORT >> .env
           echo DATABASE_URL=$DATABASE_URL >> .env
           echo MONGO_AUTH_DB=$MONGO_AUTH_DB >> .env
+          echo PROJECT_ID=$PROJECT_ID >> .env
+          echo PRIVATE_KEY_ID=$PRIVATE_KEY_ID >> .env
+          echo PRIVATE_KEY=$PRIVATE_KEY >> .env
+          echo CLIENT_EMAIL=$CLIENT_EMAIL >> .env
+          echo CLIENT_ID=$CLIENT_ID >> .env
+          echo AUTH_URI=$AUTH_URI >> .env
+          echo TOKEN_URI=$TOKEN_URI >> .env
+          echo AUTH_PROVIDER=$AUTH_PROVIDER >> .env
+          echo CERT_URL=$CERT_URL >> .env
       - name: Pull Docker Image
         run: docker pull ghcr.io/${{ github.repository }}:latest
       - name: Stop existing container
@@ -38,4 +55,4 @@ jobs:
       - name: Remove stopped container
         run: docker rm project-dates || true
       - name: Start container
-        run: docker run --name=project-dates --env-file=.env -v $JSON_SECRET -p $PORT:$PORT -d ghcr.io/${{ github.repository }}:latest
+        run: docker run --name=project-dates --env-file=.env -p $PORT:$PORT -d ghcr.io/${{ github.repository }}:latest
