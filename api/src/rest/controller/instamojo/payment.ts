@@ -31,7 +31,8 @@ const generateToken = async (): Promise<string> => {
 };
 
 export const generatePaymentLink = async (req: Request, res: Response) => {
-  const { amount, purpose, redirectUrl } = req.body;
+  const { amount, purpose, redirectUrl, webhook, buyerName, email, phone } =
+    req.body;
   if (!amount || !purpose || !redirectUrl)
     return res.status(400).json({ error: 'Missing Arguments' });
   try {
@@ -44,6 +45,10 @@ export const generatePaymentLink = async (req: Request, res: Response) => {
     encodedParams.set('amount', amount);
     encodedParams.set('purpose', purpose);
     encodedParams.set('redirect_url', redirectUrl);
+    encodedParams.set('buyer_name', buyerName);
+    encodedParams.set('email', email);
+    encodedParams.set('phone', phone);
+    encodedParams.set('webhook', webhook);
 
     const options = {
       method: 'POST',
@@ -58,9 +63,7 @@ export const generatePaymentLink = async (req: Request, res: Response) => {
 
     const paymentLink = await axios.request(options);
 
-    return res
-      .status(200)
-      .json({ success: true, data: paymentLink.data.longurl });
+    return res.status(200).send(paymentLink.data.longurl);
   } catch (error) {
     return res.status(500).send(error);
   }
