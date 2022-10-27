@@ -16,6 +16,9 @@ env:
   TOKEN_URI: ${{ secrets.TOKEN_URI }}
   AUTH_PROVIDER: ${{ secrets.AUTH_PROVIDER }}
   CERT_URL: ${{ secrets.CERT_URL }}
+  INSTAMOJO_CLIENT_ID: ${{ secrets.INSTAMOJO_CLIENT_ID }}
+  INSTAMOJO_CLIENT_SECRET: ${{ secrets.INSTAMOJO_CLIENT_SECRET }}
+  INSTAMOJO_BASE_URL: ${{ secrets.INSTAMOJO_BASE_URL }}
 
 jobs:
   build:
@@ -48,6 +51,9 @@ jobs:
           echo TOKEN_URI=$TOKEN_URI >> .env
           echo AUTH_PROVIDER=$AUTH_PROVIDER >> .env
           echo CERT_URL=$CERT_URL >> .env
+          echo INSTAMOJO_CLIENT_ID=$INSTAMOJO_CLIENT_ID >> .env
+          echo INSTAMOJO_CLIENT_SECRET=$INSTAMOJO_CLIENT_SECRET >> .env
+          echo INSTAMOJO_BASE_URL=$INSTAMOJO_BASE_URL >> .env
       - name: Pull Docker Image
         run: docker pull ghcr.io/${{ github.repository }}:latest
       - name: Stop existing container
