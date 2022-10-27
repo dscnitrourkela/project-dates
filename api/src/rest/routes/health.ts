@@ -1,6 +1,10 @@
 import express from 'express';
-import { healthController } from 'rest/controller';
+import {
+  createUserController,
+  healthController,
+} from 'rest/controller';
 
 export const healthRouter = express.Router();
 
 healthRouter.get('/', healthController);
+healthRouter.post('/user', createUserController);
