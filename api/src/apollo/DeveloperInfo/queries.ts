@@ -1,4 +1,12 @@
-import { idArg, list, nonNull, queryField } from 'nexus';
+import { checkGraphQLPermissions } from 'helpers/auth/checkPermissions';
+import {
+  idArg,
+  list,
+  nonNull,
+  queryField,
+} from 'nexus';
+
+import { PERMISSIONS } from '@constants';
 
 export const getDeveloperInfo = queryField('getDeveloperInfo', {
   type: 'DeveloperInfo',
@@ -6,6 +14,8 @@ export const getDeveloperInfo = queryField('getDeveloperInfo', {
   args: {
     id: nonNull(idArg()),
   },
+  authorize: (_parent, __args, ctx) =>
+    checkGraphQLPermissions(ctx, [PERMISSIONS.SUPER_ADMIN]),
   resolve(_parent, args, { prisma }) {
     return prisma.developerInfo.findUnique({
       where: {
@@ -18,7 +28,8 @@ export const getDeveloperInfo = queryField('getDeveloperInfo', {
 export const getDeveloperInfos = queryField('getDeveloperInfos', {
   type: list('DeveloperInfo'),
   description: `Returns a list of all the developers of the application`,
-  resolve(_parent, _args, { prisma }) {
-    return prisma.developerInfo.findMany();
+  authorize: (_parent, _args, ctx) => checkGraphQLPermissions(ctx, []),
+  resolve(_parent, _args, ctx) {
+    return ctx.prisma.developerInfo.findMany();
   },
 });

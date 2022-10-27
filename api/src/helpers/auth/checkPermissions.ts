@@ -1,9 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable consistent-return */
 import {
   Request,
   Response,
 } from 'express';
-import { AuthenticationError } from 'helpers';
 import { Permission } from 'rest/model';
 
 import { PERMISSIONS } from '@constants';
@@ -84,67 +84,68 @@ export const checkRestPermissions =
     }
   };
 
-export const checkGraphQLPermissions =
-  (next: any, requiredPermissions?: [PERMISSIONS?], id?: string) =>
-  async (parent: any, args: any, context: any, info: any) => {
-    if (!context.req.headers || !context.req.headers.authorization) {
-      throw AuthenticationError;
+export const checkGraphQLPermissions = async (
+  context: any,
+  requiredPermissions?: [PERMISSIONS?],
+  id?: string,
+) => {
+  if (!context.req.headers || !context.req.headers.authorization) {
+    return false;
+  }
+
+  const token = context.req.headers.authorization.split(' ')[1];
+  if (!token) {
+    return false;
+  }
+
+  try {
+    const decodedToken = await verifyUser(token);
+    if (!decodedToken) {
+      return false;
     }
 
-    const token = context.req.headers.authorization.split(' ')[1];
-    if (!token) {
-      throw AuthenticationError;
+    if (!requiredPermissions || requiredPermissions.length === 0) {
+      return true;
     }
 
-    try {
-      const decodedToken = await verifyUser(token);
-      if (!decodedToken) {
-        throw AuthenticationError;
-      }
+    const permissions = await Permission.findOne({
+      uid: decodedToken.uid,
+    });
 
-      if (!requiredPermissions || requiredPermissions.length === 0) {
-        return next(parent, args, context, info);
-      }
-
-      const permissions = await Permission.findOne({
-        uid: decodedToken.uid,
-      });
-
-      if (!permissions) {
-        throw AuthenticationError;
-      }
-
-      for (let i = 0; i < requiredPermissions.length; i += 1) {
-        const permission = requiredPermissions[i];
-        if (
-          (permission === PERMISSIONS.SUPER_ADMIN && permissions.superAdmin) ||
-          (permission === PERMISSIONS.SUPER_EDITOR &&
-            permissions.superEditor) ||
-          (permission === PERMISSIONS.SUPER_VIEWER && permissions.superViewer)
-        ) {
-          return next(parent, args, context, info);
-        }
-
-        if (
-          (permission === PERMISSIONS.ORG_ADMIN &&
-            permissions.orgAdmin.length > 0 &&
-            id &&
-            permissions.orgAdmin.includes(id)) ||
-          (permission === PERMISSIONS.ORG_EDITOR &&
-            permissions.orgEditor.length > 0 &&
-            id &&
-            permissions.orgEditor.includes(id)) ||
-          (permission === PERMISSIONS.SUPER_VIEWER &&
-            permissions.orgViewer.length > 0 &&
-            id &&
-            permissions.orgViewer.includes(id))
-        ) {
-          return next(parent, args, context, info);
-        }
-      }
-
-      throw AuthenticationError;
-    } catch (error) {
-      throw AuthenticationError;
+    if (!permissions) {
+      return false;
     }
-  };
+
+    for (let i = 0; i < requiredPermissions.length; i += 1) {
+      const permission = requiredPermissions[i];
+      if (
+        (permission === PERMISSIONS.SUPER_ADMIN && permissions.superAdmin) ||
+        (permission === PERMISSIONS.SUPER_EDITOR && permissions.superEditor) ||
+        (permission === PERMISSIONS.SUPER_VIEWER && permissions.superViewer)
+      ) {
+        return true;
+      }
+
+      if (
+        (permission === PERMISSIONS.ORG_ADMIN &&
+          permissions.orgAdmin.length > 0 &&
+          id &&
+          permissions.orgAdmin.includes(id)) ||
+        (permission === PERMISSIONS.ORG_EDITOR &&
+          permissions.orgEditor.length > 0 &&
+          id &&
+          permissions.orgEditor.includes(id)) ||
+        (permission === PERMISSIONS.SUPER_VIEWER &&
+          permissions.orgViewer.length > 0 &&
+          id &&
+          permissions.orgViewer.includes(id))
+      ) {
+        return true;
+      }
+    }
+
+    return false;
+  } catch (error) {
+    return false;
+  }
+};

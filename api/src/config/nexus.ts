@@ -1,4 +1,7 @@
-import { makeSchema } from 'nexus';
+import {
+  fieldAuthorizePlugin,
+  makeSchema,
+} from 'nexus';
 import { join } from 'path';
 
 import * as types from '../apollo';
@@ -13,4 +16,5 @@ export const schema = makeSchema({
     module: join(process.cwd(), './src/utils/context.ts'),
     export: 'Context',
   },
+  plugins: [fieldAuthorizePlugin()],
 });
