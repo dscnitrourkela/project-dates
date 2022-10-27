@@ -34,8 +34,6 @@ export const initializeApollo = async (app: Application) => {
 
   app.use(cors(corsOptions));
 
-  app.use(cors);
-
   const server = new ApolloServer<Context>({
     schema,
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
