@@ -1,4 +1,5 @@
 import express from 'express';
+import { checkRestPermissions } from 'helpers/auth/checkPermissions';
 import {
   createUserController,
   healthController,
@@ -7,4 +8,6 @@ import {
 export const healthRouter = express.Router();
 
 healthRouter.get('/', healthController);
-healthRouter.post('/user', createUserController);
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+healthRouter.get('/user', checkRestPermissions(createUserController, []));
