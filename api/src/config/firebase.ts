@@ -25,6 +25,8 @@ const serviceAccount = {
   client_x509_cert_url: CERT_URL,
 };
 
+console.log(serviceAccount);
+
 export const firebaseApp = admin.initializeApp({
   credential: admin.credential.cert(serviceAccount as unknown as string),
 });
