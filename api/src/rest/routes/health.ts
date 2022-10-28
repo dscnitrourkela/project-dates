@@ -10,4 +10,4 @@ export const healthRouter = express.Router();
 healthRouter.get('/', healthController);
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-healthRouter.get('/user', checkRestPermissions(createUserController, []));
+healthRouter.post('/user', checkRestPermissions(createUserController, []));
