@@ -1,4 +1,3 @@
-import cors from 'cors';
 import { Application } from 'express';
 import http from 'http';
 
@@ -17,22 +16,6 @@ export const initializeApollo = async (app: Application) => {
   const logger = winston('server');
 
   const httpServer = http.createServer(app);
-
-  const whitelist = process.env.ALLOWED_CLIENT_URL;
-
-  const corsOptions = {
-    origin(origin: any, callback: any) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      if (whitelist.indexOf(origin) !== -1 || !origin) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
-  };
-
-  app.use(cors(corsOptions));
 
   const server = new ApolloServer<Context>({
     schema,
