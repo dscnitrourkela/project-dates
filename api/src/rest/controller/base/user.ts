@@ -1,12 +1,9 @@
-/* eslint-disable consistent-return */
-import {
-  Request,
-  Response,
-} from 'express';
-
 import { prisma } from '@utils';
 
-export const createUserController = (req: Request, res: Response) => {
+/* eslint-disable consistent-return */
+import { Request, Response } from 'express';
+
+export const createUserController = async (req: Request, res: Response) => {
   try {
     const {
       name,
@@ -29,7 +26,7 @@ export const createUserController = (req: Request, res: Response) => {
         .send('Missing Paramenters: email and UID are required parameters');
     }
 
-    const user = prisma.user.create({
+    const user = await prisma.user.create({
       data: {
         email,
         uid,
@@ -49,6 +46,6 @@ export const createUserController = (req: Request, res: Response) => {
 
     return res.status(200).send(user);
   } catch (error) {
-    return res.status(400).send('Something went wrong');
+    return res.status(400).send(error);
   }
 };

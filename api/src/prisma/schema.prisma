@@ -74,7 +74,7 @@ model User {
   stream     String?
   mobile     String?   @unique
   selfID     String?   @unique @db.ObjectId
-  festID     String[]  @default([]) @db.ObjectId
+  festID     String[]  @default([])
   referredBy String?
   rollNumber String?   @unique
   uid        String    @unique
@@ -137,7 +137,7 @@ model Transaction {
   id            String           @id @default(auto()) @map("_id") @db.ObjectId
   amount        Int
   userID        String           @db.ObjectId
-  transactionID String           @db.ObjectId
+  transactionID String
   type          TRANSACTION_TYPE
   timestamp     DateTime
   orgID         String           @db.ObjectId

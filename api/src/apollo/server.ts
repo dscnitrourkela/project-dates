@@ -1,16 +1,12 @@
-import { Application } from 'express';
-import http from 'http';
-
 import { ApolloServer } from '@apollo/server';
-import {
-  ApolloServerPluginDrainHttpServer,
-} from '@apollo/server/plugin/drainHttpServer';
-import {
-  schema,
-  winston,
-} from '@config';
+// import { expressMiddleware } from '@apollo/server/express4';
+import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
+import { schema, winston } from '@config';
 import { PORT } from '@constants';
 import { Context } from '@utils';
+
+import { Application } from 'express';
+import http from 'http';
 
 export const initializeApollo = async (app: Application) => {
   const logger = winston('server');
