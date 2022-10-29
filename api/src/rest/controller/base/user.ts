@@ -43,9 +43,11 @@ export const createUserController = async (req: Request, res: Response) => {
         rollNumber,
       },
     });
+    console.log(user);
 
     return res.status(200).send(user);
   } catch (error) {
+    console.log(error);
     return res.status(400).send(error);
   }
 };
