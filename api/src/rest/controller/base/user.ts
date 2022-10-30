@@ -3,6 +3,34 @@ import { prisma } from '@utils';
 /* eslint-disable consistent-return */
 import { Request, Response } from 'express';
 
+export const getUserController = async (req: Request, res: Response) => {
+  try {
+    const { uid } = req.query;
+
+    if (!uid) {
+      return res
+        .status(400)
+        .send('Missing Parameter: uid is a required parameter');
+    }
+
+    const user = await prisma.user.findUnique({
+      where: {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        uid,
+      },
+    });
+
+    if (!user) {
+      return res.status(200).send(null);
+    }
+
+    return res.status(200).send(user);
+  } catch (error) {
+    return res.status(500).send('Internal Server Error');
+  }
+};
+
 export const createUserController = async (req: Request, res: Response) => {
   try {
     const {
@@ -23,7 +51,19 @@ export const createUserController = async (req: Request, res: Response) => {
     if (!email || !uid) {
       return res
         .status(403)
-        .send('Missing Paramenters: email and UID are required parameters');
+        .send('Missing Parameters: email and UID are required parameters');
+    }
+
+    if (email) {
+      const user = await prisma.user.findUnique({
+        where: {
+          email,
+        },
+      });
+
+      if (user) {
+        return res.status(400).send('User with this email already registered');
+      }
     }
 
     if (rollNumber) {
@@ -34,7 +74,9 @@ export const createUserController = async (req: Request, res: Response) => {
       });
 
       if (users.length > 0) {
-        return res.status(400).send('Roll Number already registered');
+        return res
+          .status(400)
+          .send('User with this roll number already registered');
       }
     }
 
@@ -60,6 +102,7 @@ export const createUserController = async (req: Request, res: Response) => {
 
     return res.status(200).send(user);
   } catch (error) {
-    return res.status(400).send(error);
+    console.error(error);
+    return res.status(400).send('Internal Server Error');
   }
 };
