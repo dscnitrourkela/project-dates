@@ -33,7 +33,7 @@ export const createEvent = mutationField('createEvent', {
       data: {
         ...args.event,
         status: args.event.status || undefined,
-        locationID: args.event.locationID || '635df9c5fabfb5342048eec3',
+        locationID: args.event.locationID || '635e1c662e3082fe09bc498e',
         type: args.event.type?.toUpperCase(),
       },
     });

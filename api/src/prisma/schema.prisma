@@ -73,7 +73,7 @@ model User {
   college    String?
   stream     String?
   mobile     String?   @unique
-  selfID     String?   @unique @db.ObjectId
+  selfID     String?
   festID     String[]  @default([])
   ca         String[]  @default([])
   referredBy String?
