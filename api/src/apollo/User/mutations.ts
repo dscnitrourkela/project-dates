@@ -33,7 +33,10 @@ export const createUser = mutationField('createUser', {
    */
   resolve(_parent, args, { prisma }) {
     return prisma.user.create({
-      data: args.user,
+      data: {
+        ...args.user,
+        selfID: args.user?.mobile,
+      },
     });
   },
 });
@@ -52,9 +55,10 @@ export const UserUpdateInputType = inputObjectType({
     t.string('stream');
     t.string('mobile');
     t.string('selfID');
-    t.nonNull.list.nonNull.id('festID');
+    t.id('festID');
     t.string('referredBy');
     t.string('rollNumber');
+    t.id('ca');
   },
 });
 
@@ -68,7 +72,22 @@ export const updateUser = mutationField('updateUser', {
   resolve(_parent, args, { prisma }) {
     return prisma.user.update({
       where: { id: args.id },
-      data: args.user,
+      data: {
+        name: args.user?.name || undefined,
+        photo: args.user?.photo || undefined,
+        gender: args.user?.gender || undefined,
+        dob: args.user?.dob || undefined,
+        state: args.user?.state || undefined,
+        city: args.user?.city || undefined,
+        college: args.user?.college || undefined,
+        stream: args.user?.stream || undefined,
+        mobile: args.user?.mobile || undefined,
+        selfID: args.user?.selfID || undefined,
+        festID: args.user?.festID ? { push: args.user?.festID } : undefined,
+        referredBy: args.user?.referredBy || undefined,
+        rollNumber: args.user?.rollNumber || undefined,
+        ca: args.user?.ca ? { push: args.user?.ca } : undefined,
+      },
     });
   },
 });

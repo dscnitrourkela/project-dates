@@ -5,6 +5,7 @@ export const getUser = queryField('getUser', {
   description: 'Returns a user whose id or email is passed',
   args: {
     id: idArg(),
+    uid: idArg(),
     email: stringArg(),
   },
   resolve(_parent, args, { prisma }) {
@@ -17,6 +18,12 @@ export const getUser = queryField('getUser', {
     if (args.email) {
       return prisma.user.findUnique({
         where: { email: args.email },
+      });
+    }
+
+    if (args.uid) {
+      return prisma.user.findUnique({
+        where: { uid: args.uid },
       });
     }
 
@@ -34,6 +41,8 @@ export const GetUsersInputType = inputObjectType({
     t.string('college');
     t.string('stream');
     t.string('referredBy');
+    t.list.nonNull.string('festID');
+    t.boolean('isNitrStudent');
   },
 });
 
@@ -42,14 +51,23 @@ export const getUsers = queryField('getUsers', {
   description: 'Returns a list of all the users depending upon the arguments',
   args: {
     params: nonNull('GetUsersInputType'),
-    festID: list(nonNull(stringArg())),
   },
   resolve(_parent, args, { prisma }) {
-    if (args.festID) {
+    if (args.params.isNitrStudent) {
+      return prisma.user.findMany({
+        where: {
+          rollNumber: {
+            not: null,
+          },
+        },
+      });
+    }
+
+    if (args.params.festID) {
       return prisma.user.findMany({
         where: {
           festID: {
-            hasEvery: args.festID,
+            hasEvery: args.params.festID,
           },
         },
       });
@@ -57,7 +75,10 @@ export const getUsers = queryField('getUsers', {
 
     if (args) {
       return prisma.user.findMany({
-        where: args.params,
+        where: {
+          ...args.params,
+          festID: undefined,
+        },
       });
     }
 

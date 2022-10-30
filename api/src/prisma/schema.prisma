@@ -73,8 +73,9 @@ model User {
   college    String?
   stream     String?
   mobile     String?   @unique
-  selfID     String?   @unique @db.ObjectId
+  selfID     String?
   festID     String[]  @default([])
+  ca         String[]  @default([])
   referredBy String?
   rollNumber String?   @unique
   uid        String    @unique
@@ -118,6 +119,7 @@ model Event {
   repeatDay   REPEAT_TYPE?
   priority    Int          @default(0)
   status      STATUS       @default(value: DRAFT)
+  type        String?
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
 }
