@@ -75,6 +75,7 @@ model User {
   mobile     String?   @unique
   selfID     String?   @unique @db.ObjectId
   festID     String[]  @default([])
+  ca         String[]  @default([])
   referredBy String?
   rollNumber String?   @unique
   uid        String    @unique
