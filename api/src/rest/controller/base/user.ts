@@ -53,6 +53,8 @@ export const createUserController = async (req: Request, res: Response) => {
         mobile,
         referredBy,
         rollNumber,
+        selfID: mobile,
+        festID: rollNumber ? ['innovision-2022'] : [],
       },
     });
 
