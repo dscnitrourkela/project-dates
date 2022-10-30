@@ -31,7 +31,18 @@ export const createUser = mutationField('createUser', {
    * - email
    * - mobile
    */
-  resolve(_parent, args, { prisma }) {
+  async resolve(_parent, args, { prisma }) {
+    if (args.user.rollNumber) {
+      const users = await prisma.user.findMany({
+        where: {
+          rollNumber: args.user.rollNumber,
+        },
+      });
+
+      if (users.length > 0) {
+        throw new Error('Roll Number already registered');
+      }
+    }
     return prisma.user.create({
       data: {
         ...args.user,
