@@ -26,6 +26,18 @@ export const createUserController = async (req: Request, res: Response) => {
         .send('Missing Paramenters: email and UID are required parameters');
     }
 
+    if (rollNumber) {
+      const users = await prisma.user.findMany({
+        where: {
+          rollNumber,
+        },
+      });
+
+      if (users.length > 0) {
+        return res.status(400).send('Roll Number already registered');
+      }
+    }
+
     const user = await prisma.user.create({
       data: {
         email,
