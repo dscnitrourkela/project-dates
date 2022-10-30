@@ -65,19 +65,19 @@ model User {
   id         String    @id @default(auto()) @map("_id") @db.ObjectId
   email      String    @unique
   name       String?
-  photo      String?   @unique
+  photo      String?
   gender     GENDER?
   dob        DateTime?
   state      String?
   city       String?
   college    String?
   stream     String?
-  mobile     String?   @unique
+  mobile     String?
   selfID     String?
   festID     String[]  @default([])
   ca         String[]  @default([])
   referredBy String?
-  rollNumber String?   @unique
+  rollNumber String?
   uid        String    @unique
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
