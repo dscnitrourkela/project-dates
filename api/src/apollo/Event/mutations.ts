@@ -4,11 +4,10 @@ export const EventCreateInputType = inputObjectType({
   name: 'EventCreateInputType',
   description: `Input arguments used in createEvent mutation`,
   definition(t) {
-    t.nonNull.id('id');
     t.nonNull.string('name');
     t.nonNull.string('description');
     t.nonNull.string('poster');
-    t.nonNull.id('locationID');
+    t.id('locationID');
     t.nonNull.date('startDate');
     t.nonNull.date('endDate');
     t.nonNull.list.nonNull.id('orgID');
@@ -18,6 +17,7 @@ export const EventCreateInputType = inputObjectType({
     t.nonNull.boolean('weekly');
     t.repeatType('repeatDay', { default: null });
     t.nonNull.int('priority');
+    t.string('type');
     t.status('status', { default: 'DRAFT' });
   },
 });
@@ -33,6 +33,8 @@ export const createEvent = mutationField('createEvent', {
       data: {
         ...args.event,
         status: args.event.status || undefined,
+        locationID: args.event.locationID || '635df9c5fabfb5342048eec3',
+        type: args.event.type?.toUpperCase(),
       },
     });
   },
@@ -55,6 +57,7 @@ export const EventUpdateInputType = inputObjectType({
     t.boolean('weekly');
     t.repeatType('repeatDay');
     t.int('priority');
+    t.string('type');
     t.status('status');
   },
 });
@@ -85,6 +88,7 @@ export const updateEvent = mutationField('updateEvent', {
         weekly: args.event?.weekly || undefined,
         repeatDay: args.event?.repeatDay || undefined,
         priority: args.event?.priority || undefined,
+        type: args.event?.type?.toUpperCase() || undefined,
         status: args.event?.status || undefined,
       },
     });

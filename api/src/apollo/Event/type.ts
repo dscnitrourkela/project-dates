@@ -25,6 +25,7 @@ export const Event = objectType({
     t.nonNull.boolean('weekly');
     t.repeatType('repeatDay');
     t.nonNull.int('priority');
+    t.string('type');
     t.nonNull.status('status');
 
     t.nonNull.id('locationID');

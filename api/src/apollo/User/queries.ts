@@ -5,6 +5,7 @@ export const getUser = queryField('getUser', {
   description: 'Returns a user whose id or email is passed',
   args: {
     id: idArg(),
+    uid: idArg(),
     email: stringArg(),
   },
   resolve(_parent, args, { prisma }) {
@@ -17,6 +18,12 @@ export const getUser = queryField('getUser', {
     if (args.email) {
       return prisma.user.findUnique({
         where: { email: args.email },
+      });
+    }
+
+    if (args.uid) {
+      return prisma.user.findUnique({
+        where: { uid: args.uid },
       });
     }
 
