@@ -102,6 +102,7 @@ export const createUserController = async (req: Request, res: Response) => {
 
     return res.status(200).send(user);
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error(error);
     return res.status(400).send('Internal Server Error');
   }
