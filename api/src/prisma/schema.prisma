@@ -107,7 +107,7 @@ model Event {
   id          String       @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   description String
-  poster      String       @unique
+  poster      String
   locationID  String       @db.ObjectId
   startDate   DateTime
   endDate     DateTime

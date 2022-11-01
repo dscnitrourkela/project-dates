@@ -4,6 +4,36 @@ import { Request, Response } from 'express';
 
 type Empty = Record<string, unknown>;
 
+export const createEvent = async (req: Request, res: Response) => {
+  try {
+    const { name, description, poster, startDate, endDate, priority, type } =
+      req.body;
+
+    console.log(name);
+
+    const event = await prisma.event.create({
+      data: {
+        name,
+        description,
+        poster,
+        locationID: '635e1c662e3082fe09bc498e',
+        startDate,
+        endDate,
+        orgID: '635c04868e47acb9dd1ba92d',
+        orgType: 'FEST',
+        priority,
+        status: 'ACTIVE',
+        type: type.toUpperCase(),
+      },
+    });
+
+    return res.status(200).send(event);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send(error);
+  }
+};
+
 export const getEvents = async (
   req: Request<
     Empty,
@@ -30,7 +60,7 @@ export const getEvents = async (
         'PRO',
         'WORKSHOPS',
         'EXHIBITIONS',
-        'GUEST-LECTURES',
+        'GUEST-LECTURES ',
       ].includes(type.toUpperCase())
     ) {
       return res.status(400).send('invalid type query parameter value');
@@ -38,7 +68,7 @@ export const getEvents = async (
 
     const events = await prisma.event.findMany({
       where: {
-        type,
+        type: type.toUpperCase(),
       },
     });
 
