@@ -18,7 +18,7 @@ healthRouter.get('/zimbra-login', zimbraController);
 healthRouter.get('/user', checkRestPermissions(getUserController, []));
 
 // @ts-ignore
-healthRouter.get('/events', checkRestPermissions(getEvents, []));
+healthRouter.get('/events', getEvents);
 
 healthRouter.post('/event', checkRestPermissions(createEvent, []));
 

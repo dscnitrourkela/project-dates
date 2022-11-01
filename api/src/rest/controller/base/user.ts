@@ -80,6 +80,18 @@ export const createUserController = async (req: Request, res: Response) => {
       }
     }
 
+    if (mobile) {
+      const user = await prisma.user.findUnique({
+        where: {
+          mobile,
+        },
+      });
+
+      if (user) {
+        return res.status(400).send('User with this mobile already registered');
+      }
+    }
+
     const user = await prisma.user.create({
       data: {
         email,

@@ -60,7 +60,7 @@ export const getEvents = async (
         'PRO',
         'WORKSHOPS',
         'EXHIBITIONS',
-        'GUEST-LECTURES',
+        'GUEST-LECTURES ',
       ].includes(type.toUpperCase())
     ) {
       return res.status(400).send('invalid type query parameter value');
@@ -68,7 +68,7 @@ export const getEvents = async (
 
     const events = await prisma.event.findMany({
       where: {
-        type,
+        type: type.toUpperCase(),
       },
     });
 
