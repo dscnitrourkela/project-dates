@@ -2,8 +2,8 @@
 import express from 'express';
 import { checkRestPermissions } from 'helpers/auth/checkPermissions';
 import {
-    createUserController, getEvents, getTransaction, getUserController, getUserRegistrations,
-    healthController, registerUserForEvent, zimbraController
+    createEvent, createUserController, getEvents, getTransaction, getUserController,
+    getUserRegistrations, healthController, registerUserForEvent, zimbraController
 } from 'rest/controller';
 
 export const healthRouter = express.Router();
@@ -19,6 +19,8 @@ healthRouter.get('/user', checkRestPermissions(getUserController, []));
 
 // @ts-ignore
 healthRouter.get('/events', checkRestPermissions(getEvents, []));
+
+healthRouter.post('/event', checkRestPermissions(createEvent, []));
 
 healthRouter.post(
   '/user/registration',
