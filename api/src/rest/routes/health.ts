@@ -9,8 +9,6 @@ import {
 export const healthRouter = express.Router();
 
 healthRouter.get('/', healthController);
-// @ts-ignore
-healthRouter.post('/user', checkRestPermissions(createUserController, []));
 
 healthRouter.get('/zimbra-login', zimbraController);
 
@@ -18,14 +16,7 @@ healthRouter.get('/zimbra-login', zimbraController);
 healthRouter.get('/user', checkRestPermissions(getUserController, []));
 
 // @ts-ignore
-healthRouter.get('/events', getEvents);
-
-healthRouter.post('/event', checkRestPermissions(createEvent, []));
-
-healthRouter.post(
-  '/user/registration',
-  checkRestPermissions(registerUserForEvent, []),
-);
+healthRouter.post('/user', checkRestPermissions(createUserController, []));
 
 healthRouter.get(
   '/user/registration',
@@ -33,5 +24,15 @@ healthRouter.get(
   checkRestPermissions(getUserRegistrations, []),
 );
 
+healthRouter.post(
+  '/user/registration',
+  checkRestPermissions(registerUserForEvent, []),
+);
+
 // @ts-ignore
 healthRouter.get('/user/transaction', checkRestPermissions(getTransaction, []));
+
+// @ts-ignore
+healthRouter.get('/events', getEvents);
+
+healthRouter.post('/events/create', checkRestPermissions(createEvent, []));
