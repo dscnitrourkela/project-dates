@@ -9,8 +9,6 @@ export const createEvent = async (req: Request, res: Response) => {
     const { name, description, poster, startDate, endDate, priority, type } =
       req.body;
 
-    console.log(name);
-
     const event = await prisma.event.create({
       data: {
         name,
@@ -29,7 +27,6 @@ export const createEvent = async (req: Request, res: Response) => {
 
     return res.status(200).send(event);
   } catch (error) {
-    console.log(error);
     return res.status(500).send(error);
   }
 };
@@ -87,6 +84,16 @@ export const registerUserForEvent = async (
 
     if (!userID || !eventID) {
       return res.status(400).send('userID and eventID are required parameters');
+    }
+
+    const existingRegistration = await prisma.eventRegistration.findMany({
+      where: {
+        AND: [{ eventID }, { userID }],
+      },
+    });
+
+    if (existingRegistration.length > 0) {
+      return res.status(400).send('user already registered for this event');
     }
 
     const eventRegistration = await prisma.eventRegistration.create({
