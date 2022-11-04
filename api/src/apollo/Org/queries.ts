@@ -1,29 +1,29 @@
+import { checkGqlPermissions } from 'helpers/auth/checkPermissions';
 import { idArg, list, queryField } from 'nexus';
 
-export const getOrg = queryField('getOrg', {
-  type: 'Org',
-  description: 'Returns an organisation whose id is passed',
+export const org = queryField('org', {
+  type: list('Org'),
+  description:
+    'Returns a list of all the organisations depending upon the arguments',
+  authorize: (_parent, _args, ctx) => checkGqlPermissions(ctx, []),
   args: {
     id: idArg(),
+    orgType: 'OrgType',
+    orgSubType: 'OrgSubType',
   },
   resolve(_parent, args, { prisma }) {
-    if (args.id) {
-      return prisma.org.findUnique({
+    const { id, orgType, orgSubType } = args;
+
+    if (id || orgType || orgSubType) {
+      return prisma.org.findMany({
         where: {
-          id: args.id,
+          id: id || undefined,
+          orgType: orgType || undefined,
+          orgSubType: orgSubType || undefined,
         },
       });
     }
 
-    // TODO: setup custom error handler
-    throw new Error('No Parameters sent, please send parameters');
-  },
-});
-
-export const getOrgs = queryField('getOrgs', {
-  type: list('Org'),
-  description: 'Returns a list of all the organisations',
-  resolve(_parent, _args, { prisma }) {
     return prisma.org.findMany();
   },
 });
