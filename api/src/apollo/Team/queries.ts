@@ -1,6 +1,6 @@
 import { idArg, list, nonNull, queryField } from 'nexus';
 
-export const getTeam = queryField('getTeam', {
+export const team = queryField('team', {
   type: list('Team'),
   description:
     'Returns a list of all the team members of the given organsation',

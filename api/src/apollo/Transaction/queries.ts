@@ -1,8 +1,11 @@
+import { PERMISSIONS } from 'constants/auth';
+import { checkGqlPermissions } from 'helpers/auth/checkPermissions';
 import { idArg, list, nonNull, queryField } from 'nexus';
 
-export const getTransaction = queryField('getTransaction', {
+export const transaction = queryField('transaction', {
   type: 'Transaction',
   description: 'Returns a transaction record whose id is passed',
+  authorize: (_parent, _args, ctx) => checkGqlPermissions(ctx, []),
   args: {
     id: nonNull(idArg()),
   },
@@ -15,9 +18,11 @@ export const getTransaction = queryField('getTransaction', {
   },
 });
 
-export const getTransactions = queryField('getTransactions', {
+export const transactions = queryField('transactions', {
   type: list('Transaction'),
   description: `Returns a list of transactions depending upon the arguments passed`,
+  authorize: (_parent, _args, ctx) =>
+    checkGqlPermissions(ctx, [PERMISSIONS.SUPER_ADMIN, PERMISSIONS.ORG_ADMIN]),
   args: {
     orgID: idArg(),
     type: 'TransactionType',

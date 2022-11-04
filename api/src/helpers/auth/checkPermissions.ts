@@ -63,7 +63,7 @@ export type CheckPermissionsType = {
   errorHandler: (
     error: ErrorParam,
   ) => Response<unknown, Record<string, unknown>> | Error;
-  requiredPermissions?: [PERMISSIONS?];
+  requiredPermissions?: PERMISSIONS[];
   id?: string;
 };
 
@@ -138,7 +138,7 @@ const checkPermissions = async ({
 export const checkRestPermissions =
   (
     next: CustomNextFunction,
-    requiredPermissions?: [PERMISSIONS?],
+    requiredPermissions?: PERMISSIONS[],
     id?: string,
   ) =>
   async (req: Request, res: Response) => {
@@ -156,7 +156,7 @@ export const checkRestPermissions =
 
 export const checkGqlPermissions = (
   context: Context,
-  requiredPermissions?: [PERMISSIONS?],
+  requiredPermissions?: PERMISSIONS[],
   id?: string,
 ): Promise<boolean | Error> => {
   const successHandler = () => true;
