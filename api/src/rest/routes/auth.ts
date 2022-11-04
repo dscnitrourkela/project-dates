@@ -1,11 +1,8 @@
+import { PERMISSIONS } from '@constants';
+
 import express from 'express';
 import { checkRestPermissions } from 'helpers/auth/checkPermissions';
-import {
-  getUserAuth,
-  updatePermissions,
-} from 'rest/controller';
-
-import { PERMISSIONS } from '@constants';
+import { getUserAuth, updatePermissions } from 'rest/controller';
 
 export const authRouter = express.Router();
 

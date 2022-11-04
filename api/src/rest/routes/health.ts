@@ -12,10 +12,8 @@ healthRouter.get('/', healthController);
 
 healthRouter.get('/zimbra-login', zimbraController);
 
-// @ts-ignore
 healthRouter.get('/user', checkRestPermissions(getUserController, []));
 
-// @ts-ignore
 healthRouter.post('/user', checkRestPermissions(createUserController, []));
 
 healthRouter.get(
@@ -32,7 +30,6 @@ healthRouter.post(
 // @ts-ignore
 healthRouter.get('/user/transaction', checkRestPermissions(getTransaction, []));
 
-// @ts-ignore
 healthRouter.get('/events', getEvents);
 
 healthRouter.post('/events/create', checkRestPermissions(createEvent, []));
