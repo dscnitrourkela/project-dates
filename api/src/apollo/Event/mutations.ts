@@ -27,14 +27,19 @@ export const EventCreateInputType = inputObjectType({
 export const createEvent = mutationField('createEvent', {
   type: 'Event',
   description: `Creates a new event record`,
-  authorize: (_parent, _args, ctx) =>
-    checkGqlPermissions(ctx, [
-      PERMISSIONS.SUPER_ADMIN,
-      PERMISSIONS.SUPER_EDITOR,
-      PERMISSIONS.ORG_ADMIN,
-      PERMISSIONS.ORG_EDITOR,
-    ]),
+  authorize: (_parent, args, ctx) =>
+    checkGqlPermissions(
+      ctx,
+      [
+        PERMISSIONS.SUPER_ADMIN,
+        PERMISSIONS.SUPER_EDITOR,
+        PERMISSIONS.ORG_ADMIN,
+        PERMISSIONS.ORG_EDITOR,
+      ],
+      args.orgID,
+    ),
   args: {
+    orgID: nonNull(idArg()),
     event: nonNull('EventCreateInputType'),
   },
   resolve(_parent, args, { prisma }) {
@@ -74,15 +79,20 @@ export const EventUpdateInputType = inputObjectType({
 export const updateEvent = mutationField('updateEvent', {
   type: 'Event',
   description: `Updates an existing event record`,
-  authorize: (_parent, _args, ctx) =>
-    checkGqlPermissions(ctx, [
-      PERMISSIONS.SUPER_ADMIN,
-      PERMISSIONS.SUPER_EDITOR,
-      PERMISSIONS.ORG_ADMIN,
-      PERMISSIONS.ORG_EDITOR,
-    ]),
+  authorize: (_parent, args, ctx) =>
+    checkGqlPermissions(
+      ctx,
+      [
+        PERMISSIONS.SUPER_ADMIN,
+        PERMISSIONS.SUPER_EDITOR,
+        PERMISSIONS.ORG_ADMIN,
+        PERMISSIONS.ORG_EDITOR,
+      ],
+      args.orgID,
+    ),
   args: {
     id: nonNull(idArg()),
+    orgID: nonNull(idArg()),
     event: nonNull('EventUpdateInputType'),
   },
   resolve(_parent, args, { prisma }) {

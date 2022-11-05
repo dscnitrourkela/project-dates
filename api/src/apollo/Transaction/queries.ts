@@ -8,10 +8,11 @@ export const transaction = queryField('transaction', {
   authorize: (_parent, args, ctx) =>
     args.id
       ? checkGqlPermissions(ctx, [])
-      : checkGqlPermissions(ctx, [
-          PERMISSIONS.SUPER_ADMIN,
-          PERMISSIONS.ORG_ADMIN,
-        ]),
+      : checkGqlPermissions(
+          ctx,
+          [PERMISSIONS.SUPER_ADMIN, PERMISSIONS.ORG_ADMIN],
+          args.orgID || undefined,
+        ),
   args: {
     id: idArg(),
     orgID: idArg(),

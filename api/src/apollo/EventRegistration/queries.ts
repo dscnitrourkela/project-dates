@@ -8,18 +8,23 @@ export const eventRegistration = queryField('eventRegistration', {
   authorize: (_parent, args, ctx) =>
     args.id || (args.eventID && args.userID)
       ? checkGqlPermissions(ctx, [])
-      : checkGqlPermissions(ctx, [
-          PERMISSIONS.SUPER_ADMIN,
-          PERMISSIONS.SUPER_EDITOR,
-          PERMISSIONS.SUPER_VIEWER,
-          PERMISSIONS.ORG_ADMIN,
-          PERMISSIONS.ORG_EDITOR,
-          PERMISSIONS.ORG_VIEWER,
-        ]),
+      : checkGqlPermissions(
+          ctx,
+          [
+            PERMISSIONS.SUPER_ADMIN,
+            PERMISSIONS.SUPER_EDITOR,
+            PERMISSIONS.SUPER_VIEWER,
+            PERMISSIONS.ORG_ADMIN,
+            PERMISSIONS.ORG_EDITOR,
+            PERMISSIONS.ORG_VIEWER,
+          ],
+          args.orgID || undefined,
+        ),
   args: {
     id: idArg(),
     userID: idArg(),
     eventID: idArg(),
+    orgID: idArg(),
   },
   resolve(_parent, args, { prisma }) {
     const { id, userID, eventID } = args;

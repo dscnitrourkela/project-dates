@@ -37,8 +37,6 @@ export const deleteEventRegistration = mutationField(
       checkGqlPermissions(ctx, [
         PERMISSIONS.SUPER_ADMIN,
         PERMISSIONS.SUPER_EDITOR,
-        PERMISSIONS.ORG_ADMIN,
-        PERMISSIONS.ORG_EDITOR,
       ]),
     args: {
       id: nonNull(idArg()),
