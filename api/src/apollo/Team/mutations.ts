@@ -1,3 +1,5 @@
+import { PERMISSIONS } from 'constants/auth';
+import { checkGqlPermissions } from 'helpers/auth/checkPermissions';
 import { idArg, inputObjectType, list, mutationField, nonNull } from 'nexus';
 
 export const TeamCreateInputType = inputObjectType({
@@ -25,6 +27,13 @@ export const TeamCreateInputType = inputObjectType({
 export const createTeam = mutationField('createTeam', {
   type: 'Int',
   description: 'Creates multiple/single record/s of team members',
+  authorize: (_parent, _args, ctx) =>
+    checkGqlPermissions(ctx, [
+      PERMISSIONS.SUPER_ADMIN,
+      PERMISSIONS.SUPER_EDITOR,
+      PERMISSIONS.ORG_ADMIN,
+      PERMISSIONS.ORG_EDITOR,
+    ]),
   args: {
     team: nonNull(list(nonNull('TeamCreateInputType'))),
   },
@@ -52,6 +61,13 @@ export const TeamUpdateInputType = inputObjectType({
 export const updateTeam = mutationField('updateTeam', {
   type: 'Team',
   description: 'Updates the existing team member record',
+  authorize: (_parent, _args, ctx) =>
+    checkGqlPermissions(ctx, [
+      PERMISSIONS.SUPER_ADMIN,
+      PERMISSIONS.SUPER_EDITOR,
+      PERMISSIONS.ORG_ADMIN,
+      PERMISSIONS.ORG_EDITOR,
+    ]),
   args: {
     id: nonNull(idArg()),
     team: nonNull('TeamUpdateInputType'),

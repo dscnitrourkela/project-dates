@@ -1,3 +1,5 @@
+import { PERMISSIONS } from 'constants/auth';
+import { checkGqlPermissions } from 'helpers/auth/checkPermissions';
 import { idArg, inputObjectType, mutationField, nonNull } from 'nexus';
 
 export const StoryCreateInputType = inputObjectType({
@@ -13,6 +15,13 @@ export const StoryCreateInputType = inputObjectType({
 export const createStory = mutationField('createStory', {
   type: 'Story',
   description: 'Creates a new story record',
+  authorize: (_parent, _args, ctx) =>
+    checkGqlPermissions(ctx, [
+      PERMISSIONS.SUPER_ADMIN,
+      PERMISSIONS.SUPER_EDITOR,
+      PERMISSIONS.ORG_ADMIN,
+      PERMISSIONS.ORG_EDITOR,
+    ]),
   args: {
     story: nonNull('StoryCreateInputType'),
   },
@@ -26,6 +35,13 @@ export const createStory = mutationField('createStory', {
 export const deleteStory = mutationField('deleteStory', {
   type: 'Boolean',
   description: 'Deletes and existing story record',
+  authorize: (_parent, _args, ctx) =>
+    checkGqlPermissions(ctx, [
+      PERMISSIONS.SUPER_ADMIN,
+      PERMISSIONS.SUPER_EDITOR,
+      PERMISSIONS.ORG_ADMIN,
+      PERMISSIONS.ORG_EDITOR,
+    ]),
   args: {
     id: nonNull(idArg()),
   },

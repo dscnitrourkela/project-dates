@@ -1,3 +1,5 @@
+import { PERMISSIONS } from 'constants/auth';
+import { checkGqlPermissions } from 'helpers/auth/checkPermissions';
 import { idArg, inputObjectType, mutationField, nonNull } from 'nexus';
 
 export const OrgCreateInputType = inputObjectType({
@@ -24,6 +26,8 @@ export const OrgCreateInputType = inputObjectType({
 export const createOrg = mutationField('createOrg', {
   type: 'Org',
   description: 'Creates a new organisation record',
+  authorize: (_parent, _args, ctx) =>
+    checkGqlPermissions(ctx, [PERMISSIONS.SUPER_ADMIN]),
   args: {
     org: nonNull('OrgCreateInputType'),
   },
@@ -60,6 +64,13 @@ export const OrgUpdateInputType = inputObjectType({
 export const updateOrg = mutationField('updateOrg', {
   type: 'Org',
   description: 'Updates an existing organisation record',
+  authorize: (_parent, _args, ctx) =>
+    checkGqlPermissions(ctx, [
+      PERMISSIONS.SUPER_ADMIN,
+      PERMISSIONS.SUPER_EDITOR,
+      PERMISSIONS.ORG_ADMIN,
+      PERMISSIONS.ORG_EDITOR,
+    ]),
   args: {
     id: nonNull(idArg()),
     org: nonNull('OrgUpdateInputType'),

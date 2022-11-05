@@ -1,3 +1,4 @@
+import { checkGqlPermissions } from 'helpers/auth/checkPermissions';
 import { idArg, inputObjectType, mutationField, nonNull } from 'nexus';
 
 export const UserCreateInputType = inputObjectType({
@@ -23,19 +24,27 @@ export const UserCreateInputType = inputObjectType({
 export const createUser = mutationField('createUser', {
   type: 'User',
   description: 'Creates a new user record',
+  authorize: (_parent, _args, ctx) => checkGqlPermissions(ctx, []),
   args: {
     user: nonNull('UserCreateInputType'),
   },
-  /**
-   * TODO: add validations on
-   * - email
-   * - mobile
-   */
   async resolve(_parent, args, { prisma }) {
+    const isMobileValid = args.user.mobile?.length === 10;
+    const isEmailValid = args.user.email
+      .toLowerCase()
+      .match(/^[a-z0-9](\.?[a-z0-9]){5,}@g(oogle)?mail\.com$/);
+
+    if (!isEmailValid) throw new Error('Invalid Email, please try again');
+    if (!isMobileValid)
+      throw new Error('Invalid Mobile Number, please try again');
+
     if (args.user.rollNumber) {
       const users = await prisma.user.findMany({
         where: {
           rollNumber: args.user.rollNumber,
+          email: args.user.email,
+          uid: args.user.uid,
+          mobile: args.user.mobile,
         },
       });
 
@@ -43,6 +52,7 @@ export const createUser = mutationField('createUser', {
         throw new Error('Roll Number already registered');
       }
     }
+
     return prisma.user.create({
       data: {
         ...args.user,
@@ -76,11 +86,16 @@ export const UserUpdateInputType = inputObjectType({
 export const updateUser = mutationField('updateUser', {
   type: 'User',
   description: 'Updates an existing user record',
+  authorize: (_parent, _args, ctx) => checkGqlPermissions(ctx, []),
   args: {
     id: nonNull(idArg()),
     user: nonNull('UserUpdateInputType'),
   },
   resolve(_parent, args, { prisma }) {
+    const isMobileValid = args.user.mobile?.length === 10;
+    if (!isMobileValid)
+      throw new Error('Invalid Mobile Number, please try again');
+
     return prisma.user.update({
       where: { id: args.id },
       data: {

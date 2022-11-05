@@ -1,3 +1,5 @@
+import { PERMISSIONS } from 'constants/auth';
+import { checkGqlPermissions } from 'helpers/auth/checkPermissions';
 import { idArg, inputObjectType, mutationField, nonNull } from 'nexus';
 
 export const TransactionCreateInputType = inputObjectType({
@@ -18,6 +20,7 @@ export const TransactionCreateInputType = inputObjectType({
 export const createTransaction = mutationField('createTransaction', {
   type: 'Transaction',
   description: 'Creates a new transaction record',
+  authorize: (_parent, _args, ctx) => checkGqlPermissions(ctx, []),
   args: {
     transaction: nonNull('TransactionCreateInputType'),
   },
@@ -42,6 +45,8 @@ export const TransactionUpdateInputType = inputObjectType({
 export const updateTransaction = mutationField('updateTransaction', {
   type: 'Transaction',
   description: 'Updates an existing record of transation',
+  authorize: (_parent, _args, ctx) =>
+    checkGqlPermissions(ctx, [PERMISSIONS.SUPER_ADMIN]),
   args: {
     id: nonNull(idArg()),
     transaction: nonNull('TransactionUpdateInputType'),

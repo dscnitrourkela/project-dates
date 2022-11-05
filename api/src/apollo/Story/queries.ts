@@ -1,31 +1,23 @@
-import { idArg, list, nonNull, queryField } from 'nexus';
+import { checkGqlPermissions } from 'helpers/auth/checkPermissions';
+import { idArg, list, queryField } from 'nexus';
 
-export const getStory = queryField('getStory', {
-  type: 'Story',
-  description: 'Returns a story whose id is passed',
-  args: {
-    id: nonNull(idArg()),
-  },
-  resolve(_parents, args, { prisma }) {
-    return prisma.story.findUnique({
-      where: {
-        id: args.id,
-      },
-    });
-  },
-});
-
-export const getStories = queryField('getStories', {
+export const story = queryField('story', {
   type: list('Story'),
-  description: 'Returns a list of all the stories of a particualr organisation',
+  description:
+    'Returns a list of all the stories depending upon the parameters',
+  authorize: (_parent, _args, ctx) => checkGqlPermissions(ctx, []),
   args: {
+    id: idArg(),
     orgID: idArg(),
   },
-  resolve(_parent, args, { prisma }) {
-    if (args.orgID) {
+  resolve(_parents, args, { prisma }) {
+    const { id, orgID } = args;
+
+    if (id || orgID) {
       return prisma.story.findMany({
         where: {
-          orgID: args.orgID || undefined,
+          id: id || undefined,
+          orgID: orgID || undefined,
         },
       });
     }
