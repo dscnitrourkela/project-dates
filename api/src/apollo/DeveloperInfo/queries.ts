@@ -1,10 +1,8 @@
-import { checkGqlPermissions } from 'helpers/auth/checkPermissions';
 import { idArg, list, queryField } from 'nexus';
 
 export const developerInfo = queryField('developerInfo', {
   type: list('DeveloperInfo'),
   description: `Returns a list of all the developers of the application`,
-  authorize: (_parent, __args, ctx) => checkGqlPermissions(ctx, []),
   args: {
     id: idArg(),
   },

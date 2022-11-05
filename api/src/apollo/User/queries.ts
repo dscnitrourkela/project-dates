@@ -1,10 +1,22 @@
+import { PERMISSIONS } from '@constants';
+
 import { checkGqlPermissions } from 'helpers/auth/checkPermissions';
 import { booleanArg, idArg, list, nonNull, queryField, stringArg } from 'nexus';
 
 export const user = queryField('user', {
   type: list('User'),
   description: 'Returns a list of users depending upon the parameters passed',
-  authorize: (_parent, _args, ctx) => checkGqlPermissions(ctx, []),
+  authorize: (_parent, args, ctx) =>
+    args.id || args.uid
+      ? checkGqlPermissions(ctx, [])
+      : checkGqlPermissions(ctx, [
+          PERMISSIONS.SUPER_ADMIN,
+          PERMISSIONS.SUPER_EDITOR,
+          PERMISSIONS.SUPER_VIEWER,
+          PERMISSIONS.ORG_ADMIN,
+          PERMISSIONS.ORG_EDITOR,
+          PERMISSIONS.ORG_VIEWER,
+        ]),
   args: {
     id: idArg(),
     uid: idArg(),

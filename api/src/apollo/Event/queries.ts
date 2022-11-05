@@ -4,7 +4,8 @@ import { idArg, list, queryField } from 'nexus';
 export const event = queryField('event', {
   type: list('Event'),
   description: `Returns as list of events depending upon the arguments`,
-  authorize: (_parent, _args, ctx) => checkGqlPermissions(ctx, []),
+  authorize: (_parent, args, ctx) =>
+    args.id || args.orgID ? true : checkGqlPermissions(ctx, []),
   args: {
     id: idArg(),
     orgID: idArg(),

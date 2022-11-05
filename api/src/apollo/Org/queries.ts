@@ -1,11 +1,9 @@
-import { checkGqlPermissions } from 'helpers/auth/checkPermissions';
 import { idArg, list, queryField } from 'nexus';
 
 export const org = queryField('org', {
   type: list('Org'),
   description:
     'Returns a list of all the organisations depending upon the arguments',
-  authorize: (_parent, _args, ctx) => checkGqlPermissions(ctx, []),
   args: {
     id: idArg(),
     orgType: 'OrgType',
