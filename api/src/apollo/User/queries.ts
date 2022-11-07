@@ -27,9 +27,9 @@ export const user = queryField('user', {
     stream: stringArg(),
     referredBy: stringArg(),
     festID: list(nonNull(stringArg())),
-    isNitrStudent: booleanArg(),
+    isNitrStudent: booleanArg({ default: true }),
   },
-  resolve(_parent, args, { prisma }) {
+  async resolve(_parent, args, { prisma }) {
     const {
       id,
       uid,
@@ -43,38 +43,21 @@ export const user = queryField('user', {
       isNitrStudent,
     } = args;
 
-    if (id || uid || email) {
-      return prisma.user.findMany({
-        where: {
-          id: id || undefined,
-          email: email || undefined,
-          uid: uid || undefined,
+    return prisma.user.findMany({
+      where: {
+        id: id || undefined,
+        email: email || undefined,
+        uid: uid || undefined,
+        state: state || undefined,
+        city: city || undefined,
+        college: college || undefined,
+        stream: stream || undefined,
+        referredBy: referredBy || undefined,
+        rollNumber: !isNitrStudent ? null : undefined,
+        festID: {
+          hasEvery: festID || [],
         },
-      });
-    }
-
-    if (state || city || college || stream || referredBy || isNitrStudent) {
-      return prisma.user.findMany({
-        where: {
-          state: state || undefined,
-          city: city || undefined,
-          college: college || undefined,
-          stream: stream || undefined,
-          referredBy: referredBy || undefined,
-        },
-      });
-    }
-
-    if (festID) {
-      return prisma.user.findMany({
-        where: {
-          festID: {
-            hasEvery: args.festID || [],
-          },
-        },
-      });
-    }
-
-    return prisma.user.findMany();
+      },
+    });
   },
 });

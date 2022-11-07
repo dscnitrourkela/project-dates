@@ -10,4 +10,5 @@ authRouter.get('/', getUserAuth);
 authRouter.post(
   '/',
   checkRestPermissions(updatePermissions, [PERMISSIONS.SUPER_ADMIN]),
+  // checkRestPermissions(updatePermissions, []),
 );

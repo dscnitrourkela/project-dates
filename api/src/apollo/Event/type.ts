@@ -61,5 +61,26 @@ export const Event = objectType({
         });
       },
     });
+
+    t.nonNull.int('eventRegistrationCount', {
+      resolve(parent, _args, { prisma }) {
+        return prisma.eventRegistration.count({
+          where: {
+            eventID: parent.id,
+          },
+        });
+      },
+    });
+
+    t.nonNull.list.field('eventRegistration', {
+      type: 'EventRegistration',
+      resolve(parent, _args, { prisma }) {
+        return prisma.eventRegistration.findMany({
+          where: {
+            eventID: parent.id,
+          },
+        });
+      },
+    });
   },
 });
