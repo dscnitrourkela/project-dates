@@ -19,14 +19,12 @@ export const initializeApollo = async (app: Application) => {
   });
   await server.start();
 
-  if (process.env.NODE_ENV === 'development') {
-    app.use(
-      '/graphql',
-      expressMiddleware(server, {
-        context,
-      }),
-    );
-  }
+  app.use(
+    '/graphql',
+    expressMiddleware(server, {
+      context,
+    }),
+  );
 
   httpServer.listen(PORT, () =>
     logger.info(`server started at: http://localhost:${PORT}`),
