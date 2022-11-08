@@ -22,21 +22,22 @@ env:
   ALLOWED_CLIENT_URL: ${{ secrets.ALLOWED_CLIENT_URL }}
 
 jobs:
-  build:
-    uses: dscnitrourkela/project-dates/.github/workflows/build.yml@main
-    secrets:
-      USERNAME: ${{ secrets.USERNAME }}
-      PERSONAL_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
+  # build:
+  #   uses: dscnitrourkela/project-dates/.github/workflows/build.yml@main
+  #   secrets:
+  #     USERNAME: ${{ secrets.USERNAME }}
+  #     PERSONAL_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
 
   deploy:
     runs-on: [self-hosted, dsc-main]
     defaults:
       run:
         shell: bash
-    needs: build
+        working-directory: api
+    # needs: build
     steps:
-      - name: Remove existing env
-        run: rm .env || true
+      # - name: Remove existing env
+      #   run: rm .env || true
       - name: Create Env
         run: |
           touch .env
@@ -56,11 +57,15 @@ jobs:
           echo INSTAMOJO_CLIENT_SECRET=$INSTAMOJO_CLIENT_SECRET >> .env
           echo INSTAMOJO_BASE_URL=$INSTAMOJO_BASE_URL >> .env
           echo ALLOWED_CLIENT_URL=$ALLOWED_CLIENT_URL >> .env
-      - name: Pull Docker Image
-        run: docker pull ghcr.io/${{ github.repository }}:latest
+      # - name: Pull Docker Image
+      #   run: docker pull ghcr.io/${{ github.repository }}:latest
+      - name: Build Docker Image
+        run: docker build -t ghcr.io/${{ github.repository }}:latest .
       - name: Stop existing container
         run: docker stop project-dates || true
       - name: Remove stopped container
         run: docker rm project-dates || true
       - name: Start container
         run: docker run --name=project-dates --env-file=.env -p $PORT:$PORT -d ghcr.io/${{ github.repository }}:latest
+      - name: Remove Unused Images
+        run: docker image prune -f
