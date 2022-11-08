@@ -8,12 +8,15 @@ export const org = queryField('org', {
     id: idArg(),
     orgType: 'OrgType',
     orgSubType: 'OrgSubType',
+    pagination: 'paginationInputType',
   },
   resolve(_parent, args, { prisma }) {
-    const { id, orgType, orgSubType } = args;
+    const { id, orgType, orgSubType, pagination } = args;
 
     if (id || orgType || orgSubType) {
       return prisma.org.findMany({
+        skip: pagination?.skip,
+        take: pagination?.take,
         where: {
           id: id || undefined,
           orgType: orgType || undefined,

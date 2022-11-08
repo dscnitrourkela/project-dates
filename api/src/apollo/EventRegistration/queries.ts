@@ -25,12 +25,15 @@ export const eventRegistration = queryField('eventRegistration', {
     userID: idArg(),
     eventID: idArg(),
     orgID: idArg(),
+    pagination: 'paginationInputType',
   },
   resolve(_parent, args, { prisma }) {
-    const { id, userID, eventID } = args;
+    const { id, userID, eventID, pagination } = args;
 
     if (id || userID || eventID) {
       return prisma.eventRegistration.findMany({
+        skip: pagination?.skip,
+        take: pagination?.take,
         where: {
           id: id || undefined,
           userID: userID || undefined,
