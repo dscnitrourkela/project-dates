@@ -1,87 +1,68 @@
-import { idArg, inputObjectType, list, nonNull, queryField, stringArg } from 'nexus';
+import { PERMISSIONS } from '@constants';
 
-export const getUser = queryField('getUser', {
-  type: 'User',
-  description: 'Returns a user whose id or email is passed',
+import { checkGqlPermissions } from 'helpers/auth/checkPermissions';
+import { booleanArg, idArg, list, nonNull, queryField, stringArg } from 'nexus';
+
+export const user = queryField('user', {
+  type: list('User'),
+  description: 'Returns a list of users depending upon the parameters passed',
+  authorize: (_parent, args, ctx) =>
+    args.id || args.uid
+      ? checkGqlPermissions(ctx, [])
+      : checkGqlPermissions(
+          ctx,
+          [
+            PERMISSIONS.SUPER_ADMIN,
+            PERMISSIONS.SUPER_EDITOR,
+            PERMISSIONS.SUPER_VIEWER,
+            PERMISSIONS.ORG_ADMIN,
+            PERMISSIONS.ORG_EDITOR,
+            PERMISSIONS.ORG_VIEWER,
+          ],
+          args.orgID || undefined,
+        ),
   args: {
     id: idArg(),
     uid: idArg(),
+    orgID: idArg(),
     email: stringArg(),
+    state: stringArg(),
+    city: stringArg(),
+    college: stringArg(),
+    stream: stringArg(),
+    referredBy: stringArg(),
+    festID: list(nonNull(stringArg())),
+    isNitrStudent: booleanArg({ default: true }),
   },
-  resolve(_parent, args, { prisma }) {
-    if (args.id) {
-      return prisma.user.findUnique({
-        where: { id: args.id },
-      });
-    }
+  async resolve(_parent, args, { prisma }) {
+    const {
+      id,
+      uid,
+      email,
+      state,
+      city,
+      college,
+      stream,
+      referredBy,
+      festID,
+      isNitrStudent,
+    } = args;
 
-    if (args.email) {
-      return prisma.user.findUnique({
-        where: { email: args.email },
-      });
-    }
-
-    if (args.uid) {
-      return prisma.user.findUnique({
-        where: { uid: args.uid },
-      });
-    }
-
-    // TODO: setup custom error handler
-    throw new Error('No Parameters sent, please send parameters');
-  },
-});
-
-export const GetUsersInputType = inputObjectType({
-  name: 'GetUsersInputType',
-  description: 'Input arguments used in getUsers query',
-  definition(t) {
-    t.string('state');
-    t.string('city');
-    t.string('college');
-    t.string('stream');
-    t.string('referredBy');
-    t.list.nonNull.string('festID');
-    t.boolean('isNitrStudent');
-  },
-});
-
-export const getUsers = queryField('getUsers', {
-  type: list('User'),
-  description: 'Returns a list of all the users depending upon the arguments',
-  args: {
-    params: nonNull('GetUsersInputType'),
-  },
-  resolve(_parent, args, { prisma }) {
-    if (args.params.isNitrStudent) {
-      return prisma.user.findMany({
-        where: {
-          rollNumber: {
-            not: null,
-          },
+    return prisma.user.findMany({
+      where: {
+        id: id || undefined,
+        email: email || undefined,
+        uid: uid || undefined,
+        state: state || undefined,
+        city: city || undefined,
+        college: college || undefined,
+        stream: stream || undefined,
+        referredBy: referredBy || undefined,
+        rollNumber: !isNitrStudent ? null : undefined,
+        festID: {
+          hasEvery: festID || [],
         },
-      });
-    }
-
-    if (args.params.festID) {
-      return prisma.user.findMany({
-        where: {
-          festID: {
-            hasEvery: args.params.festID,
-          },
-        },
-      });
-    }
-
-    if (args) {
-      return prisma.user.findMany({
-        where: {
-          ...args.params,
-          festID: undefined,
-        },
-      });
-    }
-
-    return prisma.user.findMany();
+      },
+    });
   },
 });

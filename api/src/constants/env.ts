@@ -1,3 +1,5 @@
+import 'dotenv/config';
+
 export const {
   PORT,
   MONGO_AUTH_DB,

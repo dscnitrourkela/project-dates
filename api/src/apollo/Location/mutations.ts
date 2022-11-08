@@ -1,3 +1,5 @@
+import { PERMISSIONS } from 'constants/auth';
+import { checkGqlPermissions } from 'helpers/auth/checkPermissions';
 import { idArg, inputObjectType, mutationField, nonNull } from 'nexus';
 
 export const LocationCreateInputType = inputObjectType({
@@ -14,6 +16,11 @@ export const LocationCreateInputType = inputObjectType({
 export const createLocation = mutationField('createLocation', {
   type: 'Location',
   description: `Creates a new location record`,
+  authorize: (_parent, _args, ctx) =>
+    checkGqlPermissions(ctx, [
+      PERMISSIONS.SUPER_ADMIN,
+      PERMISSIONS.SUPER_EDITOR,
+    ]),
   args: {
     location: nonNull('LocationCreateInputType'),
   },
@@ -38,6 +45,11 @@ export const LocationUpdateInputType = inputObjectType({
 export const updateLocation = mutationField('updateLocation', {
   type: 'Location',
   description: 'Updates the existing Location record',
+  authorize: (_parent, _args, ctx) =>
+    checkGqlPermissions(ctx, [
+      PERMISSIONS.SUPER_ADMIN,
+      PERMISSIONS.SUPER_EDITOR,
+    ]),
   args: {
     id: nonNull(idArg()),
     location: nonNull('LocationUpdateInputType'),
@@ -59,6 +71,11 @@ export const updateLocation = mutationField('updateLocation', {
 export const deleteLocation = mutationField('deleteLocation', {
   type: 'Location',
   description: `Deletes an existing location record`,
+  authorize: (_parent, _args, ctx) =>
+    checkGqlPermissions(ctx, [
+      PERMISSIONS.SUPER_ADMIN,
+      PERMISSIONS.SUPER_EDITOR,
+    ]),
   args: {
     id: nonNull(idArg()),
   },

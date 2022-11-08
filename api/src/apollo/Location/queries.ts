@@ -1,24 +1,25 @@
-import { idArg, list, nonNull, queryField } from 'nexus';
+import { checkGqlPermissions } from 'helpers/auth/checkPermissions';
+import { idArg, list, queryField } from 'nexus';
 
-export const getLocation = queryField('getLocation', {
-  type: 'Location',
-  description: 'Returns the information of a location whose id is passed',
+export const location = queryField('location', {
+  type: list('Location'),
+  description:
+    'Returns a list of all the locations depending upon the arguments',
+  authorize: (_parent, _args, ctx) => checkGqlPermissions(ctx, []),
   args: {
-    id: nonNull(idArg()),
+    id: idArg(),
   },
   resolve(_parent, args, { prisma }) {
-    return prisma.location.findUnique({
-      where: {
-        id: args.id,
-      },
-    });
-  },
-});
+    const { id } = args;
 
-export const getLocations = queryField('getLocations', {
-  type: list('Location'),
-  description: 'Returns a list of all the locations stored',
-  resolve(_parent, _args, { prisma }) {
+    if (id) {
+      return prisma.location.findMany({
+        where: {
+          id: id || undefined,
+        },
+      });
+    }
+
     return prisma.location.findMany();
   },
 });

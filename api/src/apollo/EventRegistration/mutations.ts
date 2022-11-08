@@ -1,3 +1,5 @@
+import { PERMISSIONS } from 'constants/auth';
+import { checkGqlPermissions } from 'helpers/auth/checkPermissions';
 import { idArg, inputObjectType, mutationField, nonNull } from 'nexus';
 
 export const EventRegistrationCreateInputType = inputObjectType({
@@ -14,6 +16,7 @@ export const createEventRegistration = mutationField(
   {
     type: 'EventRegistration',
     description: `Creates an event registration record`,
+    authorize: (_parent, _args, ctx) => checkGqlPermissions(ctx, []),
     args: {
       eventRegistration: nonNull('EventRegistrationCreateInputType'),
     },
@@ -30,6 +33,11 @@ export const deleteEventRegistration = mutationField(
   {
     type: 'EventRegistration',
     description: `Deletes an existing event registration record`,
+    authorize: (_parent, _args, ctx) =>
+      checkGqlPermissions(ctx, [
+        PERMISSIONS.SUPER_ADMIN,
+        PERMISSIONS.SUPER_EDITOR,
+      ]),
     args: {
       id: nonNull(idArg()),
     },

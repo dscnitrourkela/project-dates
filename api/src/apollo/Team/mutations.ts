@@ -1,3 +1,5 @@
+import { PERMISSIONS } from 'constants/auth';
+import { checkGqlPermissions } from 'helpers/auth/checkPermissions';
 import { idArg, inputObjectType, list, mutationField, nonNull } from 'nexus';
 
 export const TeamCreateInputType = inputObjectType({
@@ -25,8 +27,20 @@ export const TeamCreateInputType = inputObjectType({
 export const createTeam = mutationField('createTeam', {
   type: 'Int',
   description: 'Creates multiple/single record/s of team members',
+  authorize: (_parent, args, ctx) =>
+    checkGqlPermissions(
+      ctx,
+      [
+        PERMISSIONS.SUPER_ADMIN,
+        PERMISSIONS.SUPER_EDITOR,
+        PERMISSIONS.ORG_ADMIN,
+        PERMISSIONS.ORG_EDITOR,
+      ],
+      args.orgID,
+    ),
   args: {
     team: nonNull(list(nonNull('TeamCreateInputType'))),
+    orgID: nonNull(idArg()),
   },
   async resolve(_parent, args, { prisma }) {
     const { count } = await prisma.team.createMany({
@@ -52,9 +66,21 @@ export const TeamUpdateInputType = inputObjectType({
 export const updateTeam = mutationField('updateTeam', {
   type: 'Team',
   description: 'Updates the existing team member record',
+  authorize: (_parent, args, ctx) =>
+    checkGqlPermissions(
+      ctx,
+      [
+        PERMISSIONS.SUPER_ADMIN,
+        PERMISSIONS.SUPER_EDITOR,
+        PERMISSIONS.ORG_ADMIN,
+        PERMISSIONS.ORG_EDITOR,
+      ],
+      args.orgID,
+    ),
   args: {
     id: nonNull(idArg()),
     team: nonNull('TeamUpdateInputType'),
+    orgID: nonNull(idArg()),
   },
   resolve(_parent, args, { prisma }) {
     return prisma.team.update({

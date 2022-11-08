@@ -1,24 +1,13 @@
-import { idArg, list, nonNull, queryField } from 'nexus';
+import { checkGqlPermissions } from 'helpers/auth/checkPermissions';
+import { idArg, list, queryField } from 'nexus';
 
-export const getEvent = queryField('getEvent', {
-  type: 'Event',
-  description: `Returns the event whose id is passed as an argument`,
-  args: {
-    id: nonNull(idArg()),
-  },
-  resolve(_parent, args, { prisma }) {
-    return prisma.event.findUnique({
-      where: {
-        id: args.id,
-      },
-    });
-  },
-});
-
-export const getEvents = queryField('getEvents', {
+export const event = queryField('event', {
   type: list('Event'),
-  description: `Returns a list of events depending upon the various arguments passed`,
+  description: `Returns as list of events depending upon the arguments`,
+  authorize: (_parent, args, ctx) =>
+    args.id || args.orgID ? true : checkGqlPermissions(ctx, []),
   args: {
+    id: idArg(),
     orgID: idArg(),
     orgType: 'OrgType',
     startDate: 'DateTime',
@@ -26,29 +15,25 @@ export const getEvents = queryField('getEvents', {
     status: 'StatusType',
   },
   resolve(_parent, args, { prisma }) {
-    /**
-     * based on orgType
-     * based on orgID
-     * based on time (start and end)
-     * based on status
-     */
+    const { id, orgID, orgType, startDate, endDate, status } = args;
 
     const prismaQuery = {
-      orgType: args.orgType || undefined,
-      status: args.status || undefined,
-      orgID: { has: args.orgID || undefined },
+      id: id || undefined,
+      orgType: orgType || undefined,
+      status: status || undefined,
+      orgID: { has: orgID || undefined },
       AND: [
-        { startDate: { gte: args.startDate || undefined } },
-        { endDate: { lte: args.endDate || undefined } },
+        { startDate: { gte: startDate || undefined } },
+        { endDate: { lte: endDate || undefined } },
       ],
     };
 
-    if (args) {
+    if (id || orgID || orgType || startDate || endDate || status) {
       return prisma.event.findMany({
         where: prismaQuery,
       });
     }
 
-    throw new Error('missing parameters');
+    return prisma.event.findMany();
   },
 });
