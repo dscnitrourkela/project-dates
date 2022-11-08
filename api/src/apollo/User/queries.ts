@@ -9,17 +9,22 @@ export const user = queryField('user', {
   authorize: (_parent, args, ctx) =>
     args.id || args.uid
       ? checkGqlPermissions(ctx, [])
-      : checkGqlPermissions(ctx, [
-          PERMISSIONS.SUPER_ADMIN,
-          PERMISSIONS.SUPER_EDITOR,
-          PERMISSIONS.SUPER_VIEWER,
-          PERMISSIONS.ORG_ADMIN,
-          PERMISSIONS.ORG_EDITOR,
-          PERMISSIONS.ORG_VIEWER,
-        ]),
+      : checkGqlPermissions(
+          ctx,
+          [
+            PERMISSIONS.SUPER_ADMIN,
+            PERMISSIONS.SUPER_EDITOR,
+            PERMISSIONS.SUPER_VIEWER,
+            PERMISSIONS.ORG_ADMIN,
+            PERMISSIONS.ORG_EDITOR,
+            PERMISSIONS.ORG_VIEWER,
+          ],
+          args.orgID || undefined,
+        ),
   args: {
     id: idArg(),
     uid: idArg(),
+    orgID: idArg(),
     email: stringArg(),
     state: stringArg(),
     city: stringArg(),
