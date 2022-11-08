@@ -17,9 +17,12 @@ export const transaction = queryField('transaction', {
     id: idArg(),
     orgID: idArg(),
     type: 'TransactionType',
+    pagination: 'paginationInputType',
   },
   resolve(_parent, args, { prisma }) {
     return prisma.transaction.findMany({
+      skip: args.pagination?.skip,
+      take: args.pagination?.take,
       where: {
         id: args.id || undefined,
         orgID: args.orgID || undefined,

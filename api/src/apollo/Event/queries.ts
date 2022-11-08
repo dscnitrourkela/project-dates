@@ -13,9 +13,10 @@ export const event = queryField('event', {
     startDate: 'DateTime',
     endDate: 'DateTime',
     status: 'StatusType',
+    pagination: 'paginationInputType',
   },
   resolve(_parent, args, { prisma }) {
-    const { id, orgID, orgType, startDate, endDate, status } = args;
+    const { id, orgID, orgType, startDate, endDate, status, pagination } = args;
 
     const prismaQuery = {
       id: id || undefined,
@@ -30,6 +31,8 @@ export const event = queryField('event', {
 
     if (id || orgID || orgType || startDate || endDate || status) {
       return prisma.event.findMany({
+        skip: pagination?.skip,
+        take: pagination?.take,
         where: prismaQuery,
       });
     }

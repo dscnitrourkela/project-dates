@@ -33,6 +33,7 @@ export const user = queryField('user', {
     referredBy: stringArg(),
     festID: list(nonNull(stringArg())),
     isNitrStudent: booleanArg({ default: true }),
+    pagination: 'paginationInputType',
   },
   async resolve(_parent, args, { prisma }) {
     const {
@@ -46,9 +47,12 @@ export const user = queryField('user', {
       referredBy,
       festID,
       isNitrStudent,
+      pagination,
     } = args;
 
     return prisma.user.findMany({
+      skip: pagination?.skip,
+      take: pagination?.take,
       where: {
         id: id || undefined,
         email: email || undefined,

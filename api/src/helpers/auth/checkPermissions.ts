@@ -85,6 +85,8 @@ const checkPermissions = async ({
 
   try {
     const decodedToken = await verifyUser(token);
+    // eslint-disable-next-line no-console
+    console.log(decodedToken);
     if (!decodedToken) {
       return errorHandler(ERRORS.FORBIDDEN);
     }
@@ -131,6 +133,8 @@ const checkPermissions = async ({
 
     return errorHandler(ERRORS.FORBIDDEN);
   } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error(error);
     return errorHandler(ERRORS.FORBIDDEN);
   }
 };

@@ -9,12 +9,15 @@ export const story = queryField('story', {
   args: {
     id: idArg(),
     orgID: idArg(),
+    pagination: 'paginationInputType',
   },
   resolve(_parents, args, { prisma }) {
     const { id, orgID } = args;
 
     if (id || orgID) {
       return prisma.story.findMany({
+        skip: args.pagination?.skip,
+        take: args.pagination?.take,
         where: {
           id: id || undefined,
           orgID: orgID || undefined,
