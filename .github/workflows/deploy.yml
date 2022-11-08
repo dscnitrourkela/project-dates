@@ -67,3 +67,5 @@ jobs:
         run: docker rm project-dates || true
       - name: Start container
         run: docker run --name=project-dates --env-file=.env -p $PORT:$PORT -d ghcr.io/${{ github.repository }}:latest
+      - name: Remove Unused Images
+        run: docker image prune -f
