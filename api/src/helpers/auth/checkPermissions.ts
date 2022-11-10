@@ -85,8 +85,6 @@ const checkPermissions = async ({
 
   try {
     const decodedToken = await verifyUser(token);
-    // eslint-disable-next-line no-console
-    console.log(decodedToken);
     if (!decodedToken) {
       return errorHandler(ERRORS.FORBIDDEN);
     }

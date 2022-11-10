@@ -72,7 +72,7 @@ model User {
   city       String?
   college    String?
   stream     String?
-  mobile     String?   @unique
+  mobile     String    @unique
   selfID     String?
   festID     String[]  @default([])
   ca         String[]  @default([])
