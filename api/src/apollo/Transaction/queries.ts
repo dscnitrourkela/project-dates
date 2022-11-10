@@ -17,6 +17,7 @@ export const transaction = queryField('transaction', {
     id: idArg(),
     orgID: idArg(),
     type: 'TransactionType',
+    userID: idArg(),
     pagination: 'paginationInputType',
   },
   resolve(_parent, args, { prisma }) {
@@ -27,6 +28,7 @@ export const transaction = queryField('transaction', {
         id: args.id || undefined,
         orgID: args.orgID || undefined,
         type: args.type || undefined,
+        userID: args.userID || undefined,
       },
     });
   },

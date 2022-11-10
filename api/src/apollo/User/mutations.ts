@@ -15,7 +15,7 @@ export const UserCreateInputType = inputObjectType({
     t.string('city');
     t.string('college');
     t.string('stream');
-    t.string('mobile');
+    t.nonNull.string('mobile');
     t.string('referredBy');
     t.string('rollNumber');
   },
