@@ -93,7 +93,7 @@ export const updateUser = mutationField('updateUser', {
   },
   resolve(_parent, args, { prisma }) {
     const isMobileValid = args.user.mobile?.length === 10;
-    if (!isMobileValid)
+    if (args.user.mobile && !isMobileValid)
       throw new Error('Invalid Mobile Number, please try again');
 
     return prisma.user.update({
