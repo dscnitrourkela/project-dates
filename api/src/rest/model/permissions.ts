@@ -1,7 +1,4 @@
-import {
-  model,
-  Schema,
-} from 'mongoose';
+import { model, Schema } from 'mongoose';
 
 interface IPermission {
   uid: string;
@@ -30,8 +27,6 @@ const permissionSchema = new Schema<IPermission>(
     },
     umid: {
       type: String,
-      required: true,
-      unique: true,
     },
     superAdmin: {
       type: Boolean,
