@@ -19,6 +19,7 @@ export const User = objectType({
     t.string('selfID');
     t.string('referredBy');
     t.string('rollNumber');
+    t.date('createdAt');
     t.nonNull.list.nonNull.id('ca');
 
     t.nonNull.list.nonNull.id('festID');
