@@ -1,7 +1,4 @@
-import {
-  Request,
-  Response,
-} from 'express';
+import { Request, Response } from 'express';
 
 import { prisma } from '@utils';
 
@@ -55,6 +52,7 @@ export const getEvents = async (
 
     if (
       ![
+        'TECHNICAL',
         'FLAGSHIP',
         'MAIN',
         'FUN',
