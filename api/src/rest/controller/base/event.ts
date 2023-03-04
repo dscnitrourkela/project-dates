@@ -1,6 +1,6 @@
-import { prisma } from '@utils';
-
 import { Request, Response } from 'express';
+
+import { prisma } from '@utils';
 
 type Empty = Record<string, unknown>;
 
@@ -53,10 +53,12 @@ export const getEvents = async (
     if (
       ![
         'TECHNICAL',
+        'FLAGSHIP',
+        'MAIN',
         'FUN',
         'PRO',
-        'WORKSHOPS',
         'EXHIBITIONS',
+        'WORKSHOPS',
         'GUEST-LECTURES ',
       ].includes(type.toUpperCase())
     ) {
