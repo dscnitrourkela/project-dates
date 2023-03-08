@@ -17,7 +17,7 @@ export const createEvent = async (req: Request, res: Response) => {
         locationID: '635e1c662e3082fe09bc498e',
         startDate,
         endDate,
-        orgID: '635c04868e47acb9dd1ba92d',
+        orgID: '640892e9f785cdd0afcd8ccf',
         orgType: 'FEST',
         priority,
         status: 'ACTIVE',
@@ -38,14 +38,15 @@ export const getEvents = async (
     Empty,
     {
       type: string;
+      orgID: string;
     }
   >,
   res: Response,
 ) => {
   try {
-    const { type } = req.query;
+    const { type, orgID } = req.query;
 
-    if (!type) {
+    if (!type ) {
       const events = await prisma.event.findMany();
       return res.status(200).send(events);
     }
@@ -67,7 +68,14 @@ export const getEvents = async (
 
     const events = await prisma.event.findMany({
       where: {
-        type: type.toUpperCase(),
+        AND: [
+          {
+            type: type.toUpperCase(),
+            orgID: {
+              has: orgID,
+            }
+          }
+        ]
       },
     });
 
