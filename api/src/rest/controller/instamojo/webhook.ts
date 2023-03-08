@@ -13,7 +13,7 @@ export const instaMojowebhook = async (req: Request, res: Response) => {
         },
         data: {
           festID: {
-            push: 'innovision-2022',
+            push: 'nitrutsav-2023',
           },
         },
       });
@@ -25,7 +25,7 @@ export const instaMojowebhook = async (req: Request, res: Response) => {
           transactionID: payment_id,
           type: 'REGISTRATION',
           timestamp: new Date(),
-          orgID: '635c04868e47acb9dd1ba92d',
+          orgID: '640892e9f785cdd0afcd8ccf',
           comment: purpose,
         },
       });
