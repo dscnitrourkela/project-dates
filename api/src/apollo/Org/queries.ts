@@ -22,9 +22,16 @@ export const org = queryField('org', {
           orgType: orgType || undefined,
           orgSubType: orgSubType || undefined,
         },
+        orderBy: {
+          createdAt: 'desc',
+        }
       });
     }
 
-    return prisma.org.findMany();
+    return prisma.org.findMany({
+      orderBy: {
+        createdAt: 'desc',
+      }
+    });
   },
 });
