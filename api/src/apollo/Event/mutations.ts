@@ -120,30 +120,3 @@ export const updateEvent = mutationField('updateEvent', {
     });
   },
 });
-
-export const deleteEvent = mutationField('deleteEvent', {
-  type: 'Event',
-  description: `Deletes an existing event record`,
-  authorize: (_parent, args, ctx) =>
-    checkGqlPermissions(
-      ctx,
-      [
-        PERMISSIONS.SUPER_ADMIN,
-        PERMISSIONS.SUPER_EDITOR,
-        PERMISSIONS.ORG_ADMIN,
-        PERMISSIONS.ORG_EDITOR,
-      ],
-      args.orgID,
-    ),
-  args: {
-    id: nonNull(idArg()),
-    orgID: nonNull(idArg()),
-  },
-  resolve(_parent, args, { prisma }) {
-    return prisma.event.delete({
-      where: {
-        id: args.id,
-      },
-    });
-  },
-});
