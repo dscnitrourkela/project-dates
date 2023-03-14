@@ -2,8 +2,15 @@
 import express from 'express';
 import { checkRestPermissions } from 'helpers/auth/checkPermissions';
 import {
-    createEvent, createUserController, getEvents, getTransaction, getUserController,
-    getUserRegistrations, healthController, registerUserForEvent, zimbraController
+  createEvent,
+  createUserController,
+  getEvents,
+  getTransaction,
+  getUserController,
+  getUserRegistrations,
+  healthController,
+  registerUserForEvent,
+  zimbraController,
 } from 'rest/controller';
 
 export const healthRouter = express.Router();

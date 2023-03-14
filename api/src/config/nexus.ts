@@ -1,7 +1,4 @@
-import {
-  fieldAuthorizePlugin,
-  makeSchema,
-} from 'nexus';
+import { fieldAuthorizePlugin, makeSchema } from 'nexus';
 import { join } from 'path';
 
 import * as types from '../apollo';

@@ -24,14 +24,14 @@ export const org = queryField('org', {
         },
         orderBy: {
           createdAt: 'desc',
-        }
+        },
       });
     }
 
     return prisma.org.findMany({
       orderBy: {
         createdAt: 'desc',
-      }
+      },
     });
   },
 });

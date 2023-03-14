@@ -1,8 +1,5 @@
 import axios from 'axios';
-import {
-  Request,
-  Response,
-} from 'express';
+import { Request, Response } from 'express';
 
 import {
   INSTAMOJO_BASE_URL,

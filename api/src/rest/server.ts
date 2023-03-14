@@ -4,10 +4,7 @@ import express from 'express';
 import { mongoAuthDb } from '@config';
 import { ALLOWED_CLIENT_URL } from '@constants';
 
-import {
-  healthRouter,
-  paymentRouter,
-} from './routes';
+import { healthRouter, paymentRouter } from './routes';
 import { authRouter } from './routes/auth';
 
 export const app = express();
