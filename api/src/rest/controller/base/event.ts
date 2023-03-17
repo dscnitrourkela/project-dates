@@ -46,7 +46,7 @@ export const getEvents = async (
   try {
     const { type, orgID } = req.query;
 
-    if (!type ) {
+    if (!type) {
       const events = await prisma.event.findMany();
       return res.status(200).send(events);
     }
@@ -73,9 +73,9 @@ export const getEvents = async (
             type: type.toUpperCase(),
             orgID: {
               has: orgID,
-            }
-          }
-        ]
+            },
+          },
+        ],
       },
     });
 

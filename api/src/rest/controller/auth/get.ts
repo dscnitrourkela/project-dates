@@ -1,7 +1,4 @@
-import {
-  Request,
-  Response,
-} from 'express';
+import { Request, Response } from 'express';
 import { verifyUser } from 'helpers';
 import { Permission } from 'rest/model';
 

@@ -1,7 +1,4 @@
-import {
-  Request,
-  Response,
-} from 'express';
+import { Request, Response } from 'express';
 import { Permission } from 'rest/model';
 
 export const updatePermissions = async (req: Request, res: Response) => {
