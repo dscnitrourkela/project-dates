@@ -13,7 +13,7 @@ export const instaMojowebhook = async (req: Request, res: Response) => {
         },
         data: {
           festID: {
-            push: 'nitrutsav-2023',
+            push: 'innovision-2023',
           },
         },
       });

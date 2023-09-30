@@ -81,6 +81,7 @@ model User {
   uid        String    @unique
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
+  hall       String?
 }
 
 model Org {
@@ -106,6 +107,8 @@ model Org {
 model Event {
   id          String       @id @default(auto()) @map("_id") @db.ObjectId
   name        String
+  subHeading  String?
+  prizeMoney  String?
   description String
   poster      String
   locationID  String       @db.ObjectId
@@ -115,6 +118,7 @@ model Event {
   orgType     ORG_TYPE
   notes       String[]     @default([])
   pocID       String[]     @default([]) @db.ObjectId
+  contact     String[]     @default([])
   weekly      Boolean      @default(false)
   repeatDay   REPEAT_TYPE?
   priority    Int          @default(0)
