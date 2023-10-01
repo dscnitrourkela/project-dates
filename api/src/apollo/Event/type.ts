@@ -16,6 +16,8 @@ export const Event = objectType({
   definition(t) {
     t.nonNull.id('id');
     t.nonNull.string('name');
+    t.string('subHeading');
+    t.string('prizeMoney');
     t.nonNull.string('description');
     t.nonNull.string('poster');
     t.nonNull.date('startDate');
@@ -34,6 +36,7 @@ export const Event = objectType({
       resolve: locationResolver,
     });
 
+    t.list.nonNull.string('contact');
     t.nonNull.list.nonNull.id('pocID');
     t.nonNull.list.field('poc', {
       type: 'User',

@@ -6,12 +6,25 @@ type Empty = Record<string, unknown>;
 
 export const createEvent = async (req: Request, res: Response) => {
   try {
-    const { name, description, poster, startDate, endDate, priority, type } =
-      req.body;
+    const {
+      name,
+      description,
+      poster,
+      startDate,
+      endDate,
+      priority,
+      type,
+      subHeading,
+      prizeMoney,
+      contact = [],
+    } = req.body;
 
     const event = await prisma.event.create({
       data: {
         name,
+        subHeading,
+        prizeMoney,
+        contact,
         description,
         poster,
         locationID: '635e1c662e3082fe09bc498e',

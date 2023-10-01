@@ -36,7 +36,7 @@
   "npm.runSilent": false,
   "explorer.confirmDragAndDrop": false,
   "editor.formatOnPaste": false,
-  "editor.cursorSmoothCaretAnimation": false,
+  "editor.cursorSmoothCaretAnimation": "off",
   "editor.smoothScrolling": false,
   "importSorter.sortConfiguration.customOrderingRules.rules": [
     {
