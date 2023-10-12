@@ -72,8 +72,9 @@ export const getEvents = async (
         'FUN',
         'PRO',
         'EXHIBITIONS',
-        'WORKSHOPS',
-        'GUEST-LECTURES ',
+        'WORKSHOP',
+        'GUEST-LECTURES',
+        'OTHER',
       ].includes(type.toUpperCase())
     ) {
       return res.status(400).send('invalid type query parameter value');
