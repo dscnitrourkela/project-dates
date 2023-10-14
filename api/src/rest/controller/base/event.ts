@@ -60,7 +60,13 @@ export const getEvents = async (
     const { type, orgID } = req.query;
 
     if (!type) {
-      const events = await prisma.event.findMany();
+      const events = await prisma.event.findMany({
+        where: {
+          orgID: {
+            has: orgID,
+          },
+        },
+      });
       return res.status(200).send(events);
     }
 
