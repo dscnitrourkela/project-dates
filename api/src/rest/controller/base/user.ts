@@ -108,7 +108,7 @@ export const createUserController = async (req: Request, res: Response) => {
         referredBy,
         rollNumber,
         selfID: mobile,
-        festID: rollNumber ? ['nitrutsav-2023'] : [],
+        festID: rollNumber ? ['innovision-2023'] : [],
       },
     });
 

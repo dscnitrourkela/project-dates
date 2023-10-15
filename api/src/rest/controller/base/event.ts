@@ -30,7 +30,7 @@ export const createEvent = async (req: Request, res: Response) => {
         locationID: '635e1c662e3082fe09bc498e',
         startDate,
         endDate,
-        orgID: '640892e9f785cdd0afcd8ccf',
+        orgID: '65133eb72c5708eb84bf53d6',
         orgType: 'FEST',
         priority,
         status: 'ACTIVE',
