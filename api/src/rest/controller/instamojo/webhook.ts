@@ -25,7 +25,7 @@ export const instaMojowebhook = async (req: Request, res: Response) => {
           transactionID: payment_id,
           type: 'REGISTRATION',
           timestamp: new Date(),
-          orgID: '640892e9f785cdd0afcd8ccf',
+          orgID: '65133eb72c5708eb84bf53d6',
           comment: purpose,
         },
       });
