@@ -111,6 +111,7 @@ model Event {
   prizeMoney  String?
   description String
   poster      String
+  rules       String?
   locationID  String       @db.ObjectId
   startDate   DateTime
   endDate     DateTime

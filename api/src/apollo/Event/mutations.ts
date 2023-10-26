@@ -12,6 +12,7 @@ export const EventCreateInputType = inputObjectType({
     t.string('prizeMoney');
     t.nonNull.list.nonNull.string('contact');
     t.nonNull.string('poster');
+    t.string('rules');
     t.id('locationID');
     t.nonNull.date('startDate');
     t.nonNull.date('endDate');
@@ -66,6 +67,7 @@ export const EventUpdateInputType = inputObjectType({
     t.string('description');
     t.string('prizeMoney');
     t.list.nonNull.string('contact');
+    t.string('rules');
     t.string('poster');
     t.id('locationID');
     t.date('startDate');
@@ -113,6 +115,7 @@ export const updateEvent = mutationField('updateEvent', {
         contact: args.event?.contact || undefined,
         description: args.event?.description || undefined,
         poster: args.event?.poster || undefined,
+        rules: args.event?.rules || undefined,
         locationID: args.event?.locationID || undefined,
         startDate: args.event?.startDate || undefined,
         endDate: args.event?.endDate || undefined,
