@@ -1,10 +1,29 @@
 import { PERMISSIONS } from '@constants';
 
 import { checkGqlPermissions } from 'helpers/auth/checkPermissions';
-import { booleanArg, idArg, list, nonNull, queryField, stringArg } from 'nexus';
+import {
+  booleanArg,
+  idArg,
+  list,
+  nonNull,
+  objectType,
+  queryField,
+  stringArg,
+} from 'nexus';
+
+const PaginatedUserType = objectType({
+  name: 'PaginatedUserType',
+  description: 'Paginated response for user query',
+  definition(t) {
+    t.list.field('data', {
+      type: 'User',
+    });
+    t.int('count');
+  },
+});
 
 export const user = queryField('user', {
-  type: list('User'),
+  type: PaginatedUserType,
   description: 'Returns a list of users depending upon the parameters passed',
   authorize: (_parent, args, ctx) =>
     args.id || args.uid
@@ -50,23 +69,35 @@ export const user = queryField('user', {
       pagination,
     } = args;
 
-    return prisma.user.findMany({
-      skip: pagination?.skip,
-      take: pagination?.take,
-      where: {
-        id: id || undefined,
-        email: email || undefined,
-        uid: uid || undefined,
-        state: state || undefined,
-        city: city || undefined,
-        college: college || undefined,
-        stream: stream || undefined,
-        referredBy: referredBy || undefined,
-        rollNumber: !isNitrStudent ? null : undefined,
-        festID: {
-          hasEvery: festID || [],
-        },
+    const prismaQuery = {
+      id: id || undefined,
+      email: email || undefined,
+      uid: uid || undefined,
+      state: state || undefined,
+      city: city || undefined,
+      college: college || undefined,
+      stream: stream || undefined,
+      referredBy: referredBy || undefined,
+      rollNumber: !isNitrStudent ? null : undefined,
+      festID: {
+        hasEvery: festID || [],
       },
-    });
+    };
+
+    const [users, count] = await prisma.$transaction([
+      prisma.user.findMany({
+        skip: pagination?.skip,
+        take: pagination?.take,
+        where: prismaQuery,
+      }),
+      prisma.user.count({
+        where: prismaQuery,
+      }),
+    ]);
+
+    return {
+      data: users,
+      count,
+    };
   },
 });

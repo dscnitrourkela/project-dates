@@ -20,6 +20,7 @@ export const Event = objectType({
     t.string('prizeMoney');
     t.nonNull.string('description');
     t.nonNull.string('poster');
+    t.string('rules');
     t.nonNull.date('startDate');
     t.nonNull.date('endDate');
     t.nonNull.orgType('orgType');
