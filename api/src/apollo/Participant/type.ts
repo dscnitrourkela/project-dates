@@ -10,7 +10,7 @@ export const Participant = objectType({
     t.string('name');
     t.string('college');
     t.string('rollNumber');
-    t.string('IdCardPhoto');
+    t.string('idCardPhoto');
     t.string('mobile');
     t.string('aicheRegID');
     t.date('createdAt');
