@@ -8,19 +8,16 @@ export const User = objectType({
     t.nonNull.string('email');
     t.nonNull.string('uid');
     t.string('name');
-    t.string('photo');
-    t.gender('gender');
-    t.date('dob');
-    t.string('state');
-    t.string('city');
     t.string('college');
-    t.string('stream');
     t.string('mobile');
-    t.string('selfID');
-    t.string('referredBy');
     t.string('rollNumber');
     t.date('createdAt');
     t.nonNull.list.nonNull.id('ca');
+
+    t.string('tSize');
+    t.string('srcID');
+    t.string('idCardPhoto');
+    t.string('aicheRegID');
 
     t.nonNull.list.nonNull.id('festID');
     t.nonNull.list.field('fests', {
