@@ -1,5 +1,4 @@
 import { PERMISSIONS } from '@constants';
-
 import { checkGqlPermissions } from 'helpers/auth/checkPermissions';
 import {
   booleanArg,
@@ -99,5 +98,31 @@ export const user = queryField('user', {
       data: users,
       count,
     };
+  },
+});
+
+export const getUser = queryField('getUser', {
+  type: 'User',
+  description: 'Fetches a user by ID, email, or UID',
+  args: {
+    id: idArg(),
+    email: stringArg(),
+    uid: stringArg(),
+  },
+  authorize: (_parent, _args, ctx) => checkGqlPermissions(ctx, []),
+  async resolve(_parent, args, { prisma }) {
+    if (!args.id && !args.email && !args.uid) {
+      throw new Error(
+        'You must provide either an ID, an email, or a UID to fetch the user.',
+      );
+    }
+
+    return prisma.user.findUnique({
+      where: {
+        id: args.id ?? undefined,
+        email: args.email ?? undefined,
+        uid: args.uid ?? undefined,
+      },
+    });
   },
 });
