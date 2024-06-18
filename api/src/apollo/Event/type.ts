@@ -1,5 +1,5 @@
 import { FieldResolver, objectType } from 'nexus';
-
+/*
 export const locationResolver:
   | FieldResolver<'Event', 'location'>
   | undefined = (parent, _args, { prisma }) =>
@@ -8,6 +8,7 @@ export const locationResolver:
       id: parent.locationID,
     },
   });
+*/
 
 export const Event = objectType({
   name: 'Event',
@@ -18,28 +19,32 @@ export const Event = objectType({
     t.nonNull.string('name');
     t.string('subHeading');
     t.string('prizeMoney');
-    t.nonNull.string('description');
-    t.nonNull.string('poster');
+    t.string('description');
+    t.string('poster');
     t.string('rules');
-    t.nonNull.date('startDate');
-    t.nonNull.date('endDate');
-    t.nonNull.orgType('orgType');
-    t.nonNull.list.nonNull.string('notes');
-    t.nonNull.boolean('weekly');
+    t.date('startDate');
+    t.date('endDate');
+    t.orgType('orgType');
+    t.list.string('notes');
+    t.boolean('weekly');
     t.repeatType('repeatDay');
-    t.nonNull.int('priority');
+    t.int('priority');
     t.string('type');
-    t.nonNull.status('status');
-
-    t.nonNull.id('locationID');
+    t.status('status');
+    t.boolean('isTeamEvent');
+    t.int('maxTeamSize');
+    t.int('minTeamSize');
+    /*
+    t.id('locationID');
     t.field('location', {
       type: 'Location',
       resolve: locationResolver,
     });
+*/
+    t.list.string('contact');
+    t.list.id('pocID');
 
-    t.list.nonNull.string('contact');
-    t.nonNull.list.nonNull.id('pocID');
-    t.nonNull.list.field('poc', {
+    /* t.list.field('poc', {
       type: 'User',
       async resolve(parent, _args, { prisma }) {
         return prisma.user.findMany({
@@ -52,8 +57,8 @@ export const Event = objectType({
       },
     });
 
-    t.nonNull.list.nonNull.id('orgID');
-    t.nonNull.list.field('org', {
+    t.list.nonNull.id('orgID');
+    t.list.field('org', {
       type: 'Org',
       resolve(parent, _args, { prisma }) {
         return prisma.org.findMany({
@@ -65,7 +70,7 @@ export const Event = objectType({
         });
       },
     });
-
+*/
     t.nonNull.int('eventRegistrationCount', {
       resolve(parent, _args, { prisma }) {
         return prisma.eventRegistration.count({

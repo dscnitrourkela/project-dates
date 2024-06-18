@@ -2,19 +2,24 @@ import { objectType } from 'nexus';
 
 export const TeamRegistration = objectType({
   name: 'TeamRegistration',
-  description: 'Refers to the registrations of a team for a particular event',
+  description: 'Represents the registration of a team for a particular event',
   definition(t) {
     t.nonNull.id('id');
-
     t.nonNull.id('eventID');
+
     t.field('event', {
       type: 'Event',
-      resolve(parent, _args, { prisma }) {
-        return prisma.event.findUnique({
+      async resolve(parent, _args, { prisma }) {
+        const event = await prisma.event.findUnique({
           where: {
             id: parent.eventID,
           },
         });
+        if (event?.isTeamEvent) {
+          return event;
+        } else {
+          return null;
+        }
       },
     });
 
@@ -31,5 +36,8 @@ export const TeamRegistration = objectType({
         });
       },
     });
+
+    t.date('createdAt');
+    t.date('updatedAt');
   },
 });

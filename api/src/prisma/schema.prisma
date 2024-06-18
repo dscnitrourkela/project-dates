@@ -127,6 +127,9 @@ model Event {
   type        String?
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
+  isTeamEvent Boolean?
+  maxTeamSize Int?
+  minTeamSize Int?
 }
 
 model Team {
@@ -157,6 +160,14 @@ model EventRegistration {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   eventID   String   @db.ObjectId
   userID    String   @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model TeamRegistration {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  eventID   String   @db.ObjectId
+  userIDs   String[] @db.ObjectId
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
