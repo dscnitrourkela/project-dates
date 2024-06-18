@@ -7,16 +7,6 @@ export const TeamRegistration = objectType({
     t.nonNull.id('id');
 
     t.nonNull.id('TeamID');
-    t.field('Team', {
-      type: 'Team',
-      resolve(parent, _args, { prisma }) {
-        return prisma.event.findUnique({
-          where: {
-            id: parent.TeamID,
-          },
-        });
-      },
-    });
 
     t.nonNull.id('userID');
     t.field('user', {
