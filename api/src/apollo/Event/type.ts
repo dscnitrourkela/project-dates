@@ -24,11 +24,6 @@ export const Event = objectType({
     t.string('rules');
     t.date('startDate');
     t.date('endDate');
-    t.orgType('orgType');
-    t.list.string('notes');
-    t.boolean('weekly');
-    t.repeatType('repeatDay');
-    t.int('priority');
     t.string('type');
     t.status('status');
     t.boolean('isTeamEvent');
