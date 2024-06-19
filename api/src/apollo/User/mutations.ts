@@ -1,5 +1,5 @@
 import { checkGqlPermissions } from 'helpers/auth/checkPermissions';
-import { idArg, inputObjectType, mutationField, nonNull } from 'nexus';
+import { inputObjectType, mutationField, nonNull } from 'nexus';
 
 export const UserCreateInputType = inputObjectType({
   name: 'UserCreateInputType',
@@ -61,6 +61,7 @@ export const createUser = mutationField('createUser', {
   },
 });
 
+/*
 export const UserUpdateInputType = inputObjectType({
   name: 'UserUpdateInputType',
   description: 'Input arguments used in updateUser mutation',
@@ -116,3 +117,4 @@ export const updateUser = mutationField('updateUser', {
     });
   },
 });
+*/
