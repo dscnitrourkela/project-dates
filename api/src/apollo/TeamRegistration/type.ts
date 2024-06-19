@@ -5,8 +5,9 @@ export const TeamRegistration = objectType({
   description: 'Represents the registration of a team for a particular event',
   definition(t) {
     t.nonNull.id('id');
-    t.nonNull.id('eventID');
+    t.nonNull.id('teamName');
 
+    t.nonNull.id('eventID');
     t.field('event', {
       type: 'Event',
       async resolve(parent, _args, { prisma }) {

@@ -1,9 +1,11 @@
 import { PERMISSIONS } from 'constants/auth';
 import { checkGqlPermissions } from 'helpers/auth/checkPermissions';
-import { idArg, list, queryField } from 'nexus';
+import { idArg, list, queryField, nonNull } from 'nexus';
 
 export const eventRegistration = queryField('eventRegistration', {
-  type: list('EventRegistration'),
+  type: nonNull(list(nonNull('String'))),
+
+  // to fetch list of eventIds for events where user has registered
   description: `Returns a list of events depending upon the arguments`,
   authorize: (_parent, args, ctx) =>
     args.id || (args.eventID && args.userID)
@@ -27,21 +29,19 @@ export const eventRegistration = queryField('eventRegistration', {
     orgID: idArg(),
     pagination: 'paginationInputType',
   },
-  resolve(_parent, args, { prisma }) {
+  async resolve(_parent, args, { prisma }) {
     const { id, userID, eventID, pagination } = args;
 
-    if (id || userID || eventID) {
-      return prisma.eventRegistration.findMany({
-        skip: pagination?.skip,
-        take: pagination?.take,
-        where: {
-          id: id || undefined,
-          userID: userID || undefined,
-          eventID: eventID || undefined,
-        },
-      });
-    }
+    const eventRegistrations = await prisma.eventRegistration.findMany({
+      skip: pagination?.skip,
+      take: pagination?.take,
+      where: {
+        id: id || undefined,
+        userID: userID || undefined,
+        eventID: eventID || undefined,
+      },
+    });
 
-    return prisma.eventRegistration.findMany();
+    return eventRegistrations.map(registration => registration.eventID);
   },
 });

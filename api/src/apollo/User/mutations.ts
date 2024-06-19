@@ -10,7 +10,7 @@ export const UserCreateInputType = inputObjectType({
     t.nonNull.string('uid');
     t.string('name');
     t.string('college');
-    t.string('mobile');
+    t.nonNull.string('mobile');
     t.string('rollNumber');
     t.date('createdAt');
     t.string('tSize');

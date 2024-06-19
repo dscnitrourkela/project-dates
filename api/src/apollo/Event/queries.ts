@@ -1,7 +1,7 @@
 import { checkGqlPermissions } from 'helpers/auth/checkPermissions';
 import { idArg, list, queryField } from 'nexus';
 
-export const event = queryField('event', {
+export const event = queryField('getEvents', {
   type: list('Event'),
   description: `Returns as list of events depending upon the arguments`,
   authorize: (_parent, args, ctx) =>

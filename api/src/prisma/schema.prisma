@@ -166,6 +166,7 @@ model EventRegistration {
 
 model TeamRegistration {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  teamName  String
   eventID   String   @db.ObjectId
   userIDs   String[] @db.ObjectId
   createdAt DateTime @default(now())
