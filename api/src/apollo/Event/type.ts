@@ -1,4 +1,4 @@
-import { FieldResolver, objectType } from 'nexus';
+import { objectType } from 'nexus';
 /*
 export const locationResolver:
   | FieldResolver<'Event', 'location'>

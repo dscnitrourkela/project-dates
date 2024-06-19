@@ -1,6 +1,6 @@
 import { PERMISSIONS } from 'constants/auth';
 import { checkGqlPermissions } from 'helpers/auth/checkPermissions';
-import { idArg, inputObjectType, mutationField, nonNull } from 'nexus';
+import { idArg, inputObjectType, mutationField, nonNull, arg } from 'nexus';
 
 export const TeamRegistrationCreateInputType = inputObjectType({
   name: 'TeamRegistrationCreateInputType',
@@ -17,7 +17,11 @@ export const createTeamRegistration = mutationField('createTeamRegistration', {
   description: 'Creates a team registration record',
   authorize: (_parent, _args, ctx) => checkGqlPermissions(ctx, []),
   args: {
-    teamRegistration: nonNull('TeamRegistrationCreateInputType'),
+    teamRegistration: nonNull(
+      arg({
+        type: 'TeamRegistrationCreateInputType',
+      }),
+    ),
   },
   resolve(_parent, args, { prisma }) {
     return prisma.teamRegistration.create({
