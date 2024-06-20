@@ -1,27 +1,25 @@
 import { checkGqlPermissions } from 'helpers/auth/checkPermissions';
 import { idArg, list, queryField } from 'nexus';
 
-export const event = queryField('getEvents', {
+export const getEvents = queryField('getEvents', {
   type: list('Event'),
   description: `Returns a list of events`,
-  authorize: (_parent, args, ctx) =>
-    args.id ? true : checkGqlPermissions(ctx, []),
+  authorize: (_parent, _args, ctx) => checkGqlPermissions(ctx, []),
   args: {
-    id: idArg(),
+    orgID: idArg(),
     pagination: 'paginationInputType',
   },
-  resolve(_parent, args, { prisma }) {
-    const { id, pagination } = args;
+  async resolve(_parent, args, { prisma }) {
+    const { orgID, pagination } = args;
 
-    const prismaQuery = {
-      id: id || undefined,
-    };
-
-    // Return all events if `id` is not provided
     return prisma.event.findMany({
       skip: pagination?.skip,
       take: pagination?.take,
-      where: prismaQuery,
+      where: {
+        orgID: {
+          has: orgID,
+        },
+      },
     });
   },
 });
