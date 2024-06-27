@@ -51,11 +51,26 @@ This section contains the procedure to setup the project on your local machine.
 `cd api && mv .env.example .env`
 
 4.  Add Mongo DB URI in `.env` file
-5.  Build the docker image
+5.  Create firebase project and add config variables in `.env`
+
+6.  Change dir to api. `cd api`
+7.  run `yarn generate`
+
+### To run the server:
+
+7.  run `yarn run dev`
+
+### To open Apollo Sandbox:
+
+8.  go to "http://localhost:8000/graphql"
+
+### To run docker container:
+
+9.  Build the docker image
 
 `docker-compose build --no-cache`
 
-6. Spin the server.
+10. Spin the server.
 
 `docker-compose up`
 

@@ -1,4 +1,4 @@
-import { nonNull, objectType } from 'nexus';
+import { objectType } from 'nexus';
 
 export const User = objectType({
   name: 'User',
@@ -8,22 +8,20 @@ export const User = objectType({
     t.nonNull.string('email');
     t.nonNull.string('uid');
     t.string('name');
-    t.string('photo');
-    t.gender('gender');
-    t.date('dob');
-    t.string('state');
-    t.string('city');
     t.string('college');
-    t.string('stream');
-    t.string('mobile');
-    t.string('selfID');
-    t.string('referredBy');
+    t.nonNull.string('mobile');
     t.string('rollNumber');
     t.date('createdAt');
-    t.nonNull.list.nonNull.id('ca');
+    t.list.id('ca');
 
-    t.nonNull.list.nonNull.id('festID');
-    t.nonNull.list.field('fests', {
+    t.string('tSize');
+    t.string('srcID');
+    t.string('idCardPhoto');
+    t.string('aicheRegID');
+
+    /*
+    t.list.id('festID');
+    t.list.field('fests', {
       type: nonNull('Org'),
       resolve(parent, _args, { prisma }) {
         return prisma.org.findMany({
@@ -35,5 +33,6 @@ export const User = objectType({
         });
       },
     });
+    */
   },
 });
