@@ -1,10 +1,11 @@
-import { checkGqlPermissions } from 'helpers/auth/checkPermissions';
+//import { checkGqlPermissions } from 'helpers/auth/checkPermissions';
 import { idArg, list, queryField } from 'nexus';
 
 export const getEvents = queryField('getEvents', {
   type: list('Event'),
   description: `Returns a list of events`,
-  authorize: (_parent, _args, ctx) => checkGqlPermissions(ctx, []),
+  authorize: (_parent, _args) => true,
+  // authorize: (_parent, _args, ctx) => checkGqlPermissions(ctx, []),
   args: {
     orgID: idArg(),
     pagination: 'paginationInputType',

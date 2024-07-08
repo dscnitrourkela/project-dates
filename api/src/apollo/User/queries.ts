@@ -1,5 +1,5 @@
-import { PERMISSIONS } from '@constants';
-import { checkGqlPermissions } from 'helpers/auth/checkPermissions';
+// import { PERMISSIONS } from '@constants';
+// import { checkGqlPermissions } from 'helpers/auth/checkPermissions';
 import {
   booleanArg,
   idArg,
@@ -24,6 +24,8 @@ const PaginatedUserType = objectType({
 export const user = queryField('user', {
   type: PaginatedUserType,
   description: 'Returns a list of users depending upon the parameters passed',
+  authorize: (_parent, _args, _ctx) => true,
+  /*
   authorize: (_parent, args, ctx) =>
     args.id || args.uid
       ? checkGqlPermissions(ctx, [])
@@ -39,6 +41,7 @@ export const user = queryField('user', {
           ],
           args.orgID || undefined,
         ),
+        */
   args: {
     id: idArg(),
     uid: idArg(),
@@ -109,9 +112,10 @@ export const getUser = queryField('getUser', {
     email: stringArg(),
     uid: stringArg(),
   },
-  authorize: (_parent, _args, ctx) => checkGqlPermissions(ctx, []),
+  authorize: (_parent, _args, _ctx) => true,
+  // authorize: (_parent, _args, ctx) => checkGqlPermissions(ctx, []),
   async resolve(_parent, args, { prisma }) {
-    if (!args.id && !args.email && !args.uid) {
+    if (!args.email && !args.uid) {
       throw new Error(
         'You must provide either an ID, an email, or a UID to fetch the user.',
       );
