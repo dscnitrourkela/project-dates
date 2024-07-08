@@ -29,8 +29,7 @@ export const EventCreateInputType = inputObjectType({
 export const createEvent = mutationField('createEvent', {
   type: 'Event',
   description: `Creates a new event record`,
-  authorize: _parent => true,
-  /* authorize: (_parent, args, ctx) =>
+  authorize: (_parent, args, ctx) =>
     checkGqlPermissions(
       ctx,
       [
@@ -41,7 +40,7 @@ export const createEvent = mutationField('createEvent', {
       ],
       args.orgID,
     ),
-    */
+
   args: {
     orgID: nonNull(idArg()),
     event: nonNull('EventCreateInputType'),
