@@ -5,6 +5,7 @@ export const UserCreateInputType = inputObjectType({
   name: 'UserCreateInputType',
   description: 'Input arguments used in createUser mutation',
   definition(t) {
+    t.nonNull.string('id');
     t.nonNull.string('email');
     t.nonNull.string('uid');
     t.string('name');
