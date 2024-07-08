@@ -1,5 +1,5 @@
-// import { PERMISSIONS } from '@constants';
-// import { checkGqlPermissions } from 'helpers/auth/checkPermissions';
+import { PERMISSIONS } from '@constants';
+import { checkGqlPermissions } from 'helpers/auth/checkPermissions';
 import {
   booleanArg,
   idArg,
@@ -24,10 +24,8 @@ const PaginatedUserType = objectType({
 export const user = queryField('user', {
   type: PaginatedUserType,
   description: 'Returns a list of users depending upon the parameters passed',
-  authorize: (_parent, _args, _ctx) => true,
-  /*
   authorize: (_parent, args, ctx) =>
-    args.id || args.uid
+    args.id || args.uid || args.email
       ? checkGqlPermissions(ctx, [])
       : checkGqlPermissions(
           ctx,
@@ -41,7 +39,6 @@ export const user = queryField('user', {
           ],
           args.orgID || undefined,
         ),
-        */
   args: {
     id: idArg(),
     uid: idArg(),

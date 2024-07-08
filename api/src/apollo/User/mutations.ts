@@ -1,5 +1,6 @@
-// import { checkGqlPermissions } from 'helpers/auth/checkPermissions';
-import { inputObjectType, mutationField, nonNull } from 'nexus';
+import { checkGqlPermissions } from 'helpers/auth/checkPermissions';
+import { PERMISSIONS } from '@constants';
+import { inputObjectType, mutationField, nonNull, idArg } from 'nexus';
 
 export const UserCreateInputType = inputObjectType({
   name: 'UserCreateInputType',
@@ -23,9 +24,23 @@ export const UserCreateInputType = inputObjectType({
 export const createUser = mutationField('createUser', {
   type: 'User',
   description: 'Creates a new user record',
-  authorize: (_parent, _args) => true,
-  // authorize: (_parent, _args, ctx) => checkGqlPermissions(ctx, []),
+  authorize: (_parent, args, ctx) =>
+    args.orgID
+      ? checkGqlPermissions(ctx, [])
+      : checkGqlPermissions(
+          ctx,
+          [
+            PERMISSIONS.SUPER_ADMIN,
+            PERMISSIONS.SUPER_EDITOR,
+            PERMISSIONS.SUPER_VIEWER,
+            PERMISSIONS.ORG_ADMIN,
+            PERMISSIONS.ORG_EDITOR,
+            PERMISSIONS.ORG_VIEWER,
+          ],
+          args.orgID || undefined,
+        ),
   args: {
+    orgID: idArg(),
     user: nonNull('UserCreateInputType'),
   },
   async resolve(_parent, args, { prisma }) {
