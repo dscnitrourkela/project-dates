@@ -18,6 +18,7 @@ export const User = objectType({
     t.string('srcID');
     t.string('idCardPhoto');
     t.string('aicheRegID');
+    t.boolean('isHostelRequired');
 
     /*
     t.list.id('festID');

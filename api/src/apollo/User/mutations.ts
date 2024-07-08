@@ -18,6 +18,7 @@ export const UserCreateInputType = inputObjectType({
     t.string('srcID');
     t.string('idCardPhoto');
     t.string('aicheRegID');
+    t.boolean('isHostelRequired');
   },
 });
 
@@ -60,6 +61,7 @@ export const createUser = mutationField('createUser', {
           email: args.user.email,
           uid: args.user.uid,
           mobile: args.user.mobile,
+          aicheRegID: args.user.aicheRegID,
         },
       });
 

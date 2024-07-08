@@ -101,9 +101,24 @@ export const getUser = queryField('getUser', {
     id: idArg(),
     email: stringArg(),
     uid: stringArg(),
+    orgID: idArg(),
+    mobile: stringArg(),
   },
-  authorize: (_parent, _args, _ctx) => true,
-  // authorize: (_parent, _args, ctx) => checkGqlPermissions(ctx, []),
+  authorize: (_parent, args, ctx) =>
+    args.orgID
+      ? checkGqlPermissions(ctx, [])
+      : checkGqlPermissions(
+          ctx,
+          [
+            PERMISSIONS.SUPER_ADMIN,
+            PERMISSIONS.SUPER_EDITOR,
+            PERMISSIONS.SUPER_VIEWER,
+            PERMISSIONS.ORG_ADMIN,
+            PERMISSIONS.ORG_EDITOR,
+            PERMISSIONS.ORG_VIEWER,
+          ],
+          args.orgID || undefined,
+        ),
   async resolve(_parent, args, { prisma }) {
     if (!args.email && !args.uid) {
       throw new Error(
@@ -116,6 +131,7 @@ export const getUser = queryField('getUser', {
         id: args.id ?? undefined,
         email: args.email ?? undefined,
         uid: args.uid ?? undefined,
+        mobile: args.mobile ?? undefined,
       },
     });
   },
