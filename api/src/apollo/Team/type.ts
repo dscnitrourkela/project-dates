@@ -14,7 +14,7 @@ export const Team = objectType({
       type: 'User',
       async resolve(parent, _args, { prisma }) {
         const user = await prisma.user.findUnique({
-          where: { id: parent.userID },
+          where: { uid: parent.userID },
         });
 
         if (!user) throw new Error('User not found');

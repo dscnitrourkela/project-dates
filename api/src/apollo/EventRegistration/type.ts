@@ -24,7 +24,7 @@ export const EventRegistration = objectType({
       resolve(parent, _args, { prisma }) {
         return prisma.user.findUnique({
           where: {
-            id: parent.userID,
+            uid: parent.userID,
           },
         });
       },
