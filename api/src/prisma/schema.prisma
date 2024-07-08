@@ -62,27 +62,21 @@ enum TRANSACTION_TYPE {
 
 // ================== MODELS START ==================
 model User {
-  id         String    @id @default(auto()) @map("_id") @db.ObjectId
-  email      String    @unique
-  name       String?
-  photo      String?
-  gender     GENDER?
-  dob        DateTime?
-  state      String?
-  city       String?
-  college    String?
-  stream     String?
-  mobile     String    @unique
-  selfID     String?
-  festID     String[]  @default([])
-  ca         String[]  @default([])
-  referredBy String?
-  rollNumber String?
-  uid        String    @unique
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  hall       String?
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  email        String   @unique
+  uid          String   @unique
+  name         String?
+  college      String?
+  mobile       String   @unique
+  rollNumber   String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  tSize        String?
+  srcID        String?
+  idCardPhoto  String?
+  aicheRegID   String?
 }
+
 
 model Org {
   id              String       @id @default(auto()) @map("_id") @db.ObjectId
