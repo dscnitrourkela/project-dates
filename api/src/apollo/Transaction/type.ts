@@ -16,7 +16,7 @@ export const Transaction = objectType({
       type: 'User',
       resolve(parent, _args, { prisma }) {
         return prisma.user.findUnique({
-          where: { uid: parent.userID },
+          where: { id: parent.userID },
         });
       },
     });

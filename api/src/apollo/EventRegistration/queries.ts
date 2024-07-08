@@ -3,7 +3,7 @@ import { checkGqlPermissions } from 'helpers/auth/checkPermissions';
 import { idArg, list, queryField, nonNull } from 'nexus';
 
 export const eventRegistration = queryField('eventRegistration', {
-  type: nonNull(list(nonNull('String'))),
+  type: list(nonNull('EventRegistration')),
 
   // to fetch list of eventIds for events where user has registered
   description: `Returns a list of events depending upon the arguments`,
@@ -29,19 +29,21 @@ export const eventRegistration = queryField('eventRegistration', {
     orgID: idArg(),
     pagination: 'paginationInputType',
   },
-  async resolve(_parent, args, { prisma }) {
+  resolve(_parent, args, { prisma }) {
     const { id, userID, eventID, pagination } = args;
 
-    const eventRegistrations = await prisma.eventRegistration.findMany({
-      skip: pagination?.skip,
-      take: pagination?.take,
-      where: {
-        id: id || undefined,
-        userID: userID || undefined,
-        eventID: eventID || undefined,
-      },
-    });
+    if (id || userID || eventID) {
+      return prisma.eventRegistration.findMany({
+        skip: pagination?.skip,
+        take: pagination?.take,
+        where: {
+          id: id || undefined,
+          userID: userID || undefined,
+          eventID: eventID || undefined,
+        },
+      });
+    }
 
-    return eventRegistrations.map(registration => registration.eventID);
+    return prisma.eventRegistration.findMany();
   },
 });

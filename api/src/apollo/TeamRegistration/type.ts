@@ -30,7 +30,7 @@ export const TeamRegistration = objectType({
       resolve(parent, _args, { prisma }) {
         return prisma.user.findMany({
           where: {
-            uid: {
+            id: {
               in: parent.userIDs,
             },
           },

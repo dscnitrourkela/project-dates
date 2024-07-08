@@ -2,35 +2,45 @@ import { queryField, list, idArg } from 'nexus';
 import { PERMISSIONS } from 'constants/auth';
 import { checkGqlPermissions } from 'helpers/auth/checkPermissions';
 
-export const teamRegistrationsByUser = queryField('teamRegistrationsByUser', {
+export const teamRegistrations = queryField('teamRegistrations', {
   type: list('TeamRegistration'),
 
   // returns entire team registration object details where user is in team
   description: `Returns team registrations for a given user`,
-  authorize: (_parent, _args, ctx) =>
-    checkGqlPermissions(ctx, [
-      PERMISSIONS.SUPER_ADMIN,
-      PERMISSIONS.SUPER_EDITOR,
-      PERMISSIONS.SUPER_VIEWER,
-      PERMISSIONS.ORG_ADMIN,
-      PERMISSIONS.ORG_EDITOR,
-      PERMISSIONS.ORG_VIEWER,
-    ]),
+  authorize: (_parent, args, ctx) =>
+    args.id || args.userID
+      ? checkGqlPermissions(ctx, [])
+      : checkGqlPermissions(
+          ctx,
+          [
+            PERMISSIONS.SUPER_ADMIN,
+            PERMISSIONS.SUPER_EDITOR,
+            PERMISSIONS.SUPER_VIEWER,
+            PERMISSIONS.ORG_ADMIN,
+            PERMISSIONS.ORG_EDITOR,
+            PERMISSIONS.ORG_VIEWER,
+          ],
+          args.orgID || undefined,
+        ),
   args: {
+    id: idArg(),
     userID: idArg(),
+    eventID: idArg(),
+    orgID: idArg(),
     pagination: 'paginationInputType',
   },
-  async resolve(_parent, { userID, pagination }, { prisma }) {
-    const teamRegistrations = await prisma.teamRegistration.findMany({
-      where: {
-        userIDs: {
-          has: userID,
+  resolve(_parent, { id, userID, pagination, eventID }, { prisma }) {
+    if (id || userID || eventID) {
+      return prisma.teamRegistration.findMany({
+        skip: pagination?.skip,
+        take: pagination?.take,
+        where: {
+          id: id || undefined,
+          userIDs: userID ? { has: userID } : undefined,
+          eventID: eventID || undefined,
         },
-      },
-      skip: pagination?.skip,
-      take: pagination?.take,
-    });
-
-    return teamRegistrations;
+      });
+    }
+    return prisma.teamRegistration.findMany();
   },
 });

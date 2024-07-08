@@ -85,6 +85,8 @@ const checkPermissions = async ({
 
   try {
     const decodedToken = await verifyUser(token);
+    console.log(decodedToken);
+
     if (!decodedToken) {
       return errorHandler(ERRORS.FORBIDDEN);
     }
@@ -96,10 +98,14 @@ const checkPermissions = async ({
     const permissions = await PermissionModel.findOne({
       uid: decodedToken.uid,
     });
+    console.log(permissions);
 
     if (!permissions) {
       return errorHandler(ERRORS.FORBIDDEN);
     }
+
+    console.log(permissions.orgAdmin.includes(id || ''));
+    console.log(id);
 
     for (let i = 0; i < requiredPermissions.length; i += 1) {
       const permission = requiredPermissions[i];
