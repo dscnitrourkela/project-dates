@@ -131,9 +131,6 @@ model Event {
   isTeamEvent Boolean?
   maxTeamSize Int?
   minTeamSize Int?
-  isTeamEvent Boolean?
-  maxTeamSize Int?
-  minTeamSize Int?
 }
 
 model Team {
@@ -164,15 +161,6 @@ model EventRegistration {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   eventID   String   @db.ObjectId
   userID    String   @db.ObjectId
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model TeamRegistration {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  teamName  String
-  eventID   String   @db.ObjectId
-  userIDs   String[] @db.ObjectId
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
