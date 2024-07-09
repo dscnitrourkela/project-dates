@@ -53,7 +53,7 @@ export const createUser = mutationField('createUser', {
     if (!isMobileValid)
       throw new Error('Invalid Mobile Number, please try again');
 
-    if (args.user.rollNumber) {
+    if (args.user.aicheRegID) {
       const users = await prisma.user.findMany({
         where: {
           rollNumber: args.user.rollNumber,
@@ -65,7 +65,7 @@ export const createUser = mutationField('createUser', {
       });
 
       if (users.length > 0) {
-        throw new Error('Roll Number already registered');
+        throw new Error('User already registered with the AIChE ID');
       }
     }
 
