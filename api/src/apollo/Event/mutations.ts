@@ -10,21 +10,19 @@ export const EventCreateInputType = inputObjectType({
     t.string('subHeading');
     t.nonNull.string('description');
     t.string('prizeMoney');
-    t.nonNull.list.nonNull.string('contact');
     t.nonNull.string('poster');
     t.string('rules');
     t.id('locationID');
-    t.nonNull.date('startDate');
-    t.nonNull.date('endDate');
+    t.date('startDate');
+    t.date('endDate');
     t.nonNull.list.nonNull.id('orgID');
     t.nonNull.orgType('orgType');
-    t.nonNull.list.nonNull.string('notes');
-    t.nonNull.list.nonNull.id('pocID');
-    t.nonNull.boolean('weekly');
-    t.repeatType('repeatDay', { default: null });
-    t.nonNull.int('priority');
+    t.int('priority');
     t.string('type');
-    t.status('status', { default: 'DRAFT' });
+    t.nonNull.status('status', { default: 'DRAFT' });
+    t.boolean('isTeamEvent');
+    t.int('maxTeamSize');
+    t.int('minTeamSize');
   },
 });
 
@@ -42,6 +40,7 @@ export const createEvent = mutationField('createEvent', {
       ],
       args.orgID,
     ),
+
   args: {
     orgID: nonNull(idArg()),
     event: nonNull('EventCreateInputType'),
@@ -50,9 +49,7 @@ export const createEvent = mutationField('createEvent', {
     return prisma.event.create({
       data: {
         ...args.event,
-        status: args.event.status || undefined,
-        locationID: args.event.locationID || '635e1c662e3082fe09bc498e',
-        type: args.event.type?.toUpperCase(),
+        status: args.event.status || 'DRAFT',
       },
     });
   },
@@ -66,7 +63,6 @@ export const EventUpdateInputType = inputObjectType({
     t.string('subHeading');
     t.string('description');
     t.string('prizeMoney');
-    t.list.nonNull.string('contact');
     t.string('rules');
     t.string('poster');
     t.id('locationID');
@@ -74,8 +70,6 @@ export const EventUpdateInputType = inputObjectType({
     t.date('endDate');
     t.list.nonNull.id('orgID');
     t.orgType('orgType');
-    t.list.nonNull.string('notes');
-    t.list.nonNull.id('pocID');
     t.boolean('weekly');
     t.repeatType('repeatDay');
     t.int('priority');
@@ -112,7 +106,6 @@ export const updateEvent = mutationField('updateEvent', {
         name: args.event?.name || undefined,
         subHeading: args.event?.subHeading || undefined,
         prizeMoney: args.event?.prizeMoney || undefined,
-        contact: args.event?.contact || undefined,
         description: args.event?.description || undefined,
         poster: args.event?.poster || undefined,
         rules: args.event?.rules || undefined,
@@ -121,8 +114,6 @@ export const updateEvent = mutationField('updateEvent', {
         endDate: args.event?.endDate || undefined,
         orgID: args.event?.orgID || undefined,
         orgType: args.event?.orgType || undefined,
-        notes: args.event?.notes || undefined,
-        pocID: args.event?.pocID || undefined,
         weekly: args.event?.weekly || undefined,
         repeatDay: args.event?.repeatDay || undefined,
         priority: args.event?.priority || undefined,

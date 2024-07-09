@@ -16,7 +16,6 @@ export const createEvent = async (req: Request, res: Response) => {
       type,
       subHeading,
       prizeMoney,
-      contact = [],
     } = req.body;
 
     const event = await prisma.event.create({
@@ -24,7 +23,6 @@ export const createEvent = async (req: Request, res: Response) => {
         name,
         subHeading,
         prizeMoney,
-        contact,
         description,
         poster,
         locationID: '635e1c662e3082fe09bc498e',

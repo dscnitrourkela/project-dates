@@ -15,8 +15,23 @@ export const TeamRegistrationCreateInputType = inputObjectType({
 export const createTeamRegistration = mutationField('createTeamRegistration', {
   type: 'TeamRegistration',
   description: 'Creates a team registration record',
-  authorize: (_parent, _args, ctx) => checkGqlPermissions(ctx, []),
+  authorize: (_parent, args, ctx) =>
+    args.orgID
+      ? checkGqlPermissions(ctx, [])
+      : checkGqlPermissions(
+          ctx,
+          [
+            PERMISSIONS.SUPER_ADMIN,
+            PERMISSIONS.SUPER_EDITOR,
+            PERMISSIONS.SUPER_VIEWER,
+            PERMISSIONS.ORG_ADMIN,
+            PERMISSIONS.ORG_EDITOR,
+            PERMISSIONS.ORG_VIEWER,
+          ],
+          args.orgID || undefined,
+        ),
   args: {
+    orgID: idArg(),
     teamRegistration: nonNull(
       arg({
         type: 'TeamRegistrationCreateInputType',

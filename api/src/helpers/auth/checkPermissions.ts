@@ -85,6 +85,7 @@ const checkPermissions = async ({
 
   try {
     const decodedToken = await verifyUser(token);
+
     if (!decodedToken) {
       return errorHandler(ERRORS.FORBIDDEN);
     }

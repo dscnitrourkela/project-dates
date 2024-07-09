@@ -25,7 +25,7 @@ export const user = queryField('user', {
   type: PaginatedUserType,
   description: 'Returns a list of users depending upon the parameters passed',
   authorize: (_parent, args, ctx) =>
-    args.id || args.uid
+    args.id || args.uid || args.email
       ? checkGqlPermissions(ctx, [])
       : checkGqlPermissions(
           ctx,
@@ -44,11 +44,10 @@ export const user = queryField('user', {
     uid: idArg(),
     orgID: idArg(),
     email: stringArg(),
-    state: stringArg(),
-    city: stringArg(),
     college: stringArg(),
-    stream: stringArg(),
-    referredBy: stringArg(),
+    aicheRegID: stringArg(),
+    mobile: stringArg(),
+    srcID: stringArg(),
     festID: list(nonNull(stringArg())),
     isNitrStudent: booleanArg({ default: true }),
     pagination: 'paginationInputType',
@@ -58,11 +57,8 @@ export const user = queryField('user', {
       id,
       uid,
       email,
-      state,
-      city,
       college,
-      stream,
-      referredBy,
+      mobile,
       festID,
       isNitrStudent,
       pagination,
@@ -72,11 +68,8 @@ export const user = queryField('user', {
       id: id || undefined,
       email: email || undefined,
       uid: uid || undefined,
-      state: state || undefined,
-      city: city || undefined,
+      mobile: mobile || undefined,
       college: college || undefined,
-      stream: stream || undefined,
-      referredBy: referredBy || undefined,
       rollNumber: !isNitrStudent ? null : undefined,
       festID: {
         hasEvery: festID || [],
@@ -108,10 +101,26 @@ export const getUser = queryField('getUser', {
     id: idArg(),
     email: stringArg(),
     uid: stringArg(),
+    orgID: idArg(),
+    mobile: stringArg(),
   },
-  authorize: (_parent, _args, ctx) => checkGqlPermissions(ctx, []),
+  authorize: (_parent, args, ctx) =>
+    args.orgID
+      ? checkGqlPermissions(ctx, [])
+      : checkGqlPermissions(
+          ctx,
+          [
+            PERMISSIONS.SUPER_ADMIN,
+            PERMISSIONS.SUPER_EDITOR,
+            PERMISSIONS.SUPER_VIEWER,
+            PERMISSIONS.ORG_ADMIN,
+            PERMISSIONS.ORG_EDITOR,
+            PERMISSIONS.ORG_VIEWER,
+          ],
+          args.orgID || undefined,
+        ),
   async resolve(_parent, args, { prisma }) {
-    if (!args.id && !args.email && !args.uid) {
+    if (!args.email && !args.uid) {
       throw new Error(
         'You must provide either an ID, an email, or a UID to fetch the user.',
       );
@@ -122,6 +131,7 @@ export const getUser = queryField('getUser', {
         id: args.id ?? undefined,
         email: args.email ?? undefined,
         uid: args.uid ?? undefined,
+        mobile: args.mobile ?? undefined,
       },
     });
   },

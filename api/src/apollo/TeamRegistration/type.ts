@@ -10,17 +10,12 @@ export const TeamRegistration = objectType({
     t.nonNull.id('eventID');
     t.field('event', {
       type: 'Event',
-      async resolve(parent, _args, { prisma }) {
-        const event = await prisma.event.findUnique({
+      resolve(parent, _args, { prisma }) {
+        return prisma.event.findUnique({
           where: {
             id: parent.eventID,
           },
         });
-        if (event?.isTeamEvent) {
-          return event;
-        } else {
-          return null;
-        }
       },
     });
 

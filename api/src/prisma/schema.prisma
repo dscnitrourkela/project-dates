@@ -62,26 +62,30 @@ enum TRANSACTION_TYPE {
 
 // ================== MODELS START ==================
 model User {
-  id         String    @id @default(auto()) @map("_id") @db.ObjectId
-  email      String    @unique
-  name       String?
-  photo      String?
-  gender     GENDER?
-  dob        DateTime?
-  state      String?
-  city       String?
-  college    String?
-  stream     String?
-  mobile     String    @unique
-  selfID     String?
-  festID     String[]  @default([])
-  ca         String[]  @default([])
-  referredBy String?
-  rollNumber String?
-  uid        String    @unique
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  hall       String?
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
+  email        String    @unique
+  name         String?
+  photo        String?
+  gender       GENDER?
+  dob          DateTime?
+  state        String?
+  city         String?
+  college      String?
+  stream       String?
+  mobile       String    @unique
+  selfID       String?
+  festID       String[]  @default([])
+  ca           String[]  @default([])
+  referredBy   String?
+  rollNumber   String?
+  uid          String    @unique
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  hall         String?
+  tSize        String?
+  srcID        String?
+  idCardPhoto  String?
+  aicheRegID   String?
 }
 
 model Org {
@@ -109,24 +113,21 @@ model Event {
   name        String
   subHeading  String?
   prizeMoney  String?
-  description String
+  description String?
   poster      String
   rules       String?
-  locationID  String       @db.ObjectId
-  startDate   DateTime
-  endDate     DateTime
+  locationID  String?      @db.ObjectId
+  startDate   DateTime?
+  endDate     DateTime?
   orgID       String[]     @default([]) @db.ObjectId
   orgType     ORG_TYPE
-  notes       String[]     @default([])
-  pocID       String[]     @default([]) @db.ObjectId
-  contact     String[]     @default([])
-  weekly      Boolean      @default(false)
+  weekly      Boolean?      @default(false)
   repeatDay   REPEAT_TYPE?
-  priority    Int          @default(0)
+  priority    Int?          @default(0)
   status      STATUS       @default(value: DRAFT)
   type        String?
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  createdAt   DateTime?     @default(now())
+  updatedAt   DateTime?     @updatedAt
   isTeamEvent Boolean?
   maxTeamSize Int?
   minTeamSize Int?

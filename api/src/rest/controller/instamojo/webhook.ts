@@ -21,7 +21,7 @@ export const instaMojowebhook = async (req: Request, res: Response) => {
       await prisma.transaction.create({
         data: {
           amount: parseInt(amount, 10),
-          userID: user.id,
+          userID: user.uid,
           transactionID: payment_id,
           type: 'REGISTRATION',
           timestamp: new Date(),
