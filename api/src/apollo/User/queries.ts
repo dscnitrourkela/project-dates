@@ -140,6 +140,7 @@ export const getUser = queryField('getUser', {
 export const getAllUsers = queryField('getAllUsers', {
   type: list('User'),
   description: `Returns a list of users`,
+  args: { orgID: idArg() },
   authorize: (_parent, args, ctx) =>
     args.orgID
       ? checkGqlPermissions(ctx, [])
