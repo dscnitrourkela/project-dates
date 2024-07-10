@@ -136,3 +136,17 @@ export const getUser = queryField('getUser', {
     });
   },
 });
+
+export const getAllUsers = queryField('getAllUsers', {
+  type: list('User'),
+  description: `Returns a list of users`,
+  authorize: (_parent, _args, ctx) =>
+    checkGqlPermissions(ctx, [
+      PERMISSIONS.SUPER_ADMIN,
+      PERMISSIONS.SUPER_EDITOR,
+      PERMISSIONS.SUPER_VIEWER,
+    ]),
+  resolve: async (_parent, _args, { prisma }) => {
+    return prisma.user.findMany();
+  },
+});
