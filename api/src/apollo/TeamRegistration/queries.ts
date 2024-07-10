@@ -8,7 +8,7 @@ export const teamRegistrations = queryField('teamRegistrations', {
   // returns entire team registration object details where user is in team
   description: `Returns team registrations for a given user`,
   authorize: (_parent, args, ctx) =>
-    args.orgID
+    args.orgID && args.userID
       ? checkGqlPermissions(ctx, [])
       : checkGqlPermissions(
           ctx,

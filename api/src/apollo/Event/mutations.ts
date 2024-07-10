@@ -30,20 +30,18 @@ export const createEvent = mutationField('createEvent', {
   type: 'Event',
   description: `Creates a new event record`,
   authorize: (_parent, args, ctx) =>
-    args.orgID
-      ? checkGqlPermissions(ctx, [])
-      : checkGqlPermissions(
-          ctx,
-          [
-            PERMISSIONS.SUPER_ADMIN,
-            PERMISSIONS.SUPER_EDITOR,
-            PERMISSIONS.SUPER_VIEWER,
-            PERMISSIONS.ORG_ADMIN,
-            PERMISSIONS.ORG_EDITOR,
-            PERMISSIONS.ORG_VIEWER,
-          ],
-          args.orgID || undefined,
-        ),
+    checkGqlPermissions(
+      ctx,
+      [
+        PERMISSIONS.SUPER_ADMIN,
+        PERMISSIONS.SUPER_EDITOR,
+        PERMISSIONS.SUPER_VIEWER,
+        PERMISSIONS.ORG_ADMIN,
+        PERMISSIONS.ORG_EDITOR,
+        PERMISSIONS.ORG_VIEWER,
+      ],
+      args.orgID || undefined,
+    ),
 
   args: {
     orgID: nonNull(idArg()),

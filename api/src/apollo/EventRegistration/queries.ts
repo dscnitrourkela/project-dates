@@ -8,7 +8,7 @@ export const eventRegistration = queryField('eventRegistration', {
   // to fetch list of eventIds for events where user has registered
   description: `Returns a list of events depending upon the arguments`,
   authorize: (_parent, args, ctx) =>
-    args.orgID
+    args.orgID && args.userID
       ? checkGqlPermissions(ctx, [])
       : checkGqlPermissions(
           ctx,

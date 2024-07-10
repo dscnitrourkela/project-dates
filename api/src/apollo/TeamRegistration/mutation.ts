@@ -16,7 +16,8 @@ export const createTeamRegistration = mutationField('createTeamRegistration', {
   type: 'TeamRegistration',
   description: 'Creates a team registration record',
   authorize: (_parent, args, ctx) =>
-    args.orgID
+    args.orgID &&
+    (args.teamRegistration.eventID || args.teamRegistration.userIDs)
       ? checkGqlPermissions(ctx, [])
       : checkGqlPermissions(
           ctx,
