@@ -8,6 +8,7 @@ export const EventRegistrationCreateInputType = inputObjectType({
   definition(t) {
     t.nonNull.id('eventID');
     t.nonNull.id('userID');
+    t.string('submittedPDF');
   },
 });
 

@@ -1,6 +1,6 @@
 import { PERMISSIONS } from 'constants/auth';
 import { checkGqlPermissions } from 'helpers/auth/checkPermissions';
-import { idArg, list, queryField, nonNull } from 'nexus';
+import { idArg, stringArg, list, queryField, nonNull } from 'nexus';
 
 export const eventRegistration = queryField('eventRegistration', {
   type: list(nonNull('EventRegistration')),
@@ -23,6 +23,7 @@ export const eventRegistration = queryField('eventRegistration', {
           args.orgID || undefined,
         ),
   args: {
+    submittedPDF: stringArg(),
     id: idArg(),
     userID: idArg(),
     eventID: idArg(),

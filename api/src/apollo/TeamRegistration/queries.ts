@@ -1,4 +1,4 @@
-import { queryField, list, idArg } from 'nexus';
+import { queryField, list, idArg, stringArg } from 'nexus';
 import { PERMISSIONS } from 'constants/auth';
 import { checkGqlPermissions } from 'helpers/auth/checkPermissions';
 
@@ -23,6 +23,7 @@ export const teamRegistrations = queryField('teamRegistrations', {
           args.orgID || undefined,
         ),
   args: {
+    submittedPDF: stringArg(),
     id: idArg(),
     userID: idArg(),
     eventID: idArg(),

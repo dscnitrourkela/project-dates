@@ -9,6 +9,7 @@ export const TeamRegistrationCreateInputType = inputObjectType({
     t.nonNull.id('eventID');
     t.nonNull.list.nonNull.id('userIDs');
     t.nonNull.string('teamName');
+    t.string('submittedPDF');
   },
 });
 
