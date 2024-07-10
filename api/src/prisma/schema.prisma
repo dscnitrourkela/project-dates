@@ -86,6 +86,7 @@ model User {
   srcID        String?
   idCardPhoto  String?
   aicheRegID   String?
+  isHostelRequired Boolean?
 }
 
 model Org {
