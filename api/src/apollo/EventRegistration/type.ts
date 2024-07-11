@@ -5,6 +5,7 @@ export const EventRegistration = objectType({
   description: 'Refers to the registrations of a user for a particular event',
   definition(t) {
     t.nonNull.id('id');
+    t.string('submittedPDF');
 
     t.nonNull.id('eventID');
     t.field('event', {

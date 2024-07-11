@@ -8,6 +8,7 @@ export const EventRegistrationCreateInputType = inputObjectType({
   definition(t) {
     t.nonNull.id('eventID');
     t.nonNull.id('userID');
+    t.string('submittedPDF');
   },
 });
 
@@ -17,7 +18,8 @@ export const createEventRegistration = mutationField(
     type: 'EventRegistration',
     description: `Creates an event registration record`,
     authorize: (_parent, args, ctx) =>
-      args.orgID
+      args.orgID &&
+      (args.eventRegistration.userID || args.eventRegistration.eventID)
         ? checkGqlPermissions(ctx, [])
         : checkGqlPermissions(
             ctx,

@@ -35,10 +35,12 @@ export const createEvent = mutationField('createEvent', {
       [
         PERMISSIONS.SUPER_ADMIN,
         PERMISSIONS.SUPER_EDITOR,
+        PERMISSIONS.SUPER_VIEWER,
         PERMISSIONS.ORG_ADMIN,
         PERMISSIONS.ORG_EDITOR,
+        PERMISSIONS.ORG_VIEWER,
       ],
-      args.orgID,
+      args.orgID || undefined,
     ),
 
   args: {

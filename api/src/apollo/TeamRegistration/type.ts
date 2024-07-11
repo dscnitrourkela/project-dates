@@ -6,6 +6,7 @@ export const TeamRegistration = objectType({
   definition(t) {
     t.nonNull.id('id');
     t.nonNull.id('teamName');
+    t.string('submittedPDF');
 
     t.nonNull.id('eventID');
     t.field('event', {

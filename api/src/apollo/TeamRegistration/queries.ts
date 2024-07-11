@@ -1,4 +1,4 @@
-import { queryField, list, idArg } from 'nexus';
+import { queryField, list, idArg, stringArg } from 'nexus';
 import { PERMISSIONS } from 'constants/auth';
 import { checkGqlPermissions } from 'helpers/auth/checkPermissions';
 
@@ -8,7 +8,7 @@ export const teamRegistrations = queryField('teamRegistrations', {
   // returns entire team registration object details where user is in team
   description: `Returns team registrations for a given user`,
   authorize: (_parent, args, ctx) =>
-    args.id || args.userID
+    args.orgID && args.userID
       ? checkGqlPermissions(ctx, [])
       : checkGqlPermissions(
           ctx,
@@ -23,6 +23,7 @@ export const teamRegistrations = queryField('teamRegistrations', {
           args.orgID || undefined,
         ),
   args: {
+    submittedPDF: stringArg(),
     id: idArg(),
     userID: idArg(),
     eventID: idArg(),

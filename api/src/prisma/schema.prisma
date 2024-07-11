@@ -86,6 +86,7 @@ model User {
   srcID        String?
   idCardPhoto  String?
   aicheRegID   String?
+  isHostelRequired Boolean?
 }
 
 model Org {
@@ -163,6 +164,7 @@ model EventRegistration {
   userID    String   @db.ObjectId
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  submittedPDF String?
 }
 
 model TeamRegistration {
@@ -172,6 +174,7 @@ model TeamRegistration {
   userIDs   String[] @db.ObjectId
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  submittedPDF String?
 }
 
 model Story {
