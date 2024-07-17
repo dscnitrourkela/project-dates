@@ -175,6 +175,7 @@ model TeamRegistration {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   submittedPDF String?
+  grade     String?
 }
 
 model Story {

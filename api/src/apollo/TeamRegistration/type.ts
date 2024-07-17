@@ -7,6 +7,7 @@ export const TeamRegistration = objectType({
     t.nonNull.id('id');
     t.nonNull.id('teamName');
     t.string('submittedPDF');
+    t.string('grade');
 
     t.nonNull.id('eventID');
     t.field('event', {
