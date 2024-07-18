@@ -27,6 +27,7 @@ export const teamRegistrations = queryField('teamRegistrations', {
     id: idArg(),
     userID: idArg(),
     eventID: idArg(),
+    grade: stringArg(),
     orgID: idArg(),
     pagination: 'paginationInputType',
   },
