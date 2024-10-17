@@ -12,7 +12,6 @@
   <img src="https://github.com/dscnitrourkela/project-elaichi/blob/main/logo.png" alt="Logo" width="130">
 </p>
 <h1 align="center">Project Dates</h1>
-for Innovison 2023
 
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
