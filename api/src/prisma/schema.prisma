@@ -23,6 +23,11 @@ enum STATUS {
   EXPIRED
 }
 
+enum COLLEGE_STATUS {
+  BLACKLISTED
+  ALLOWED
+}
+
 enum ORG_SUB_TYPE {
   TECHNICAL
   CULTURAL
@@ -64,13 +69,13 @@ enum TRANSACTION_TYPE {
 model User {
   id         String    @id @default(auto()) @map("_id") @db.ObjectId
   email      String    @unique
-  name       String?
+  name       String
   photo      String?
   gender     GENDER?
   dob        DateTime?
   state      String?
   city       String?
-  college    String?
+  college    String?   @default("") @db.ObjectId
   stream     String?
   mobile     String    @unique
   selfID     String?
@@ -102,6 +107,17 @@ model Org {
   locationID      String?      @db.ObjectId
   createdAt       DateTime     @default(now())
   updatedAt       DateTime     @updatedAt
+}
+
+model Institute {
+  id              String       @id @default(auto()) @map("_id") @db.ObjectId
+  name            String
+  description     String
+  locationID      String?      @db.ObjectId
+  registrations   Int?
+  type            COLLEGE_STATUS?
+  createdAt       DateTime?    @default(now())
+  updatedAt       DateTime?    @updatedAt
 }
 
 model Event {
