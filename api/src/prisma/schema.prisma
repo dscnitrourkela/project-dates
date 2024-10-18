@@ -69,17 +69,18 @@ enum TRANSACTION_TYPE {
 model User {
   id         String    @id @default(auto()) @map("_id") @db.ObjectId
   email      String    @unique
-  name       String
+  name       String?
   photo      String?
   gender     GENDER?
   dob        DateTime?
   state      String?
   city       String?
   college    String?   @default("") @db.ObjectId
+  idCard     String?
   stream     String?
   mobile     String    @unique
   selfID     String?
-  festID     String[]  @default([])
+  festID     String[]  @default([""])
   ca         String[]  @default([])
   referredBy String?
   rollNumber String?

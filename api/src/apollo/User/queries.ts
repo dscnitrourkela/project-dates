@@ -1,15 +1,7 @@
 import { PERMISSIONS } from '@constants';
 
 import { checkGqlPermissions } from 'helpers/auth/checkPermissions';
-import {
-  booleanArg,
-  idArg,
-  list,
-  nonNull,
-  objectType,
-  queryField,
-  stringArg,
-} from 'nexus';
+import { idArg, list, nonNull, objectType, queryField, stringArg } from 'nexus';
 
 const PaginatedUserType = objectType({
   name: 'PaginatedUserType',
@@ -26,7 +18,7 @@ export const user = queryField('user', {
   type: PaginatedUserType,
   description: 'Returns a list of users depending upon the parameters passed',
   authorize: (_parent, args, ctx) =>
-    args.id || args.uid
+    args.id || args.uid || args.name
       ? checkGqlPermissions(ctx, [])
       : checkGqlPermissions(
           ctx,
@@ -43,6 +35,7 @@ export const user = queryField('user', {
   args: {
     id: idArg(),
     uid: idArg(),
+    name: stringArg(),
     orgID: idArg(),
     email: stringArg(),
     state: stringArg(),
@@ -51,7 +44,7 @@ export const user = queryField('user', {
     stream: stringArg(),
     referredBy: stringArg(),
     festID: list(nonNull(stringArg())),
-    isNitrStudent: booleanArg({ default: true }),
+    rollNumber: stringArg(),
     pagination: 'paginationInputType',
   },
   async resolve(_parent, args, { prisma }) {
@@ -59,13 +52,13 @@ export const user = queryField('user', {
       id,
       uid,
       email,
+      name,
       state,
       city,
       college,
       stream,
       referredBy,
-      festID,
-      isNitrStudent,
+      rollNumber,
       pagination,
     } = args;
 
@@ -73,15 +66,13 @@ export const user = queryField('user', {
       id: id || undefined,
       email: email || undefined,
       uid: uid || undefined,
+      name: name || undefined,
       state: state || undefined,
       city: city || undefined,
       college: college || undefined,
       stream: stream || undefined,
       referredBy: referredBy || undefined,
-      rollNumber: !isNitrStudent ? null : undefined,
-      festID: {
-        hasEvery: festID || [],
-      },
+      rollNumber: rollNumber || undefined,
     };
 
     const [users, count] = await prisma.$transaction([
