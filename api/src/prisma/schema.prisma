@@ -116,7 +116,7 @@ model Institute {
   description     String
   locationID      String?      @db.ObjectId
   registrations   Int?
-  type            COLLEGE_STATUS?
+  status          COLLEGE_STATUS?
   createdAt       DateTime?    @default(now())
   updatedAt       DateTime?    @updatedAt
 }

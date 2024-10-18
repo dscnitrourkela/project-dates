@@ -53,6 +53,15 @@ export const createUser = mutationField('createUser', {
       }
     }
 
+    if (args.user.college) {
+      await prisma.institute.update({
+        where: { id: args.user.college },
+        data: {
+          registrations: { increment: 1 },
+        },
+      });
+    }
+
     return prisma.user.create({
       data: {
         ...args.user,
