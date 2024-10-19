@@ -19,6 +19,8 @@ export const User = objectType({
     t.string('mobile');
     t.string('selfID');
     t.string('referredBy');
+    t.boolean('hasPaid');
+    t.string('receipt');
     t.string('rollNumber');
     t.date('createdAt');
     t.nonNull.list.nonNull.id('ca');

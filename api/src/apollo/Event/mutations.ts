@@ -1,6 +1,6 @@
 import { PERMISSIONS } from 'constants/auth';
 import { checkGqlPermissions } from 'helpers/auth/checkPermissions';
-import { idArg, inputObjectType, mutationField, nonNull } from 'nexus';
+import { idArg, inputObjectType, mutationField, nonNull, list } from 'nexus';
 
 export const EventCreateInputType = inputObjectType({
   name: 'EventCreateInputType',
@@ -130,5 +130,42 @@ export const updateEvent = mutationField('updateEvent', {
         status: args.event?.status || undefined,
       },
     });
+  },
+});
+
+// Mutation to add multiple events at once
+export const createMultipleEvents = mutationField('createMultipleEvents', {
+  type: list('Event'),
+  description: 'Creates multiple events at once',
+  authorize: (_parent, args, ctx) =>
+    checkGqlPermissions(
+      ctx,
+      [
+        PERMISSIONS.SUPER_ADMIN,
+        PERMISSIONS.SUPER_EDITOR,
+        PERMISSIONS.ORG_ADMIN,
+        PERMISSIONS.ORG_EDITOR,
+      ],
+      args.orgID,
+    ),
+  args: {
+    orgID: nonNull(idArg()),
+    events: nonNull(list(nonNull('EventCreateInputType'))),
+  },
+  async resolve(_parent, args, { prisma }) {
+    const createdEvents = await Promise.all(
+      args.events.map(async (eventData: typeof args.events[number]) => {
+        return prisma.event.create({
+          data: {
+            ...eventData,
+            status: eventData.status || undefined,
+            locationID: eventData.locationID || '635e1c662e3082fe09bc498e',
+            type: eventData.type?.toUpperCase(),
+          },
+        });
+      }),
+    );
+
+    return createdEvents;
   },
 });

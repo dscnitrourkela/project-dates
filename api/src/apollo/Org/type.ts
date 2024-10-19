@@ -12,6 +12,7 @@ export const Org = objectType({
     t.string('coverImg');
     t.string('theme');
     t.nonNull.int('registrationFee');
+    t.int('registrations');
     t.date('startDate');
     t.date('endDate');
     t.nonNull.status('status');

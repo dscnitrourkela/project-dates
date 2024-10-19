@@ -85,6 +85,8 @@ model User {
   referredBy String?
   rollNumber String?
   uid        String    @unique
+  hasPaid    Boolean?
+  receipt    String?
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
   hall       String?
@@ -100,6 +102,7 @@ model Org {
   theme           String?
   festID          String?
   registrationFee Int          @default(0)
+  registrations   Int?
   startDate       DateTime?
   endDate         DateTime?
   status          STATUS       @default(value: DRAFT)
