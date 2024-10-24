@@ -75,7 +75,7 @@ model User {
   dob        DateTime?
   state      String?
   city       String?
-  college    String?   @default("") @db.ObjectId
+  college    String?   @db.ObjectId
   idCard     String?
   stream     String?
   mobile     String    @unique
