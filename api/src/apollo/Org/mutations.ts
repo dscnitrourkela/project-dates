@@ -14,17 +14,18 @@ export const OrgCreateInputType = inputObjectType({
   description: 'Input arguments used in the createOrg mutation',
   definition(t) {
     t.nonNull.string('name');
-    t.nonNull.string('description');
-    t.nonNull.string('logo');
+    t.string('description');
+    t.string('logo');
     t.string('tagline');
     t.string('coverImg');
     t.string('theme');
     t.id('festID');
-    t.nonNull.int('registrationFee', { default: 0 });
+    t.int('registrationFee', { default: 0 });
     t.date('startDate');
     t.date('endDate');
-    t.nonNull.status('status');
-    t.nonNull.orgSubType('orgSubType');
+    t.status('status');
+    //    t.collegeStatus('college_status');
+    t.orgSubType('orgSubType');
     t.nonNull.orgType('orgType');
     t.id('locationID');
   },
