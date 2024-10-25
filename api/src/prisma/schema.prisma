@@ -130,24 +130,22 @@ model Event {
   name        String
   subHeading  String?
   prizeMoney  String?
+  type        String?
   description String
   poster      String
   rules       String?
-  locationID  String       @db.ObjectId
+  locationID  String?
   startDate   DateTime
-  endDate     DateTime
+  endDate     DateTime?
   orgID       String[]     @default([]) @db.ObjectId
-  orgType     ORG_TYPE
-  notes       String[]     @default([])
-  pocID       String[]     @default([]) @db.ObjectId
+  orgType     ORG_TYPE?
   contact     String[]     @default([])
-  weekly      Boolean      @default(false)
+  weekly      Boolean?      @default(false)
   repeatDay   REPEAT_TYPE?
-  priority    Int          @default(0)
-  status      STATUS       @default(value: DRAFT)
-  type        String?
+  priority    Int?          @default(0)
+  status      STATUS?       @default(value: DRAFT)
   createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  updatedAt   DateTime?     @updatedAt
 }
 
 model Team {

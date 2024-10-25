@@ -1,12 +1,14 @@
 import { PERMISSIONS } from 'constants/auth';
 import { checkGqlPermissions } from 'helpers/auth/checkPermissions';
-import { idArg, list, queryField } from 'nexus';
+import { idArg, list, queryField, nonNull } from 'nexus';
 
 export const eventRegistration = queryField('eventRegistration', {
-  type: list('EventRegistration'),
+  type: list(nonNull('EventRegistration')),
+
+  // to fetch list of eventIds for events where user has registered
   description: `Returns a list of events depending upon the arguments`,
   authorize: (_parent, args, ctx) =>
-    args.id || (args.eventID && args.userID)
+    args.orgID && args.userID
       ? checkGqlPermissions(ctx, [])
       : checkGqlPermissions(
           ctx,

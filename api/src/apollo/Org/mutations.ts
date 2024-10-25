@@ -150,7 +150,7 @@ export const incrementOrgRegistration = mutationField(
     type: 'Org',
     description: 'Increments the registration count for an organisation',
     args: {
-      orgId: nonNull(stringArg()), // The ID of the organisation where the user is registering
+      orgId: nonNull(stringArg()), // The ID of the College org from which the user is registering
     },
     async resolve(_parent, { orgId }, { prisma }) {
       const org = await prisma.org.findUnique({
