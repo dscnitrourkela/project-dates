@@ -10,16 +10,16 @@ export const EventCreateInputType = inputObjectType({
     t.string('subHeading');
     t.nonNull.string('description');
     t.string('prizeMoney');
-    t.list.string('contact');
+    t.list.nonNull.string('contact');
     t.nonNull.string('poster');
     t.string('rules');
-    t.id('locationID');
+    t.nullable.id('locationID');
     t.nonNull.date('startDate');
     t.date('endDate');
     t.nonNull.list.nonNull.id('orgID');
     t.orgType('orgType');
-    t.list.string('notes');
-    t.list.id('pocID');
+    t.list.nonNull.string('notes');
+    t.list.nonNull.id('pocID');
     t.boolean('weekly');
     t.repeatType('repeatDay', { default: null });
     t.int('priority');
@@ -50,6 +50,9 @@ export const createEvent = mutationField('createEvent', {
     return prisma.event.create({
       data: {
         ...args.event,
+        contact: args.event.contact || [],
+        pocID: args.event.pocID || [],
+        notes: args.event.notes || [],
       },
     });
   },
@@ -146,15 +149,18 @@ export const createMultipleEvents = mutationField('createMultipleEvents', {
   },
   async resolve(_parent, args, { prisma }) {
     const createdEvents = await Promise.all(
-      args.events.map(async (eventData: typeof args.events[number]) => {
-        return prisma.event.create({
+      args.events.map(async (eventData: typeof args.events[number]) =>
+        prisma.event.create({
           data: {
             ...eventData,
             status: eventData.status || 'ACTIVE',
             type: eventData.type?.toUpperCase(),
+            contact: eventData.contact || [],
+            pocID: eventData.pocID || [],
+            notes: eventData.notes || [],
           },
-        });
-      }),
+        }),
+      ),
     );
 
     return createdEvents;

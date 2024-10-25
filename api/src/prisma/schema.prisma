@@ -93,36 +93,36 @@ model User {
 }
 
 model Org {
-  id              String       @id @default(auto()) @map("_id") @db.ObjectId
+  id              String          @id @default(auto()) @map("_id") @db.ObjectId
   name            String
   description     String?
-  logo            String?       @unique
+  logo            String?         @unique
   coverImg        String?
   tagline         String?
   theme           String?
   festID          String?
-  registrationFee Int?          @default(0)
+  registrationFee Int?            @default(0)
   registrations   Int?
   startDate       DateTime?
   endDate         DateTime?
-  status          STATUS?       @default(value: ACTIVE)
-  collegeStatus   COLLEGE_STATUS?  @default(value: ALLOWED)
+  status          STATUS?         @default(value: ACTIVE)
+  collegeStatus   COLLEGE_STATUS? @default(value: ALLOWED)
   orgSubType      ORG_SUB_TYPE?
-  orgType         ORG_TYPE     @default(value: INSTITUTE)
-  locationID      String?      @db.ObjectId
-  createdAt       DateTime?     @default(now())
-  updatedAt       DateTime?     @updatedAt
+  orgType         ORG_TYPE        @default(value: INSTITUTE)
+  locationID      String?         @db.ObjectId
+  createdAt       DateTime?       @default(now())
+  updatedAt       DateTime?       @updatedAt
 }
 
 model Institute {
-  id              String       @id @default(auto()) @map("_id") @db.ObjectId
-  name            String
-  description     String
-  locationID      String?      @db.ObjectId
-  registrations   Int?
-  collegeStatus          COLLEGE_STATUS?
-  createdAt       DateTime?    @default(now())
-  updatedAt       DateTime?    @updatedAt
+  id            String          @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  description   String
+  locationID    String?         @db.ObjectId
+  registrations Int?
+  collegeStatus COLLEGE_STATUS?
+  createdAt     DateTime?       @default(now())
+  updatedAt     DateTime?       @updatedAt
 }
 
 model Event {
@@ -140,12 +140,14 @@ model Event {
   orgID       String[]     @default([]) @db.ObjectId
   orgType     ORG_TYPE?
   contact     String[]     @default([])
-  weekly      Boolean?      @default(false)
+  pocID       String[]     @default([]) @db.ObjectId
+  notes       String[]     @default([])
+  weekly      Boolean?     @default(false)
   repeatDay   REPEAT_TYPE?
-  priority    Int?          @default(0)
-  status      STATUS?       @default(value: DRAFT)
+  priority    Int?         @default(0)
+  status      STATUS?      @default(value: DRAFT)
   createdAt   DateTime     @default(now())
-  updatedAt   DateTime?     @updatedAt
+  updatedAt   DateTime?    @updatedAt
 }
 
 model Team {
