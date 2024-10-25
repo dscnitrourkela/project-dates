@@ -45,5 +45,16 @@ export const Org = objectType({
           .then(fest => fest[0]);
       },
     });
+
+    // New field to get the count of students (users) associated with this Org
+    t.nonNull.int('studentCount', {
+      resolve(parent, _args, { prisma }) {
+        return prisma.user.count({
+          where: {
+            college: parent.id,
+          },
+        });
+      },
+    });
   },
 });
