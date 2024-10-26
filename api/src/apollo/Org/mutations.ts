@@ -24,7 +24,7 @@ export const OrgCreateInputType = inputObjectType({
     t.date('startDate');
     t.date('endDate');
     t.status('status');
-    //    t.collegeStatus('college_status');
+    t.int('registrations', { default: 0 });
     t.orgSubType('orgSubType');
     t.nonNull.orgType('orgType');
     t.id('locationID');
@@ -54,7 +54,7 @@ export const createMultipleOrgs = mutationField('createMultipleOrgs', {
   },
 });
 
-// Original single-org mutation retained for individual creation
+// single-org mutation for individual creation
 export const createOrg = mutationField('createOrg', {
   type: 'Org',
   description: 'Creates a new organisation record',
