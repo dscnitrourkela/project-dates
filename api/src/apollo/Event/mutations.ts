@@ -1,6 +1,6 @@
 import { PERMISSIONS } from 'constants/auth';
 import { checkGqlPermissions } from 'helpers/auth/checkPermissions';
-import { idArg, inputObjectType, mutationField, nonNull } from 'nexus';
+import { idArg, inputObjectType, mutationField, nonNull, list } from 'nexus';
 
 export const EventCreateInputType = inputObjectType({
   name: 'EventCreateInputType',
@@ -10,19 +10,19 @@ export const EventCreateInputType = inputObjectType({
     t.string('subHeading');
     t.nonNull.string('description');
     t.string('prizeMoney');
-    t.nonNull.list.nonNull.string('contact');
+    t.list.nonNull.string('contact');
     t.nonNull.string('poster');
     t.string('rules');
-    t.id('locationID');
+    t.nullable.id('locationID');
     t.nonNull.date('startDate');
-    t.nonNull.date('endDate');
+    t.date('endDate');
     t.nonNull.list.nonNull.id('orgID');
-    t.nonNull.orgType('orgType');
-    t.nonNull.list.nonNull.string('notes');
-    t.nonNull.list.nonNull.id('pocID');
-    t.nonNull.boolean('weekly');
+    t.orgType('orgType');
+    t.list.nonNull.string('notes');
+    t.list.nonNull.id('pocID');
+    t.boolean('weekly');
     t.repeatType('repeatDay', { default: null });
-    t.nonNull.int('priority');
+    t.int('priority');
     t.string('type');
     t.status('status', { default: 'DRAFT' });
   },
@@ -50,9 +50,9 @@ export const createEvent = mutationField('createEvent', {
     return prisma.event.create({
       data: {
         ...args.event,
-        status: args.event.status || undefined,
-        locationID: args.event.locationID || '635e1c662e3082fe09bc498e',
-        type: args.event.type?.toUpperCase(),
+        contact: args.event.contact || [],
+        pocID: args.event.pocID || [],
+        notes: args.event.notes || [],
       },
     });
   },
@@ -116,19 +116,53 @@ export const updateEvent = mutationField('updateEvent', {
         description: args.event?.description || undefined,
         poster: args.event?.poster || undefined,
         rules: args.event?.rules || undefined,
-        locationID: args.event?.locationID || undefined,
         startDate: args.event?.startDate || undefined,
         endDate: args.event?.endDate || undefined,
         orgID: args.event?.orgID || undefined,
         orgType: args.event?.orgType || undefined,
-        notes: args.event?.notes || undefined,
-        pocID: args.event?.pocID || undefined,
-        weekly: args.event?.weekly || undefined,
-        repeatDay: args.event?.repeatDay || undefined,
         priority: args.event?.priority || undefined,
         type: args.event?.type?.toUpperCase() || undefined,
         status: args.event?.status || undefined,
       },
     });
+  },
+});
+
+// Mutation to add multiple events at once
+export const createMultipleEvents = mutationField('createMultipleEvents', {
+  type: list('Event'),
+  description: 'Creates multiple events at once',
+  authorize: (_parent, args, ctx) =>
+    checkGqlPermissions(
+      ctx,
+      [
+        PERMISSIONS.SUPER_ADMIN,
+        PERMISSIONS.SUPER_EDITOR,
+        PERMISSIONS.ORG_ADMIN,
+        PERMISSIONS.ORG_EDITOR,
+      ],
+      args.orgID,
+    ),
+  args: {
+    orgID: nonNull(idArg()),
+    events: nonNull(list(nonNull('EventCreateInputType'))),
+  },
+  async resolve(_parent, args, { prisma }) {
+    const createdEvents = await Promise.all(
+      args.events.map(async (eventData: typeof args.events[number]) =>
+        prisma.event.create({
+          data: {
+            ...eventData,
+            status: eventData.status || 'ACTIVE',
+            type: eventData.type?.toUpperCase(),
+            contact: eventData.contact || [],
+            pocID: eventData.pocID || [],
+            notes: eventData.notes || [],
+          },
+        }),
+      ),
+    );
+
+    return createdEvents;
   },
 });

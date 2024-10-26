@@ -1,13 +1,4 @@
-import { FieldResolver, objectType } from 'nexus';
-
-export const locationResolver:
-  | FieldResolver<'Event', 'location'>
-  | undefined = (parent, _args, { prisma }) =>
-  prisma.location.findUnique({
-    where: {
-      id: parent.locationID,
-    },
-  });
+import { objectType } from 'nexus';
 
 export const Event = objectType({
   name: 'Event',
@@ -22,20 +13,14 @@ export const Event = objectType({
     t.nonNull.string('poster');
     t.string('rules');
     t.nonNull.date('startDate');
-    t.nonNull.date('endDate');
-    t.nonNull.orgType('orgType');
+    t.date('endDate');
+    t.orgType('orgType');
     t.nonNull.list.nonNull.string('notes');
-    t.nonNull.boolean('weekly');
-    t.repeatType('repeatDay');
-    t.nonNull.int('priority');
+    t.int('priority');
     t.string('type');
-    t.nonNull.status('status');
+    t.status('status');
 
-    t.nonNull.id('locationID');
-    t.field('location', {
-      type: 'Location',
-      resolve: locationResolver,
-    });
+    t.id('locationID');
 
     t.list.nonNull.string('contact');
     t.nonNull.list.nonNull.id('pocID');

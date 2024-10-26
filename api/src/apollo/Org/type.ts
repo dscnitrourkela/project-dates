@@ -6,16 +6,18 @@ export const Org = objectType({
   definition(t) {
     t.nonNull.id('id');
     t.nonNull.string('name');
-    t.nonNull.string('description');
-    t.nonNull.string('logo');
+    t.string('description');
+    t.string('logo');
     t.string('tagline');
     t.string('coverImg');
     t.string('theme');
-    t.nonNull.int('registrationFee');
+    t.int('registrationFee');
+    t.int('registrations');
     t.date('startDate');
     t.date('endDate');
-    t.nonNull.status('status');
-    t.nonNull.orgSubType('orgSubType');
+    t.status('status');
+    //    t.collegeStatus('collegeStatus');
+    t.orgSubType('orgSubType');
     t.nonNull.orgType('orgType');
 
     t.id('locationID');
@@ -41,6 +43,17 @@ export const Org = objectType({
             },
           })
           .then(fest => fest[0]);
+      },
+    });
+
+    // New field to get the count of students (users) associated with this Org
+    t.nonNull.int('studentCount', {
+      resolve(parent, _args, { prisma }) {
+        return prisma.user.count({
+          where: {
+            college: parent.id,
+          },
+        });
       },
     });
   },
