@@ -1,60 +1,28 @@
 import { PERMISSIONS } from 'constants/auth';
 import { checkGqlPermissions } from 'helpers/auth/checkPermissions';
-import {
-  idArg,
-  inputObjectType,
-  mutationField,
-  nonNull,
-  list,
-  stringArg,
-} from 'nexus';
+import { idArg, inputObjectType, mutationField, nonNull } from 'nexus';
 
 export const OrgCreateInputType = inputObjectType({
   name: 'OrgCreateInputType',
   description: 'Input arguments used in the createOrg mutation',
   definition(t) {
     t.nonNull.string('name');
-    t.string('description');
-    t.string('logo');
+    t.nonNull.string('description');
+    t.nonNull.string('logo');
     t.string('tagline');
     t.string('coverImg');
     t.string('theme');
     t.id('festID');
-    t.int('registrationFee', { default: 0 });
+    t.nonNull.int('registrationFee', { default: 0 });
     t.date('startDate');
     t.date('endDate');
-    t.status('status');
-    //    t.collegeStatus('college_status');
-    t.orgSubType('orgSubType');
+    t.nonNull.status('status');
+    t.nonNull.orgSubType('orgSubType');
     t.nonNull.orgType('orgType');
     t.id('locationID');
   },
 });
 
-// Mutation for adding multiple orgs/Institues at once
-export const createMultipleOrgs = mutationField('createMultipleOrgs', {
-  type: list('Org'),
-  description: 'Creates multiple organisation records at once',
-  authorize: (_parent, _args, ctx) => checkGqlPermissions(ctx, []),
-  args: {
-    orgs: nonNull(list(nonNull('OrgCreateInputType'))), // Expect an array of org input objects
-  },
-  async resolve(_parent, args, { prisma }) {
-    const createdOrgs = [];
-
-    // Loop over each organization input and create it in the database
-    for (const org of args.orgs) {
-      const createdOrg = await prisma.org.create({
-        data: org,
-      });
-      createdOrgs.push(createdOrg);
-    }
-
-    return createdOrgs;
-  },
-});
-
-// Original single-org mutation retained for individual creation
 export const createOrg = mutationField('createOrg', {
   type: 'Org',
   description: 'Creates a new organisation record',
@@ -70,7 +38,6 @@ export const createOrg = mutationField('createOrg', {
   },
 });
 
-// Update mutation for updating existing organizations
 export const OrgUpdateInputType = inputObjectType({
   name: 'OrgUpdateInputType',
   description: 'Input arguments used in the updateOrg mutation',
@@ -94,11 +61,20 @@ export const OrgUpdateInputType = inputObjectType({
   },
 });
 
-// Original update org mutation retained
 export const updateOrg = mutationField('updateOrg', {
   type: 'Org',
   description: 'Updates an existing organisation record',
-  authorize: (_parent, args, ctx) => checkGqlPermissions(ctx, [], args.id),
+  authorize: (_parent, args, ctx) =>
+    checkGqlPermissions(
+      ctx,
+      [
+        PERMISSIONS.SUPER_ADMIN,
+        PERMISSIONS.SUPER_EDITOR,
+        PERMISSIONS.ORG_ADMIN,
+        PERMISSIONS.ORG_EDITOR,
+      ],
+      args.id,
+    ),
   args: {
     id: nonNull(idArg()),
     org: nonNull('OrgUpdateInputType'),
@@ -142,31 +118,3 @@ export const updateOrg = mutationField('updateOrg', {
     });
   },
 });
-
-// Increment the `registrations` field for a specific org
-export const incrementOrgRegistration = mutationField(
-  'incrementOrgRegistration',
-  {
-    type: 'Org',
-    description: 'Increments the registration count for an organisation',
-    args: {
-      orgId: nonNull(stringArg()), // The ID of the College org from which the user is registering
-    },
-    async resolve(_parent, { orgId }, { prisma }) {
-      const org = await prisma.org.findUnique({
-        where: { id: orgId },
-      });
-
-      if (!org) {
-        throw new Error('Organisation not found');
-      }
-
-      return prisma.org.update({
-        where: { id: orgId },
-        data: {
-          registrations: (org.registrations || 0) + 1,
-        },
-      });
-    },
-  },
-);

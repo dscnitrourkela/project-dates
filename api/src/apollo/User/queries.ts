@@ -1,7 +1,15 @@
 import { PERMISSIONS } from '@constants';
 
 import { checkGqlPermissions } from 'helpers/auth/checkPermissions';
-import { idArg, list, nonNull, objectType, queryField, stringArg } from 'nexus';
+import {
+  booleanArg,
+  idArg,
+  list,
+  nonNull,
+  objectType,
+  queryField,
+  stringArg,
+} from 'nexus';
 
 const PaginatedUserType = objectType({
   name: 'PaginatedUserType',
@@ -18,7 +26,7 @@ export const user = queryField('user', {
   type: PaginatedUserType,
   description: 'Returns a list of users depending upon the parameters passed',
   authorize: (_parent, args, ctx) =>
-    args.id || args.uid || args.name || args.orgID
+    args.id || args.uid
       ? checkGqlPermissions(ctx, [])
       : checkGqlPermissions(
           ctx,
@@ -35,7 +43,6 @@ export const user = queryField('user', {
   args: {
     id: idArg(),
     uid: idArg(),
-    name: stringArg(),
     orgID: idArg(),
     email: stringArg(),
     state: stringArg(),
@@ -44,7 +51,7 @@ export const user = queryField('user', {
     stream: stringArg(),
     referredBy: stringArg(),
     festID: list(nonNull(stringArg())),
-    rollNumber: stringArg(),
+    isNitrStudent: booleanArg({ default: true }),
     pagination: 'paginationInputType',
   },
   async resolve(_parent, args, { prisma }) {
@@ -52,13 +59,13 @@ export const user = queryField('user', {
       id,
       uid,
       email,
-      name,
       state,
       city,
       college,
       stream,
       referredBy,
-      rollNumber,
+      festID,
+      isNitrStudent,
       pagination,
     } = args;
 
@@ -66,13 +73,15 @@ export const user = queryField('user', {
       id: id || undefined,
       email: email || undefined,
       uid: uid || undefined,
-      name: name || undefined,
       state: state || undefined,
       city: city || undefined,
       college: college || undefined,
       stream: stream || undefined,
       referredBy: referredBy || undefined,
-      rollNumber: rollNumber || undefined,
+      rollNumber: !isNitrStudent ? null : undefined,
+      festID: {
+        hasEvery: festID || [],
+      },
     };
 
     const [users, count] = await prisma.$transaction([

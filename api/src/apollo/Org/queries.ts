@@ -9,9 +9,10 @@ export const org = queryField('org', {
     orgType: 'OrgType',
     orgSubType: 'OrgSubType',
     pagination: 'paginationInputType',
+    status: 'StatusType',
   },
   resolve(_parent, args, { prisma }) {
-    const { id, orgType, orgSubType, pagination } = args;
+    const { id, orgType, orgSubType, pagination, status } = args;
 
     if (id || orgType || orgSubType) {
       return prisma.org.findMany({
@@ -21,16 +22,17 @@ export const org = queryField('org', {
           id: id || undefined,
           orgType: orgType || undefined,
           orgSubType: orgSubType || undefined,
+          status: status || undefined,
         },
         orderBy: {
-          registrations: 'desc',
+          createdAt: 'desc',
         },
       });
     }
 
     return prisma.org.findMany({
       where: {
-        orgType: orgType || undefined,
+        status: status || undefined,
       },
       orderBy: {
         createdAt: 'desc',
