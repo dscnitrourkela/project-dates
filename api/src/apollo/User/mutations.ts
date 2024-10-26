@@ -14,14 +14,10 @@ export const UserCreateInputType = inputObjectType({
     t.string('state');
     t.string('city');
     t.string('college');
-    t.string('idCard');
     t.string('stream');
-    t.string('receipt');
     t.nonNull.string('mobile');
     t.string('referredBy');
     t.string('rollNumber');
-    t.string('transactionID');
-    t.boolean('hasPaid');
   },
 });
 
@@ -55,15 +51,6 @@ export const createUser = mutationField('createUser', {
       if (users.length > 0) {
         throw new Error('Roll Number already registered');
       }
-    }
-
-    if (args.user.college) {
-      await prisma.institute.update({
-        where: { id: args.user.college },
-        data: {
-          registrations: { increment: 1 },
-        },
-      });
     }
 
     return prisma.user.create({

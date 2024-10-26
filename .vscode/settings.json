@@ -3,7 +3,7 @@
   "editor.formatOnSave": true,
   "editor.detectIndentation": true,
   "editor.snippetSuggestions": "top",
-  "editor.wordBasedSuggestions": "off",
+  "editor.wordBasedSuggestions": false,
   "editor.suggest.localityBonus": true,
   "editor.acceptSuggestionOnCommitCharacter": false,
   "[javascript]": {
@@ -27,12 +27,12 @@
     "**/.gh-pages": true
   },
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "never"
+    "source.fixAll.eslint": false
   },
   "eslint.validate": ["javascript", "javascriptreact"],
   "npm.runSilent": false,
   "explorer.confirmDragAndDrop": false,
   "editor.formatOnPaste": false,
-  "editor.cursorSmoothCaretAnimation": "off",
+  "editor.cursorSmoothCaretAnimation": false,
   "editor.smoothScrolling": false
 }

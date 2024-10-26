@@ -23,12 +23,6 @@ enum STATUS {
   EXPIRED
 }
 
-enum COLLEGE_STATUS {
-  BLACKLISTED
-  ALLOWED
-  OTHER
-}
-
 enum ORG_SUB_TYPE {
   TECHNICAL
   CULTURAL
@@ -76,55 +70,38 @@ model User {
   dob        DateTime?
   state      String?
   city       String?
-  college    String?   @db.ObjectId
-  idCard     String?
+  college    String?
   stream     String?
   mobile     String    @unique
   selfID     String?
-  festID     String[]  @default([""])
+  festID     String[]  @default([])
   ca         String[]  @default([])
   referredBy String?
   rollNumber String?
   uid        String    @unique
-  hasPaid    Boolean?
-  receipt    String?
-  transactionID String?
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
   hall       String?
 }
 
 model Org {
-  id              String          @id @default(auto()) @map("_id") @db.ObjectId
+  id              String       @id @default(auto()) @map("_id") @db.ObjectId
   name            String
-  description     String?
-  logo            String?         @unique
+  description     String
+  logo            String       @unique
   coverImg        String?
   tagline         String?
   theme           String?
   festID          String?
-  registrationFee Int?            @default(0)
-  registrations   Int?
+  registrationFee Int          @default(0)
   startDate       DateTime?
   endDate         DateTime?
-  status          STATUS?         @default(value: ACTIVE)
-  collegeStatus   COLLEGE_STATUS? @default(value: ALLOWED)
-  orgSubType      ORG_SUB_TYPE?
-  orgType         ORG_TYPE        @default(value: INSTITUTE)
-  locationID      String?         @db.ObjectId
-  createdAt       DateTime?       @default(now())
-  updatedAt       DateTime?       @updatedAt
-}
-
-model Institute {
-  id            String          @id @default(auto()) @map("_id") @db.ObjectId
-  name          String
-  description   String
-  locationID    String?         @db.ObjectId
-  registrations Int?
-  collegeStatus COLLEGE_STATUS?
-  createdAt     DateTime?       @default(now())
-  updatedAt     DateTime?       @updatedAt
+  status          STATUS       @default(value: DRAFT)
+  orgSubType      ORG_SUB_TYPE
+  orgType         ORG_TYPE
+  locationID      String?      @db.ObjectId
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
 }
 
 model Event {
@@ -132,24 +109,24 @@ model Event {
   name        String
   subHeading  String?
   prizeMoney  String?
-  type        String?
   description String
   poster      String
   rules       String?
-  locationID  String?
+  locationID  String       @db.ObjectId
   startDate   DateTime
-  endDate     DateTime?
+  endDate     DateTime
   orgID       String[]     @default([]) @db.ObjectId
-  orgType     ORG_TYPE?
-  contact     String[]     @default([])
-  pocID       String[]     @default([]) @db.ObjectId
+  orgType     ORG_TYPE
   notes       String[]     @default([])
-  weekly      Boolean?     @default(false)
+  pocID       String[]     @default([]) @db.ObjectId
+  contact     String[]     @default([])
+  weekly      Boolean      @default(false)
   repeatDay   REPEAT_TYPE?
-  priority    Int?         @default(0)
-  status      STATUS?      @default(value: DRAFT)
+  priority    Int          @default(0)
+  status      STATUS       @default(value: DRAFT)
+  type        String?
   createdAt   DateTime     @default(now())
-  updatedAt   DateTime?    @updatedAt
+  updatedAt   DateTime     @updatedAt
 }
 
 model Team {
