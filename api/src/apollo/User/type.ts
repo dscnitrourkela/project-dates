@@ -23,6 +23,7 @@ export const User = objectType({
     t.string('receipt');
     t.string('rollNumber');
     t.date('createdAt');
+    t.string('transactionID');
     t.nonNull.list.nonNull.id('ca');
 
     t.nonNull.list.nonNull.id('festID');

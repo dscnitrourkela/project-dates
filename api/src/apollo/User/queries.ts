@@ -18,7 +18,7 @@ export const user = queryField('user', {
   type: PaginatedUserType,
   description: 'Returns a list of users depending upon the parameters passed',
   authorize: (_parent, args, ctx) =>
-    args.id || args.uid || args.name
+    args.id || args.uid || args.name || args.orgID
       ? checkGqlPermissions(ctx, [])
       : checkGqlPermissions(
           ctx,

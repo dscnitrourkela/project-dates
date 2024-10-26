@@ -20,6 +20,8 @@ export const UserCreateInputType = inputObjectType({
     t.nonNull.string('mobile');
     t.string('referredBy');
     t.string('rollNumber');
+    t.string('transactionID');
+    t.boolean('hasPaid');
   },
 });
 

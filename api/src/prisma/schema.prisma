@@ -26,6 +26,7 @@ enum STATUS {
 enum COLLEGE_STATUS {
   BLACKLISTED
   ALLOWED
+  OTHER
 }
 
 enum ORG_SUB_TYPE {
@@ -87,6 +88,7 @@ model User {
   uid        String    @unique
   hasPaid    Boolean?
   receipt    String?
+  transactionID String?
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
   hall       String?
