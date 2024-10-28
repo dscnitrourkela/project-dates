@@ -93,6 +93,7 @@ export const UserUpdateInputType = inputObjectType({
     t.string('referredBy');
     t.string('rollNumber');
     t.id('ca');
+    t.boolean('hasPaid');
   },
 });
 
@@ -126,6 +127,7 @@ export const updateUser = mutationField('updateUser', {
         referredBy: args.user?.referredBy || undefined,
         rollNumber: args.user?.rollNumber || undefined,
         ca: args.user?.ca ? { push: args.user?.ca } : undefined,
+        hasPaid: args.user?.hasPaid || undefined,
       },
     });
   },
